@@ -14,25 +14,25 @@ class Config
      * Database host
      * @var string
      */
-    const DB_HOST = 'your-database-host';
+    const DB_HOST = 'localhost';
 
     /**
      * Database name
      * @var string
      */
-    const DB_NAME = 'your-database-name';
+    const DB_NAME = 'darmotics';
 
     /**
      * Database user
      * @var string
      */
-    const DB_USER = 'your-database-user';
+    const DB_USER = 'francis';
 
     /**
      * Database password
      * @var string
      */
-    const DB_PASSWORD = 'your-database-password';
+    const DB_PASSWORD = 'Mypass321$';
 
     /**
      * Show or hide error messages on screen

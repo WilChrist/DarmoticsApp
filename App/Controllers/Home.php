@@ -31,8 +31,8 @@ class Home extends \Core\Controller
     {
         return 5;
         $user =new User();
-        $user->email= $_POST["email"];
-        $user->password=$_POST["password"];
+        $user->setEmail($_POST["email"]);
+        $user->setPassword($_POST["password"]);
         View::renderTemplate('Home/login.html');
     }
 }

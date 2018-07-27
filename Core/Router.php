@@ -9,6 +9,8 @@ namespace Core;
  */
 class Router
 {
+    //Variable temporaire pour accueillir le POST
+    public $other=null;
 
     /**
      * Associative array of routes (the routing table)
@@ -102,8 +104,11 @@ class Router
      *
      * @return void
      */
-    public function dispatch($url)
+    public function dispatch($url, $others)
     {
+        //récupération et test du post
+        $this->other=$others;
+        var_dump($this->other);
         $url = $this->removeQueryStringVariables($url);
 
         if ($this->match($url)) {
@@ -118,7 +123,7 @@ class Router
                 $action = $this->convertToCamelCase($action);
 
                 if (preg_match('/action$/i', $action) == 0) {
-                    $controller_object->$action();
+                    $controller_object->$action($this->other);
 
                 } else {
                     throw new \Exception("Method $action in controller $controller cannot be called directly - remove the Action suffix to call this method");

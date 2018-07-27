@@ -28,5 +28,13 @@ $router = new Core\Router();
 $router->add('', ['controller' => 'Home', 'action' => 'index']);
 $router->add('login', ['controller' => 'Home', 'action' => 'login']);
 $router->add('{controller}/{action}');
-    
-$router->dispatch($_SERVER['QUERY_STRING']);
+if(isset($_POST))
+{
+    print_r($_POST);
+}
+else
+{
+    echo 'La variable est vide.';
+}
+//je passe le $_POST au routeur afin qu'il le passe au controleur
+$router->dispatch($_SERVER['QUERY_STRING'],$_POST);

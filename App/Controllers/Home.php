@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use Core\Controller;
 use \Core\View;
 use \App\Models\User;
 /**
@@ -29,10 +30,13 @@ class Home extends \Core\Controller
      */
     public function loginAction()
     {
-        return 5;
+        //Le POST existe déjà donc on peut créer un USer directement
         $user =new User();
-        $user->setEmail($_POST["email"]);
-        $user->setPassword($_POST["password"]);
-        View::renderTemplate('Home/login.html');
+        $user->setEmail($this->post["email"]);
+        $user->setPassword($this->post["password"]);
+        var_dump($user);
+
+        //passage du user à la vue
+        View::renderTemplate('Home/login.html', ['user'=>$user]);
     }
 }

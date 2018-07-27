@@ -9,6 +9,8 @@ namespace Core;
  */
 abstract class Controller
 {
+    //variable pour stocker le $post dans le controlleur
+    public $post=[];
 
     /**
      * Parameters from the matched route
@@ -41,10 +43,13 @@ abstract class Controller
      */
     public function __call($name, $args)
     {
+        //récupération et stockage du $_POST
+        $this->post=$args[0];
         $method = $name . 'Action';
 
         if (method_exists($this, $method)) {
             if ($this->before() !== false) {
+                var_dump($args);
                 call_user_func_array([$this, $method], $args);
                 $this->after();
             }

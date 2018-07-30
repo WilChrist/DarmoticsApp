@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use Core\Controller;
 use \Core\View;
-use \App\Models\User;
+
 /**
  * Home controller
  *
@@ -34,7 +34,9 @@ class Home extends \Core\Controller
         //$user =new User();
         //$user->setEmail($this->post["email"]);
         //$user->setPassword($this->post["password"]);
-        $user = $this->db->find("Director",["email"=>$this->post["email"],"password"=>md5($this->post["password"])]);
+        $directorRepository = $this->db->getRepository('App\Models\Director');
+
+        $user = $directorRepository->findOneBy(array("email"=>$this->post["email"],"password"=> md5($this->post["password"])));
         if($user!==null){
             $_SESSION["user"]=$user;
             header("Location:/DarmoticsApp/public/Shareholder");

@@ -2,14 +2,12 @@
 
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Mapping\Driver\StaticPHPDriver;
-//use Doctrine\ORM\Mapping\AnsiQuoteStrategy;
 use App\Config;
 
 require_once "vendor/autoload.php";
 
-$paths = array("App/Models");
-$driver = new StaticPHPDriver("App/Models/Entities");
+$paths = array(__DIR__."/App/Models/");
+//$driver = new StaticPHPDriver("App/Models/Entities");
 $isDevMode = true;
 
 // the connection configuration
@@ -22,8 +20,11 @@ $dbParams = array(
 
 $config = Setup::createAnnotationMetadataConfiguration($paths, $isDevMode);
 $entityManager = EntityManager::create($dbParams, $config);
-$entityManager->getConfiguration()->setMetadataDriverImpl($driver);
-//$entityManager->getConfiguration()->setQuoteStrategy(new AnsiQuoteStrategy());
 
+/*$metas = $entityManager->getMetadataFactory()->getAllMetadata();
 
+foreach ($metas as $meta) {
+    $classes[] = $meta->getName();
+}
+var_dump($classes);*/
 

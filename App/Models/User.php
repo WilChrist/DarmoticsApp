@@ -2,10 +2,8 @@
 
 namespace App\Models;
 
-namespace App\Models;
 
 /**
- * @Entity
  * @Table(name="user",uniqueConstraints={@UniqueConstraint(name="email_unique",columns={"email"})})
  */
 class User

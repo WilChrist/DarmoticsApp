@@ -38,6 +38,11 @@
         </div>
     </nav>
     {% block body %}
+    {{ app.request.baseUrl  }}
+
+    {{base_path}}
+
+    {{ app.request.getBaseURL() }}
     {% endblock %}
 
     <footer class="jumbotron text-center" style="margin-bottom:0">

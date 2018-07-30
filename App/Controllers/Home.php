@@ -31,12 +31,21 @@ class Home extends \Core\Controller
     public function loginAction()
     {
         //Le POST existe déjà donc on peut créer un USer directement
-        $user =new User();
-        $user->setEmail($this->post["email"]);
-        $user->setPassword($this->post["password"]);
-        var_dump($user);
+        //$user =new User();
+        //$user->setEmail($this->post["email"]);
+        //$user->setPassword($this->post["password"]);
+        $user = $this->db->find("Director",["email"=>$this->post["email"],"password"=>md5($this->post["password"])]);
+        if($user!==null){
+            $_SESSION["user"]=$user;
+            header("Location:/DarmoticsApp/public/Shareholder");
+        }
+        else{
+            header("Location:/DarmoticsApp/public/Home");
+        }
+    }
 
-        //passage du user à la vue
-        View::renderTemplate('Home/login.html', ['user'=>$user]);
+    public function logoutAction(){
+        session_destroy();
+        $this->indexAction();
     }
 }

@@ -7,6 +7,9 @@ namespace Core;
  *
  * PHP version 7.0
  */
+
+
+
 abstract class Controller
 {
     //variable pour stocker le $post dans le controlleur
@@ -17,7 +20,7 @@ abstract class Controller
      * @var array
      */
     protected $route_params = [];
-
+    protected $db;
     /**
      * Class constructor
      *
@@ -27,7 +30,10 @@ abstract class Controller
      */
     public function __construct($route_params)
     {
+        session_start();
+        require_once ("../bootstrap.php");
         $this->route_params = $route_params;
+        $this->db = $entityManager;
     }
 
     /**
@@ -49,7 +55,6 @@ abstract class Controller
 
         if (method_exists($this, $method)) {
             if ($this->before() !== false) {
-                var_dump($args);
                 call_user_func_array([$this, $method], $args);
                 $this->after();
             }

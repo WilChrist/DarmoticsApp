@@ -108,7 +108,6 @@ class Router
     {
         //récupération et test du post
         $this->other=$others;
-        var_dump($this->other);
         $url = $this->removeQueryStringVariables($url);
 
         if ($this->match($url)) {

@@ -7,10 +7,6 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Twig_' => array($vendorDir . '/twig/twig/lib'),
-<<<<<<< HEAD
-    'Doctrine\\ORM\\' => array($vendorDir . '/doctrine/orm/lib'),
-=======
->>>>>>> 3739e7b6b9a023e1d5637cf9fbf6b2a00ce4fb9f
     'Doctrine\\DBAL\\' => array($vendorDir . '/doctrine/dbal/lib'),
     'Doctrine\\Common\\Lexer\\' => array($vendorDir . '/doctrine/lexer/lib'),
     'Doctrine\\Common\\Collections\\' => array($vendorDir . '/doctrine/collections/lib'),

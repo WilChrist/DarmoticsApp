@@ -26,15 +26,12 @@ $router = new Core\Router();
 
 // Add the routes
 $router->add('', ['controller' => 'Home', 'action' => 'index']);
-$router->add('login', ['controller' => 'Home', 'action' => 'login']);
+$router->add('Home', ['controller' => 'Home', 'action' => 'index']);
+$router->add('Home/login', ['controller' => 'Home', 'action' => 'login']);
+
+$router->add('Shareholder', ['controller' => 'ShareholderC', 'action' => 'index']);
+$router->add('Shareholder/index', ['controller' => 'ShareholderC', 'action' => 'index']);
 $router->add('{controller}/{action}');
-if(isset($_POST))
-{
-    print_r($_POST);
-}
-else
-{
-    echo 'La variable est vide.';
-}
+
 //je passe le $_POST au routeur afin qu'il le passe au controleur
 $router->dispatch($_SERVER['QUERY_STRING'],$_POST);

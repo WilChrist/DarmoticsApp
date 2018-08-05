@@ -31,10 +31,10 @@ class User
     /** @Column(length=255,nullable=true) */
     protected $phone;
 
-    /** @Column(type="datetime",options={"default" = "CURRENT_TIMESTAMP"}) */
+    /** @Column(type="datetime",options={"default" : "CURRENT_TIMESTAMP"}) */
     protected $signUpDate;
 
-    /** @Column(type="datetime",options={"default" = "CURRENT_TIMESTAMP"}) */
+    /** @Column(type="datetime",options={"default":"CURRENT_TIMESTAMP"}) */
     protected $lastUpdateDate;
 
     /** @Column(length=255,nullable=true) */
@@ -148,9 +148,9 @@ class User
     /**
      * @param mixed $signUpDate
      */
-    public function setSignUpDate($signUpDate)
+    public function setSignUpDate()
     {
-        $this->signUpDate = $signUpDate;
+        $this->signUpDate = new \DateTime("now");
     }
 
     /**
@@ -164,9 +164,9 @@ class User
     /**
      * @param mixed $lastUpdateDate
      */
-    public function setLastUpdateDate($lastUpdateDate)
+    public function setLastUpdateDate()
     {
-        $this->lastUpdateDate = $lastUpdateDate;
+        $this->lastUpdateDate = new \DateTime("now");
     }
 
     /**
@@ -185,4 +185,9 @@ class User
         $this->address = $address;
     }
 
+    public function __construct()
+    {
+        $this->setLastUpdateDate();
+        $this->setSignUpDate();
+    }
 }

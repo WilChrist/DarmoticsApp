@@ -16,9 +16,22 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
 
+                {% if error %}
+                    <div class="alert alert-danger alert-dismissible">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>{{error}} </strong>
+                    </div>
+                    <script>
+                        $( document ).ready(function() {
+                            $('#myModal').modal('show');
+                        });
+                    </script>
+                {% endif %}
+
                 <!-- Modal body -->
                 <div class="modal-body">
-                    <form method="post" action="./Home/login" enctype="application/x-www-form-urlencoded">
+
+                    <form method="post" action="{{ app.request.getBaseURL()}}/DarmoticsApp/public/Home/login" enctype="application/x-www-form-urlencoded">
                         <div class="form-group">
                             <label for="email">Email address:</label>
                             <input type="email" class="form-control" id="email" name="email">
@@ -76,4 +89,6 @@
         </div>
     </div>
 </div>
+
+
 {% endblock %}

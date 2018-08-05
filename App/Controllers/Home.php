@@ -36,18 +36,20 @@ class Home extends \Core\Controller
         //$user->setPassword($this->post["password"]);
         $directorRepository = $this->db->getRepository('App\Models\Director');
 
-        $user = $directorRepository->findOneBy(array("email"=>$this->post["email"],"password"=> md5($this->post["password"])));
+        $user = $directorRepository->findOneBy(array("email"=>$this->getpost("email"),"password"=> md5($this->getpost("password"))));
+
         if($user!==null){
             $_SESSION["user"]=$user;
             header("Location:/DarmoticsApp/public/Shareholder");
         }
         else{
-            header("Location:/DarmoticsApp/public/Home");
+            View::renderTemplate('Home/index.html',["error"=>"email ou mot de passe incorrecte"]);
+
         }
     }
 
     public function logoutAction(){
         session_destroy();
-        $this->indexAction();
+        header("Location:/DarmoticsApp/public/Home");
     }
 }

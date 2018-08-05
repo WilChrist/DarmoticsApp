@@ -14,7 +14,7 @@ namespace App\Models;
  */
 class Shareholder extends User
 {
-    /** @Column(type="datetime",options={"default" = "CURRENT_TIMESTAMP"}) */
+    /** @Column(type="datetime",options={"default" : "CURRENT_TIMESTAMP"}) */
     protected $enterToCapitalDate;
 
     /** @Column(type="float",options={"default"=0}) */
@@ -31,9 +31,9 @@ class Shareholder extends User
     /**
      * @param mixed $enterToCapitalDate
      */
-    public function setEnterToCapitalDate($enterToCapitalDate)
+    public function setEnterToCapitalDate()
     {
-        $this->enterToCapitalDate = $enterToCapitalDate;
+        $this->enterToCapitalDate = new \DateTime("now");
     }
 
     /**
@@ -50,5 +50,11 @@ class Shareholder extends User
     public function setSharesPercentage($sharesPercentage)
     {
         $this->sharesPercentage = $sharesPercentage;
+    }
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->setEnterToCapitalDate();
     }
 }

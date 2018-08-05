@@ -31,6 +31,7 @@ $router->add('Home/login', ['controller' => 'Home', 'action' => 'login']);
 
 $router->add('Shareholder', ['controller' => 'ShareholderC', 'action' => 'index']);
 $router->add('Shareholder/index', ['controller' => 'ShareholderC', 'action' => 'index']);
+$router->add('Shareholder/add', ['controller' => 'ShareholderC', 'action' => 'add']);
 $router->add('{controller}/{action}');
 
 //je passe le $_POST au routeur afin qu'il le passe au controleur

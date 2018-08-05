@@ -13,7 +13,7 @@ namespace Core;
 abstract class Controller
 {
     //variable pour stocker le $post dans le controlleur
-    public $post=[];
+    protected $post=[];
 
     /**
      * Parameters from the matched route
@@ -79,5 +79,9 @@ abstract class Controller
      */
     protected function after()
     {
+    }
+
+    protected function getpost($key){
+        return isset($this->post[$key])? $this->post[$key] : null;
     }
 }

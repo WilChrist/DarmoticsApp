@@ -16,8 +16,11 @@ namespace App\Models;
 class Budgeting extends FinancialMovement
 {
 
-    /** @Column(type="integer") */
-    protected $projectId;
+    /**
+     * One Budgeting is for One Project.
+     * @OneToOne(targetEntity="Project", mappedBy="budget")
+     */
+    protected $project;
 
     /**
      * @return mixed
@@ -33,6 +36,22 @@ class Budgeting extends FinancialMovement
     public function setProjectId($projectId)
     {
         $this->projectId = $projectId;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProject()
+    {
+        return $this->project;
+    }
+
+    /**
+     * @param mixed $project
+     */
+    public function setProject($project)
+    {
+        $this->project = $project;
     }
 
 

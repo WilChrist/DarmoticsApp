@@ -112,14 +112,14 @@
         </li>
 
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown"
+            <a class="nav-link dropdown-toggle" href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/Project" id="pagesDropdown" role="button" data-toggle="dropdown"
                aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-fw fa-folder"></i>
                 <span>Projets</span>
             </a>
             <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-                <a class="dropdown-item" href="#">Ajouter</a>
-                <a class="dropdown-item" href="#">Lister</a>
+                <a class="dropdown-item" href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/Project">Ajouter</a>
+                <a class="dropdown-item" href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/Project/list">Lister</a>
             </div>
         </li>
 

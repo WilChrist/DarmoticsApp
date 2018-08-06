@@ -1,0 +1,48 @@
+{% extends "dashboardbase.html" %}
+
+{% block title %}Shareholder{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9 col-md-6 col-lg-6 mx-auto">
+            {% if shareholders|length <= 0 %}
+            <p>Aucun Actionnaire n'existe pour le moment veuillez rajouter des actionnaires</p>
+            {% else %}
+            {% set i=0 %}
+            <div id="accordion">
+                {% for shareholder in shareholders %}
+                <div class="card bg-dark text-white">
+                    <div class="card-header">
+                        <a class="card-link" data-toggle="collapse" href="#collapse{{i}}">
+                            {{shareholder.lastname}}
+                        </a>
+                    </div>
+                    <div id="collapse{{i}}" class="collapse{% if i==0 %}{{' show'}}{% endif %}" data-parent="#accordion">
+                        <div class="card-body">
+                            <p class="card-text">Prenom: {{shareholder.firstname}}</p>
+                            <p class="card-text">Email: {{shareholder.phone}}</p>
+                            <p class="card-text">Téléphone: {{shareholder.email}}</p>
+                            <p class="card-text">Téléphone: {{shareholder.address}}</p>
+                            <p class="card-text">Pourcentage d'Actions: {{shareholder.sharesPercentage}}%</p>
+                        </div>
+                        <div class="card-footer">
+                            <div class="container">
+                                <a href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/Shareholder/edit?id={{shareholder.id}}"><button type="button" class="btn btn-primary">Modifier</button></a>
+                                <a href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/Shareholder/delete?id={{shareholder.id}}"><button type="button" class="btn btn-danger">Supprimer</button></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% set i=i+1 %}
+                {% endfor %}
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

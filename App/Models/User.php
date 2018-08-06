@@ -14,7 +14,7 @@ class User
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
      */
-    protected $id ;
+    protected $id;
 
     /** @Column(length=255,nullable=true) */
     protected $first_name;

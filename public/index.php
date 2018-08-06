@@ -22,6 +22,7 @@ set_exception_handler('Core\Error::exceptionHandler');
 /**
  * Routing
  */
+use \Core\View;
 $router = new Core\Router();
 
 // Add the routes
@@ -32,7 +33,13 @@ $router->add('Home/login', ['controller' => 'Home', 'action' => 'login']);
 $router->add('Shareholder', ['controller' => 'ShareholderC', 'action' => 'index']);
 $router->add('Shareholder/index', ['controller' => 'ShareholderC', 'action' => 'index']);
 $router->add('Shareholder/add', ['controller' => 'ShareholderC', 'action' => 'add']);
+$router->add('Shareholder/list', ['controller' => 'ShareholderC', 'action' => 'list']);
 $router->add('{controller}/{action}');
 
 //je passe le $_POST au routeur afin qu'il le passe au controleur
-$router->dispatch($_SERVER['QUERY_STRING'],$_POST);
+try {
+    $router->dispatch($_SERVER['QUERY_STRING'], $_POST);
+}
+catch (\Exception $e){
+    View::renderTemplate('404.html', ['message'=>$e->getMessage()]);
+}

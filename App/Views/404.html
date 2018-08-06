@@ -1,10 +1,77 @@
-{% extends "base.html" %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Page d'erreur</title>
+    <style>
+        html, body {
+            background-color: #fff;
+            color: #636b6f;
+            font-family: 'Raleway', sans-serif;
+            font-weight: 100;
+            height: 100vh;
+            margin: 0;
+        }
 
-{% block title %}Page not found{% endblock %}
+        .full-height {
+            height: 100vh;
+        }
 
-{% block body %}
+        .flex-center {
+            align-items: center;
+            display: flex;
+            justify-content: center;
+        }
 
-    <h1>Page not found</h1>
-    <p>Sorry, that page doesn't exist.</p>
+        .position-ref {
+            position: relative;
+        }
 
-{% endblock %}
+        .top-right {
+            position: absolute;
+            right: 10px;
+            top: 18px;
+        }
+
+        .content {
+            text-align: center;
+        }
+
+        .title {
+            font-size: 42px;
+        }
+
+        .links > a {
+            color: #6acb6f;
+            padding: 0 25px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: .1rem;
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+
+        .m-b-md {
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+<div class="flex-center position-ref full-height">
+    <div class="content">
+        <div class="title m-b-md">
+            <h1><strong>Erreur 404</strong></h1>
+            <p>the page you are looking for does not exist or is under construction</p>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+
+
+
+

@@ -60,10 +60,10 @@ class ProjectC extends Controller
         if (!isset($_SESSION["user"])) {
             header("Location:/DarmoticsApp/public/");
         } else {
-            $shareholders = null;
+            $projects = null;
             try{
-                $shareholders = $this->db->getRepository('App\Models\Shareholder')->findAll();
-                View::renderTemplate('Shareholder/list.html', ['user' => $_SESSION["user"],"shareholders"=>$shareholders]);
+                $projects = $this->db->getRepository('App\Models\Project')->findAll();
+                View::renderTemplate('Project/list.html', ['user' => $_SESSION["user"],"projects"=>$projects]);
             }
             catch (\Exception $e){
                 var_dump($e->getMessage());

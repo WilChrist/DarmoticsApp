@@ -12,21 +12,21 @@
     <title>{% block title %}{% endblock %}</title>
 
     <!-- Bootstrap core CSS-->
-    <link href="{{ app.request.getBaseURL()}}/DarmoticsApp/App/Views/vendor/bootstrap/css/bootstrap.min.css"
+    <link href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/vendor/bootstrap/css/bootstrap.min.css"
           rel="stylesheet">
 
     <!-- Custom fonts for this template-->
-    <link href="{{ app.request.getBaseURL()}}/DarmoticsApp/App/Views/vendor/fontawesome-free/css/all.min.css"
+    <link href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/vendor/fontawesome-free/css/all.min.css"
           rel="stylesheet" type="text/css">
 
     <!-- Page level plugin CSS-->
-    <link href="{{ app.request.getBaseURL()}}/DarmoticsApp/App/Views/vendor/datatables/dataTables.bootstrap4.css"
+    <link href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/vendor/datatables/dataTables.bootstrap4.css"
           rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="{{ app.request.getBaseURL()}}/DarmoticsApp/App/Views/css/sb-admin.css" rel="stylesheet">
-    <link href="{{ app.request.getBaseURL()}}/DarmoticsApp/App/Views/css/style.css" rel="stylesheet">
-    <script src="{{ app.request.getBaseURL()}}/DarmoticsApp/App/Views/vendor/jquery/jquery.min.js"></script>
+    <link href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/css/sb-admin.css" rel="stylesheet">
+    <link href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/css/style.css" rel="stylesheet">
+    <script src="{{ app.request.getBaseURL()}}/DarmoticsApp/public/vendor/jquery/jquery.min.js"></script>
 </head>
 
 <body id="page-top">
@@ -135,13 +135,24 @@
             </div>
         </li>
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="employeeDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a class="nav-link dropdown-toggle" href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/Employee" id="employeeDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-fw fa-table"></i>
                 <span>Employés</span>
             </a>
             <div class="dropdown-menu" aria-labelledby="employeeDropdown">
-                <a class="dropdown-item" href="#">Ajouter</a>
-                <a class="dropdown-item" href="#">Lister</a>
+                <a class="dropdown-item" href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/Employee">Ajouter</a>
+                <a class="dropdown-item" href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/Employee/list">Lister</a>
+            </div>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/Department" id="deparmentDropdown" role="button" data-toggle="dropdown"
+               aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-fw fa-folder"></i>
+                <span>Départements</span>
+            </a>
+            <div class="dropdown-menu" aria-labelledby="pagesDropdown">
+                <a class="dropdown-item" href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/Department">Ajouter</a>
+                <a class="dropdown-item" href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/Department/list">Lister</a>
             </div>
         </li>
 
@@ -154,7 +165,7 @@
         <footer class="sticky-footer">
             <div class="container my-auto">
                 <div class="copyright text-center my-auto">
-                    <span>Copyright © Your Website 2018</span>
+                    <span>Copyright © DarmoticsApp 2018</span>
                 </div>
             </div>
         </footer>
@@ -192,22 +203,22 @@
 </div>
 
 <!-- Bootstrap core JavaScript-->
-<script src="{{ app.request.getBaseURL()}}/DarmoticsApp/App/Views/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="{{ app.request.getBaseURL()}}/DarmoticsApp/public/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <!-- Core plugin JavaScript-->
-<script src="{{ app.request.getBaseURL()}}/DarmoticsApp/App/Views/vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="{{ app.request.getBaseURL()}}/DarmoticsApp/public/vendor/jquery-easing/jquery.easing.min.js"></script>
 
 <!-- Page level plugin JavaScript-->
-<script src="{{ app.request.getBaseURL()}}/DarmoticsApp/App/Views/vendor/chart.js/Chart.min.js"></script>
-<script src="{{ app.request.getBaseURL()}}/DarmoticsApp/App/Views/vendor/datatables/jquery.dataTables.js"></script>
-<script src="{{ app.request.getBaseURL()}}/DarmoticsApp/App/Views/vendor/datatables/dataTables.bootstrap4.js"></script>
+<script src="{{ app.request.getBaseURL()}}/DarmoticsApp/public/vendor/chart.js/Chart.min.js"></script>
+<script src="{{ app.request.getBaseURL()}}/DarmoticsApp/public/vendor/datatables/jquery.dataTables.js"></script>
+<script src="{{ app.request.getBaseURL()}}/DarmoticsApp/public/vendor/datatables/dataTables.bootstrap4.js"></script>
 
 <!-- Custom scripts for all pages-->
-<script src="{{ app.request.getBaseURL()}}/DarmoticsApp/App/Views/js/sb-admin.min.js"></script>
+<script src="{{ app.request.getBaseURL()}}/DarmoticsApp/public/js/sb-admin.min.js"></script>
 
 <!-- Demo scripts for this page-->
-<script src="{{ app.request.getBaseURL()}}/DarmoticsApp/App/Views/js/demo/datatables-demo.js"></script>
-<script src="{{ app.request.getBaseURL()}}/DarmoticsApp/App/Views/js/demo/chart-area-demo.js"></script>
+<script src="{{ app.request.getBaseURL()}}/DarmoticsApp/public/js/demo/datatables-demo.js"></script>
+<script src="{{ app.request.getBaseURL()}}/DarmoticsApp/public/js/demo/chart-area-demo.js"></script>
 
 </body>
 

@@ -1,0 +1,92 @@
+{% extends "dashboardbase.html" %}
+
+{% block title %}Projets{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9 col-md-10 col-lg-10 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Ajouter un Département</h5>
+
+                    {% if error %}
+                    <div class="alert alert-danger alert-dismissible">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>{{error}} </strong>
+                    </div>
+                    {% elseif success %}
+                    <div class="alert alert-success alert-dismissible">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>{{success}} </strong>
+                    </div>
+                    {% endif %}
+
+
+                    <form class="addshareholder" method="post"
+                          action="{{ app.request.getBaseURL()}}/DarmoticsApp/public/Department/add">
+                        <div class="form-group">
+                            <label for="name">Nom du Département</label>
+                            <input type="text" id="name" name="name" class="form-control" placeholder="Nom"
+                                   required autofocus>
+                            <span class="alert alert-danger error" id="name_error"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description du Département</label>
+                            <textarea class="form-control" name="description" id="description" cols="30" rows="10" placeholder="description"></textarea>
+                            <span class="alert alert-danger error" id="description_error"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="creationDate">Date de création du Département</label>
+                            <input type="date" id="creationDate" name="creationDate" class="form-control" required>
+                            <span class="alert alert-danger error" id="creationdate_error"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Chef du Département</label>
+                            <input type="text" id="chief" name="chief" class="form-control" placeholder="Nom du Chef"
+                                   autofocus>
+                            <span class="alert alert-danger error" id="chief_name_error"></span>
+                        </div>
+
+                        <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Ajouter</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $("#name").blur(function () {
+            if ($(this).val() === "") {
+                $("#name_error").empty().append("le nom ne peut être vide").show();
+            }
+            else {
+                $("#name_error").hide();
+            }
+        })
+
+        $("#description").blur(function () {
+            if ($(this).val() === "") {
+                $("#description_error").empty().append("la description ne peut être vide").show();
+            }
+            else {
+                $("#description_error").hide();
+            }
+        })
+
+        $("#creationDate").blur(function () {
+            if ($(this).val() === "") {
+                $("#creationdate_error").empty().append("la date de création est invalide").show();
+            }
+            else {
+                $("#creationdate_error").hide();
+            }
+        })
+
+    })
+
+</script>
+{% endblock %}

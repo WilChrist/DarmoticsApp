@@ -1,0 +1,95 @@
+{% extends "dashboardbase.html" %}
+
+{% block title %}Employés{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12 mx-auto">
+            {% if employees|length <= 0 %}
+            <p>Aucun Employée n'existe pour le moment veuillez rajouter des employées</p>
+            {% else %}
+            {% set i=0 %}
+            <!-- DataTables Example -->
+            <div class="card mb-3">
+                <div class="card-header">
+                    <i class="fas fa-table"></i>
+                    Liste des Employées</div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th>N°</th>
+                                <th>Noms</th>
+                                <th>Prénoms</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Adresse</th>
+                                <th>Formation</th>
+                                <th>Compétences</th>
+                                <th>Département</th>
+                                <th>Poste</th>
+                                <th>Date d'entrée dans l'E'se</th>
+                                <th>Modifier</th>
+                                <th>Supprimer</th>
+                            </tr>
+                            </thead>
+                            <tfoot>
+                            <tr>
+                                <th>N°</th>
+                                <th>Noms</th>
+                                <th>Prénoms</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Adresse</th>
+                                <th>Formation</th>
+                                <th>Compétences</th>
+                                <th>Département</th>
+                                <th>Poste</th>
+                                <th>Date d'entrée dans l'E'se</th>
+                                <th>Modifier</th>
+                                <th>Supprimer</th>
+                            </tr>
+                            </tfoot>
+                            <tbody>
+                            {% set d=null%}
+                            {% for employee in employees %}
+                            {% set skills=employee.skills|split(';')%}
+                            <tr>
+                                <td> {{i}} </td>
+                                <td>{{employee.firstName}}</td>
+                                <td>{{employee.lastName}}</td>
+                                <td>{{employee.email}}</td>
+                                <td>{{employee.phone}}</td>
+                                <td>{{employee.address}}</td>
+                                <td>{{employee.education}}</td>
+                                <td>
+                                    {% for s in skills%}
+                                       <span class="badge badge-pill badge-success">{{s}}</span>
+                                    {% endfor %}
+                                </td>
+                                <td>{{employee.department.name}}</td>
+                                <td>{{employee.office}}</td>
+                                <td>{{employee.dateOfEntry|date('Y-m-d')}}</td>
+                                <td><a href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/Department/edit?id={{department.id}}"><button type="button" class="btn btn-primary">Modifier</button></a></td>
+                                <td><a href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/Department/delete?id={{department.id}}"><button type="button" class="btn btn-danger">Supprimer</button></a></td>
+                            </tr>{% set d=employee.lastUpdateDate%}
+                            {% set i=i+1 %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer small text-muted">Mis à jour le {{ d|date('l j F Y') }} at {{ d|date('H:i:s') }}</div>
+            </div>
+
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

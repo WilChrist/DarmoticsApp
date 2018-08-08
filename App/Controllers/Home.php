@@ -36,7 +36,7 @@ class Home extends \Core\Controller
         //$user->setPassword($this->post["password"]);
         $directorRepository = $this->db->getRepository('App\Models\Director');
 
-        $user = $directorRepository->findOneBy(array("email"=>$this->getpost("email"),"password"=> md5($this->getpost("password"))));
+        $user = $directorRepository->findOneBy(array("email"=>$this->getpost("email"),"password"=> sha1($this->getpost("password"))));
 
         if($user!==null){
             $_SESSION["user"]=$user;

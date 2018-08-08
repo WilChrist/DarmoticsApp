@@ -1,0 +1,72 @@
+{% extends "dashboardbase.html" %}
+
+{% block title %}Departments{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9 col-md-11 col-lg-11 mx-auto">
+            {% if departments|length <= 0 %}
+            <p>Aucun Département n'existe pour le moment veuillez rajouter des départements</p>
+            {% else %}
+            {% set i=0 %}
+            <!-- DataTables Example -->
+            <div class="card mb-3">
+                <div class="card-header">
+                    <i class="fas fa-table"></i>
+                    Liste des Départements</div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th>N°</th>
+                                <th>Nom</th>
+                                <th>Description</th>
+                                <th>Nom du Chef</th>
+                                <th>Date de Création</th>
+                                <th>Modifier</th>
+                                <th>Supprimer</th>
+                            </tr>
+                            </thead>
+                            <tfoot>
+                            <tr>
+                                <th>N°</th>
+                                <th>Nom</th>
+                                <th>Description</th>
+                                <th>Nom du Chef</th>
+                                <th>Date de Création</th>
+                                <th>Modifier</th>
+                                <th>Supprimer</th>
+                            </tr>
+                            </tfoot>
+                            <tbody>
+                            {% set d=null%}
+                            {% for department in departments %}
+                            <tr>
+                                <td> {{i}} </td>
+                                <td>{{department.name}}</td>
+                                <td>{{department.description}}</td>
+                                <td>{{department.chief }}</td>
+                                <td>{{department.creationDate|date('Y-m-d')}}</td>
+                                <td><a href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/Department/edit?id={{department.id}}"><button type="button" class="btn btn-primary">Modifier</button></a></td>
+                                <td><a href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/Department/delete?id={{department.id}}"><button type="button" class="btn btn-danger">Supprimer</button></a></td>
+                            </tr>{% set d=department.lastUpdateDate%}
+                            {% set i=i+1 %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer small text-muted">Mis à jour le {{ d|date('l j F Y') }} at {{ d|date('H:i:s') }}</div>
+            </div>
+
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

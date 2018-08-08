@@ -25,7 +25,7 @@ class User
     /** @Column(length=255) */
     protected $email;
 
-    /** @Column(length=255) */
+    /** @Column(length=255)*/
     protected $password;
 
     /** @Column(length=255,nullable=true) */

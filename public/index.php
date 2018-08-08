@@ -37,6 +37,15 @@ $router->add('Shareholder/list', ['controller' => 'ShareholderC', 'action' => 'l
 $router->add('Project', ['controller' => 'ProjectC', 'action' => 'index']);
 $router->add('Project/add', ['controller' => 'ProjectC', 'action' => 'add']);
 $router->add('Project/list', ['controller' => 'ProjectC', 'action' => 'list']);
+
+$router->add('Department', ['controller' => 'DepartmentC', 'action' => 'index']);
+$router->add('Department/add', ['controller' => 'DepartmentC', 'action' => 'add']);
+$router->add('Department/list', ['controller' => 'DepartmentC', 'action' => 'list']);
+
+
+$router->add('Employee', ['controller' => 'EmployeeC', 'action' => 'index']);
+$router->add('Employee/add', ['controller' => 'EmployeeC', 'action' => 'add']);
+$router->add('Employee/list', ['controller' => 'EmployeeC', 'action' => 'list']);
 $router->add('{controller}/{action}');
 
 //je passe le $_POST au routeur afin qu'il le passe au controleur

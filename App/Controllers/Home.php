@@ -31,15 +31,14 @@ class Home extends \Core\Controller
     public function loginAction()
     {
         //Le POST existe déjà donc on peut créer un USer directement
-        //$user =new User();
-        //$user->setEmail($this->post["email"]);
-        //$user->setPassword($this->post["password"]);
+
         $directorRepository = $this->db->getRepository('App\Models\Director');
 
         $user = $directorRepository->findOneBy(array("email"=>$this->getpost("email"),"password"=> sha1($this->getpost("password"))));
 
         if($user!==null){
             $_SESSION["user"]=$user;
+            $this->logger->info( 'Login',["email"=>$user->getEmail()]);
             header("Location:/DarmoticsApp/public/Shareholder");
         }
         else{
@@ -50,6 +49,7 @@ class Home extends \Core\Controller
 
     public function logoutAction(){
         session_destroy();
+        $this->logger->info('Logout',["email"=>$_SESSION["user"]->getEmail()]);
         header("Location:/DarmoticsApp/public/Home");
     }
 }

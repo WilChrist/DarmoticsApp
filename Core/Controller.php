@@ -2,6 +2,10 @@
 
 namespace Core;
 
+use Katzgrau\KLogger\Logger;
+use Psr\Log\LogLevel;
+
+//require '/xampp/htdocs/DarmoticsApp/vendor/autoload.php';
 /**
  * Base controller
  *
@@ -21,6 +25,7 @@ abstract class Controller
      */
     protected $route_params = [];
     protected $db;
+    protected $logger;
     /**
      * Class constructor
      *
@@ -34,6 +39,16 @@ abstract class Controller
         require_once ("../bootstrap.php");
         $this->route_params = $route_params;
         $this->db = $entityManager;
+        $this->logger = new Logger('../logs/'.get_class($this), LogLevel::DEBUG, array (
+            'extension' => 'log', // changes the log file extension
+            'logFormat' => json_encode([
+                'datetime' => '{date}',
+                'logLevel' => '{level}',
+                'message'  => '{message}',
+                'context'  => '{context}',
+            ]),
+            'appendContext' => false
+        ));
     }
 
     /**

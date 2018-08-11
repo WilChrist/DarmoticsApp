@@ -7,7 +7,7 @@
  */
 
 namespace App\Models;
-
+use Doctrine\Common\Collections\ArrayCollection;
 /**
  * @Entity
  * @Table(name="project")
@@ -40,6 +40,28 @@ class Project
      * @JoinColumn(name="budget_id", referencedColumnName="id")
      */
     protected $budget;
+
+    /**
+     * One Project has Many Employee_Project.
+     * @OneToMany(targetEntity="Employee_Project", mappedBy="project")
+     */
+    protected $employee_project;
+
+    /**
+     * @return mixed
+     */
+    public function getEmployeeProject()
+    {
+        return $this->employee_project;
+    }
+
+    /**
+     * @param mixed $employee_project
+     */
+    public function setEmployeeProject($employee_project)
+    {
+        $this->employee_project = $employee_project;
+    }
 
     /**
      * @return mixed
@@ -137,5 +159,7 @@ class Project
         $this->budget = $budget;
     }
 
-
+    public function __construct() {
+        $this->employee_project = new ArrayCollection();
+    }
 }

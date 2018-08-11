@@ -1,0 +1,342 @@
+{"datetime":"2018-08-11 3:26:05.195455","logLevel":"INFO","message":"Modification of an Employee","context":"{
+    "authorEmail": "admin@darmotics.ma",
+    "oldData": {
+        "firstName": "Nzesseu",
+        "lastName": "Willy",
+        "email": "willynzesseu@gmail.com",
+        "phone": "+212635348819",
+        "address": "Wad-ElBasha",
+        "dateOfEntry": {
+            "date": "1997-06-21 00:00:00.000000",
+            "timezone_type": 3,
+            "timezone": "Europe\/Berlin"
+        },
+        "education": "Bac Maths; Ensas;",
+        "departmentName": null,
+        "office": "Dev",
+        "skills": "C++;C#;Php;",
+        "lastUpdateDate": {
+            "date": "2018-08-07 23:56:23.000000",
+            "timezone_type": 3,
+            "timezone": "Europe\/Berlin"
+        },
+        "signUpDate": {
+            "date": "2018-08-07 23:56:22.000000",
+            "timezone_type": 3,
+            "timezone": "Europe\/Berlin"
+        },
+        "projectId": null
+    },
+    "newData": {
+        "firstName": "Nzesseu",
+        "lastName": "Willy",
+        "email": "willynzesseu@gmail.com",
+        "phone": "+212635348819",
+        "address": "Wad-ElBasha",
+        "dateOfEntry": {
+            "date": "1997-06-21 00:00:00.000000",
+            "timezone_type": 3,
+            "timezone": "Europe\/Berlin"
+        },
+        "education": "Bac Maths; Ensas;",
+        "departmentName": "Informatique",
+        "office": "Dev",
+        "skills": "C++;C#;Php;",
+        "lastUpdateDate": {
+            "date": "2018-08-11 03:26:04.000000",
+            "timezone_type": 3,
+            "timezone": "Europe\/Berlin"
+        },
+        "signUpDate": {
+            "date": "2018-08-11 03:26:04.000000",
+            "timezone_type": 3,
+            "timezone": "Europe\/Berlin"
+        },
+        "projectId": "1"
+    }
+}"}
+{"datetime":"2018-08-11 3:26:32.778390","logLevel":"INFO","message":"Modification of an Employee","context":"{
+    "authorEmail": "admin@darmotics.ma",
+    "oldData": {
+        "firstName": "Nzesseu",
+        "lastName": "Willy",
+        "email": "willynzesseu@gmail.com",
+        "phone": "+212635348819",
+        "address": "Wad-ElBasha",
+        "dateOfEntry": {
+            "date": "1997-06-21 00:00:00.000000",
+            "timezone_type": 3,
+            "timezone": "Europe\/Berlin"
+        },
+        "education": "Bac Maths; Ensas;",
+        "departmentName": "Informatique",
+        "office": "Dev",
+        "skills": "C++;C#;Php;",
+        "lastUpdateDate": {
+            "date": "2018-08-11 03:26:04.000000",
+            "timezone_type": 3,
+            "timezone": "Europe\/Berlin"
+        },
+        "signUpDate": {
+            "date": "2018-08-11 03:26:04.000000",
+            "timezone_type": 3,
+            "timezone": "Europe\/Berlin"
+        },
+        "projectId": 3
+    },
+    "newData": {
+        "firstName": "Nzesseu",
+        "lastName": "Willy",
+        "email": "willynzesseu@gmail.com",
+        "phone": "+212635348819",
+        "address": "Wad-ElBasha",
+        "dateOfEntry": {
+            "date": "1997-06-21 00:00:00.000000",
+            "timezone_type": 3,
+            "timezone": "Europe\/Berlin"
+        },
+        "education": "Bac Maths; Ensas;",
+        "departmentName": "GTR",
+        "office": "Dev",
+        "skills": "C++;C#;Php;",
+        "lastUpdateDate": {
+            "date": "2018-08-11 03:26:32.000000",
+            "timezone_type": 3,
+            "timezone": "Europe\/Berlin"
+        },
+        "signUpDate": {
+            "date": "2018-08-11 03:26:32.000000",
+            "timezone_type": 3,
+            "timezone": "Europe\/Berlin"
+        },
+        "projectId": "2"
+    }
+}"}
+{"datetime":"2018-08-11 3:27:03.169526","logLevel":"INFO","message":"Modification of an Employee","context":"{
+    "authorEmail": "admin@darmotics.ma",
+    "oldData": {
+        "firstName": "Nzesseu",
+        "lastName": "Willy",
+        "email": "willynzesseu@gmail.com",
+        "phone": "+212635348819",
+        "address": "Wad-ElBasha",
+        "dateOfEntry": {
+            "date": "1997-06-21 00:00:00.000000",
+            "timezone_type": 3,
+            "timezone": "Europe\/Berlin"
+        },
+        "education": "Bac Maths; Ensas;",
+        "departmentName": "GTR",
+        "office": "Dev",
+        "skills": "C++;C#;Php;",
+        "lastUpdateDate": {
+            "date": "2018-08-11 03:26:32.000000",
+            "timezone_type": 3,
+            "timezone": "Europe\/Berlin"
+        },
+        "signUpDate": {
+            "date": "2018-08-11 03:26:32.000000",
+            "timezone_type": 3,
+            "timezone": "Europe\/Berlin"
+        },
+        "projectId": 3
+    },
+    "newData": {
+        "firstName": "Nzesseu",
+        "lastName": "Willy",
+        "email": "willynzesseu@gmail.com",
+        "phone": "+212635348819",
+        "address": "Wad-ElBasha",
+        "dateOfEntry": {
+            "date": "1997-06-21 00:00:00.000000",
+            "timezone_type": 3,
+            "timezone": "Europe\/Berlin"
+        },
+        "education": "Bac Maths; Ensas;",
+        "departmentName": "Informatique",
+        "office": "Dev",
+        "skills": "C++;C#;Php;",
+        "lastUpdateDate": {
+            "date": "2018-08-11 03:27:03.000000",
+            "timezone_type": 3,
+            "timezone": "Europe\/Berlin"
+        },
+        "signUpDate": {
+            "date": "2018-08-11 03:27:03.000000",
+            "timezone_type": 3,
+            "timezone": "Europe\/Berlin"
+        },
+        "projectId": "1"
+    }
+}"}
+{"datetime":"2018-08-11 3:27:35.702228","logLevel":"INFO","message":"Modification of an Employee","context":"{
+    "authorEmail": "admin@darmotics.ma",
+    "oldData": {
+        "firstName": "Nzesseu",
+        "lastName": "Willy",
+        "email": "willynzesseu@gmail.com",
+        "phone": "+212635348819",
+        "address": "Wad-ElBasha",
+        "dateOfEntry": {
+            "date": "1997-06-21 00:00:00.000000",
+            "timezone_type": 3,
+            "timezone": "Europe\/Berlin"
+        },
+        "education": "Bac Maths; Ensas;",
+        "departmentName": "Informatique",
+        "office": "Dev",
+        "skills": "C++;C#;Php;",
+        "lastUpdateDate": {
+            "date": "2018-08-11 03:27:03.000000",
+            "timezone_type": 3,
+            "timezone": "Europe\/Berlin"
+        },
+        "signUpDate": {
+            "date": "2018-08-11 03:27:03.000000",
+            "timezone_type": 3,
+            "timezone": "Europe\/Berlin"
+        },
+        "projectId": 3
+    },
+    "newData": {
+        "firstName": "Nzesseu",
+        "lastName": "Willy",
+        "email": "willynzesseu@gmail.com",
+        "phone": "+212635348819",
+        "address": "Wad-ElBasha",
+        "dateOfEntry": {
+            "date": "1997-06-21 00:00:00.000000",
+            "timezone_type": 3,
+            "timezone": "Europe\/Berlin"
+        },
+        "education": "Bac Maths; Ensas;",
+        "departmentName": "GTR",
+        "office": "Dev",
+        "skills": "C++;C#;Php;",
+        "lastUpdateDate": {
+            "date": "2018-08-11 03:27:35.000000",
+            "timezone_type": 3,
+            "timezone": "Europe\/Berlin"
+        },
+        "signUpDate": {
+            "date": "2018-08-11 03:27:35.000000",
+            "timezone_type": 3,
+            "timezone": "Europe\/Berlin"
+        },
+        "projectId": "2"
+    }
+}"}
+{"datetime":"2018-08-11 3:29:51.076685","logLevel":"INFO","message":"Modification of an Employee","context":"{
+    "authorEmail": "admin@darmotics.ma",
+    "oldData": {
+        "firstName": "Nzesseu",
+        "lastName": "Willy",
+        "email": "willynzesseu@gmail.com",
+        "phone": "+212635348819",
+        "address": "Wad-ElBasha",
+        "dateOfEntry": {
+            "date": "1997-06-21 00:00:00.000000",
+            "timezone_type": 3,
+            "timezone": "Europe\/Berlin"
+        },
+        "education": "Bac Maths; Ensas;",
+        "departmentName": "GTR",
+        "office": "Dev",
+        "skills": "C++;C#;Php;",
+        "lastUpdateDate": {
+            "date": "2018-08-11 03:27:35.000000",
+            "timezone_type": 3,
+            "timezone": "Europe\/Berlin"
+        },
+        "signUpDate": {
+            "date": "2018-08-11 03:27:35.000000",
+            "timezone_type": 3,
+            "timezone": "Europe\/Berlin"
+        },
+        "projectId": 2
+    },
+    "newData": {
+        "firstName": "Nzesseu",
+        "lastName": "Willy",
+        "email": "willynzesseu@gmail.com",
+        "phone": "+212635348819",
+        "address": "Wad-ElBasha",
+        "dateOfEntry": {
+            "date": "1997-06-21 00:00:00.000000",
+            "timezone_type": 3,
+            "timezone": "Europe\/Berlin"
+        },
+        "education": "Bac Maths; Ensas;",
+        "departmentName": "Informatique",
+        "office": "Dev",
+        "skills": "C++;C#;Php;",
+        "lastUpdateDate": {
+            "date": "2018-08-11 03:29:50.000000",
+            "timezone_type": 3,
+            "timezone": "Europe\/Berlin"
+        },
+        "signUpDate": {
+            "date": "2018-08-11 03:29:50.000000",
+            "timezone_type": 3,
+            "timezone": "Europe\/Berlin"
+        },
+        "projectId": "1"
+    }
+}"}
+{"datetime":"2018-08-11 3:30:00.576193","logLevel":"INFO","message":"Modification of an Employee","context":"{
+    "authorEmail": "admin@darmotics.ma",
+    "oldData": {
+        "firstName": "Nzesseu",
+        "lastName": "Willy",
+        "email": "willynzesseu@gmail.com",
+        "phone": "+212635348819",
+        "address": "Wad-ElBasha",
+        "dateOfEntry": {
+            "date": "1997-06-21 00:00:00.000000",
+            "timezone_type": 3,
+            "timezone": "Europe\/Berlin"
+        },
+        "education": "Bac Maths; Ensas;",
+        "departmentName": "Informatique",
+        "office": "Dev",
+        "skills": "C++;C#;Php;",
+        "lastUpdateDate": {
+            "date": "2018-08-11 03:29:50.000000",
+            "timezone_type": 3,
+            "timezone": "Europe\/Berlin"
+        },
+        "signUpDate": {
+            "date": "2018-08-11 03:29:50.000000",
+            "timezone_type": 3,
+            "timezone": "Europe\/Berlin"
+        },
+        "projectId": 1
+    },
+    "newData": {
+        "firstName": "Nzesseu",
+        "lastName": "Willy",
+        "email": "willynzesseu@gmail.com",
+        "phone": "+212635348819",
+        "address": "Wad-ElBasha",
+        "dateOfEntry": {
+            "date": "1997-06-21 00:00:00.000000",
+            "timezone_type": 3,
+            "timezone": "Europe\/Berlin"
+        },
+        "education": "Bac Maths; Ensas;",
+        "departmentName": "GTR",
+        "office": "Dev",
+        "skills": "C++;C#;Php;",
+        "lastUpdateDate": {
+            "date": "2018-08-11 03:30:00.000000",
+            "timezone_type": 3,
+            "timezone": "Europe\/Berlin"
+        },
+        "signUpDate": {
+            "date": "2018-08-11 03:30:00.000000",
+            "timezone_type": 3,
+            "timezone": "Europe\/Berlin"
+        },
+        "projectId": "2"
+    }
+}"}

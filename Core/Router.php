@@ -109,12 +109,12 @@ class Router
         //récupération et test du post
         $this->other=$others;
         $url = $this->removeQueryStringVariables($url);
-
+        //var_dump($url);
         if ($this->match($url)) {
             $controller = $this->params['controller'];
             $controller = $this->convertToStudlyCaps($controller);
             $controller = $this->getNamespace() . $controller;
-
+            //var_dump($this->params);
             if (class_exists($controller)) {
                 $controller_object = new $controller($this->params);
 
@@ -122,7 +122,11 @@ class Router
                 $action = $this->convertToCamelCase($action);
 
                 if (preg_match('/action$/i', $action) == 0) {
-                    $controller_object->$action($this->other);
+                    //$controller_object->$action($this->other);
+                    if(!isset($this->params['id'])){
+                        $this->params['id']=null;
+                    }//var_dump($this->params);
+                    $controller_object->$action($this->other,$this->params['id']);
 
                 } else {
                     throw new \Exception("Method $action in controller $controller cannot be called directly - remove the Action suffix to call this method");

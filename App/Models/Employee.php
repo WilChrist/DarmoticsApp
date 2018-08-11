@@ -7,7 +7,7 @@
  */
 
 namespace App\Models;
-
+use Doctrine\Common\Collections\ArrayCollection;
 /**
  * @Entity
  * @Table(name="employee",uniqueConstraints={@UniqueConstraint(name="email_unique",columns={"email"})})
@@ -33,6 +33,28 @@ class Employee extends User
      * @JoinColumn(name="department_id", referencedColumnName="id", nullable=true)
      */
     protected $department;
+
+    /**
+     * One Employee has Many Employee_Project.
+     * @OneToMany(targetEntity="Employee_Project", mappedBy="employee")
+     */
+    protected $employee_project;
+
+    /**
+     * @return mixed
+     */
+    public function getEmployeeProject()
+    {
+        return $this->employee_project;
+    }
+
+    /**
+     * @param mixed $employee_project
+     */
+    public function setEmployeeProject($employee_project)
+    {
+        $this->employee_project = $employee_project;
+    }
 
     /**
      * @return mixed
@@ -118,5 +140,7 @@ class Employee extends User
     }
 
 
-
+    public function __construct() {
+        $this->employee_project = new ArrayCollection();
+    }
 }

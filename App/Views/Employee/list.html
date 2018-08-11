@@ -31,6 +31,7 @@
                                 <th>Compétences</th>
                                 <th>Département</th>
                                 <th>Poste</th>
+                                <th>Projet</th>
                                 <th>Date d'entrée dans l'E'se</th>
                                 <th>Modifier</th>
                                 <th>Supprimer</th>
@@ -48,6 +49,7 @@
                                 <th>Compétences</th>
                                 <th>Département</th>
                                 <th>Poste</th>
+                                <th>Projet</th>
                                 <th>Date d'entrée dans l'E'se</th>
                                 <th>Modifier</th>
                                 <th>Supprimer</th>
@@ -72,9 +74,10 @@
                                 </td>
                                 <td>{{employee.department.name}}</td>
                                 <td>{{employee.office}}</td>
+                                <td>{{employee.employeeProject[0].project.name}}    {{employee.employeeProject[1].project.name}}</td>
                                 <td>{{employee.dateOfEntry|date('Y-m-d')}}</td>
-                                <td><a href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/Department/edit?id={{department.id}}"><button type="button" class="btn btn-primary">Modifier</button></a></td>
-                                <td><a href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/Department/delete?id={{department.id}}"><button type="button" class="btn btn-danger">Supprimer</button></a></td>
+                                <td><a href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/EmployeeC/{{employee.id}}/edit"><button type="button" class="btn btn-primary">Modifier</button></a></td>
+                                <td><a href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/EmployeeC/{{employee.id}}/delete"><button type="button" class="btn btn-danger">Supprimer</button></a></td>
                             </tr>{% set d=employee.lastUpdateDate%}
                             {% set i=i+1 %}
                             {% endfor %}

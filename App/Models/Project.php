@@ -35,9 +35,8 @@ class Project
 
 
     /**
-     * One Project has One Budget.
-     * @OneToOne(targetEntity="Budgeting", inversedBy="project")
-     * @JoinColumn(name="budget_id", referencedColumnName="id")
+     * One Budgeting is for One Project.
+     * @OneToOne(targetEntity="Budgeting", mappedBy="project")
      */
     protected $budget;
 

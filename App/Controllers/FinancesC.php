@@ -96,8 +96,7 @@ class FinancesC extends \Core\Controller
             header("Location:/DarmoticsApp/public/");
         } else {
             try {
-                $projects = $this->db->getRepository('App\Models\Project')->findAll();
-                View::renderTemplate('Finances/budgeting.html', ['user' => $_SESSION["user"],'projects'=>$projects]);
+                View::renderTemplate('Finances/budgeting.html', ['user' => $_SESSION["user"],'projects'=>$this->projectsWithoutBudget()]);
             }
             catch (\Exception $e){
                 View::renderTemplate('500.html');
@@ -109,7 +108,22 @@ class FinancesC extends \Core\Controller
         if (!isset($_SESSION["user"])) {
             header("Location:/DarmoticsApp/public/");
         } else {
-            
+            $lastupdate = $this->db->getRepository('App\Models\AccountUpdate')->findOneBy(array(), array('id' => 'desc'));
+
+            if($lastupdate->getAmountafter()<$this->getpost("amount")){
+                View::renderTemplate('Finances/budgeting.html', ['user' => $_SESSION["user"],'projects'=>$this->projectsWithoutBudget()]);
+            }
+            else{
+                $budget = new Budgeting();
+                $budget->setAmount($this->getpost("amount"));
+                $budget->setProject($this->db->getRepository('App\Models\Project')->findOneBy(array('id'=>$this->getpost("project"))));
+                $budget->setMovementDate();
+
+                $this->db->persist($budget);
+                $this->db->flush();
+                View::renderTemplate('Finances/budgeting.html', ['user' => $_SESSION["user"],'projects'=>$this->projectsWithoutBudget()]);
+            }
+
         }
     }
 
@@ -129,5 +143,10 @@ class FinancesC extends \Core\Controller
 
     public function addExitAction(){
 
+    }
+
+    public function projectsWithoutBudget(){
+        $projects = $this->db->getRepository('App\Models\Project')->findAll();
+        return array_filter($projects,function ($v){return $v->getBudget()==null;});
     }
 }

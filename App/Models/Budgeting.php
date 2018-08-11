@@ -8,6 +8,7 @@
 
 namespace App\Models;
 
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @Entity
@@ -16,11 +17,22 @@ namespace App\Models;
 class Budgeting extends FinancialMovement
 {
 
+    public function __construct() {
+        $this->financialexit = new ArrayCollection();
+    }
+
     /**
      * One Budgeting is for One Project.
      * @OneToOne(targetEntity="Project", mappedBy="budget")
      */
     protected $project;
+
+
+    /**
+     * One Budgeting is related to many FinancialExit.
+     * @OneToMany(targetEntity="FinancialExit", mappedBy="budgeting")
+     */
+    private $financialExit;
 
     /**
      * @return mixed
@@ -54,6 +66,20 @@ class Budgeting extends FinancialMovement
         $this->project = $project;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getFinancialExit()
+    {
+        return $this->financialexit;
+    }
 
+    /**
+     * @param mixed $financialexit
+     */
+    public function setFinancialExit($financialExit)
+    {
+        $this->financialExit = $financialExit;
+    }
 
 }

@@ -1,0 +1,73 @@
+{% extends "dashboardbase.html" %}
+
+{% block title %}Entrée financière{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9 col-md-10 col-lg-10 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Ajouter une entrée au capital</h5>
+
+                    <form  method="post" action="{{ app.request.getBaseURL()}}/DarmoticsApp/public/Finances/addEntry">
+                        <div class="form-group">
+                            <label for="type">Type d'entrée</label>
+                            <select  id="type" name="type" class="form-control" required autofocus>
+                                <option value="shareholder">Apport Actionnaire</option>
+                                <option value="donation">DON</option>
+                            </select>
+                            <span class="alert alert-danger error" id="type_error"></span>
+                        </div>
+
+                        <div class="form-group" id="shareholderBloc">
+                            <label for="type">Actionnaire</label>
+                            <select  id="shareholder" name="shareholder" class="form-control" autofocus>
+                                <option value="-1">Nom de l'actionnaire</option>
+                                {% for shareholder in shareholders %}
+                                <option value="{{shareholder.id}}">{{shareholder.lastname}}</option>
+                                {% endfor %}
+                            </select>
+                            <span class="alert alert-danger error" id="shareholder_error"></span>
+                        </div>
+
+                        <div class="form-group" id="contributorBloc">
+                            <label for="contributorName">Nom donnateur</label>
+                            <input type="text" id="contributorName" name="contributorName" class="form-control">
+                            <span class="alert alert-danger error" id="contributorName_error"></span>
+
+                            <label for="contributorPhone">Numéro du donnateur</label>
+                            <input type="text" id="contributorPhone" name="contributorPhone" class="form-control">
+                            <span class="alert alert-danger error" id="contributorPhone_error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="amount">Montant Apporter</label>
+                            <input type="number" id="amount" name="amount" class="form-control" step="0.01" min="0" required>
+                            <span class="alert alert-danger error" id="amount_error"></span>
+                        </div>
+
+                        <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Ajouter</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $("#contributorBloc").hide();
+    $("#type").on('change',function () {
+        if ($(this).val()=="shareholder"){
+            $("#contributorBloc").hide(); $("#shareholderBloc").show();
+        }
+        else {
+            $("#shareholderBloc").hide(); $("#contributorBloc").show();
+        }
+    })
+})
+</script>
+
+{% endblock %}

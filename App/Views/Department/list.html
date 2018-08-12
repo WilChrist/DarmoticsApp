@@ -50,8 +50,8 @@
                                 <td>{{department.description}}</td>
                                 <td>{{department.chief }}</td>
                                 <td>{{department.creationDate|date('Y-m-d')}}</td>
-                                <td><a href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/Department/edit?id={{department.id}}"><button type="button" class="btn btn-primary">Modifier</button></a></td>
-                                <td><a href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/Department/delete?id={{department.id}}"><button type="button" class="btn btn-danger">Supprimer</button></a></td>
+                                <td><a href="{{ app.request.getBaseURL()}}/Department/edit?id={{department.id}}"><button type="button" class="btn btn-primary">Modifier</button></a></td>
+                                <td><a href="{{ app.request.getBaseURL()}}/Department/delete?id={{department.id}}"><button type="button" class="btn btn-danger">Supprimer</button></a></td>
                             </tr>{% set d=department.lastUpdateDate%}
                             {% set i=i+1 %}
                             {% endfor %}

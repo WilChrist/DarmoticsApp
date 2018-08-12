@@ -18,7 +18,7 @@ class ShareholderC extends \Core\Controller
     public function indexAction()
     {
         if (!isset($_SESSION["user"])) {
-            header("Location:/DarmoticsApp/public/");
+            header("Location:/");
         } else {
 
             View::renderTemplate('Shareholder/index.html', ['user' => $_SESSION["user"]]);
@@ -29,9 +29,9 @@ class ShareholderC extends \Core\Controller
     public function addAction()
     {
         if (!isset($_SESSION['user'])) {
-            header("Location:/DarmoticsApp/public/");
+            header("Location:/");
         } elseif ($this->getpost("last_name") == null || $this->getpost("email") == null || $this->getpost("sharespercentage") == null) {
-            header("Location:/DarmoticsApp/public/Shareholder");
+            header("Location:/Shareholder");
         } else {
             $newShareholder = new Shareholder();
             $newShareholder->setLastName($this->getpost("last_name"));
@@ -56,7 +56,7 @@ class ShareholderC extends \Core\Controller
 
     public function listAction(){
         if (!isset($_SESSION["user"])) {
-            header("Location:/DarmoticsApp/public/");
+            header("Location:/");
         } else {
             $shareholders = null;
             try{

@@ -1,6 +1,6 @@
 function deletee(id,email){
     $( document ).ready(function() {
-        //$('#supprform').attr('action',"/DarmoticsApp/public/EmployeeC/"+id+"/delete");
+        //$('#supprform').attr('action',"/EmployeeC/"+id+"/delete");
         $('#id').val(id);
         $('#empmail').html("<b class='badge badge-warning'>"+email+"</b>");
         $('#myModal').modal('show');
@@ -9,7 +9,7 @@ function deletee(id,email){
 $(function () {
     $("#suppBout").click(function () {//alert($("#id").val());
         $.ajax({
-            url:"/DarmoticsApp/public/EmployeeC/"+$("#id").val()+"/delete",
+            url:"/EmployeeC/"+$("#id").val()+"/delete",
             method:"POST",
             data:{"id":$("#id").val(),"reason":$("#reason").val()}
 

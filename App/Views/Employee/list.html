@@ -3,7 +3,7 @@
 {% block title %}Employés{% endblock %}
 
 {% block body %}
-<script type="application/javascript" src="{{ app.request.getBaseURL()}}/DarmoticsApp/public/js/suppr.js"></script>
+<script type="application/javascript" src="{{ app.request.getBaseURL()}}/js/suppr.js"></script>
 <div class="container">
     <div class="row">
         <div class="col-sm-12 col-md-12 col-lg-12 mx-auto">
@@ -78,7 +78,7 @@
                                 <td>{{employee.office}}</td>
                                 <td>{{employee.employeeProject[0].project.name}}    {{employee.employeeProject[1].project.name}}</td>
                                 <td>{{employee.dateOfEntry|date('Y-m-d')}}</td>
-                                <td><a href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/EmployeeC/{{employee.id}}/edit"><button type="button" class="btn btn-primary">Modifier</button></a></td>
+                                <td><a href="{{ app.request.getBaseURL()}}/EmployeeC/{{employee.id}}/edit"><button type="button" class="btn btn-primary">Modifier</button></a></td>
                                 <td><button type="button" class="btn btn-danger" onclick="deletee('{{employee.id}}', '{{employee.email}}')">Supprimer</button></td>
                             </tr>{% set d=employee.lastUpdateDate%}
                             {% set i=i+1 %}

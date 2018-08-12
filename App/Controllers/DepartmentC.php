@@ -17,7 +17,7 @@ class DepartmentC extends Controller
     public function indexAction()
     {
         if (!isset($_SESSION["user"])) {
-            header("Location:/DarmoticsApp/public/");
+            header("Location:/");
         } else {
 
             View::renderTemplate('Department/index.html', ['user' => $_SESSION["user"]]);
@@ -26,9 +26,9 @@ class DepartmentC extends Controller
 
     public function addAction(){
         if (!isset($_SESSION['user'])) {
-            header("Location:/DarmoticsApp/public/");
+            header("Location:/");
         } elseif ($this->getpost("name") == null || $this->getpost("creationDate") == null) {
-            header("Location:/DarmoticsApp/public/Department");
+            header("Location:/Department");
         } else {
             $newDepartment = new Department();
             $newDepartment->setName($this->getpost("name"));
@@ -60,7 +60,7 @@ class DepartmentC extends Controller
 
     public function listAction(){
         if (!isset($_SESSION["user"])) {
-            header("Location:/DarmoticsApp/public/");
+            header("Location:/");
         } else {
             $departments = null;
             try{

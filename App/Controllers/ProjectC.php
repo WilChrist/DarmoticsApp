@@ -16,7 +16,7 @@ class ProjectC extends Controller
     public function indexAction()
     {
         if (!isset($_SESSION["user"])) {
-            header("Location:/DarmoticsApp/public/");
+            header("Location:/");
         } else {
 
             View::renderTemplate('Project/index.html', ['user' => $_SESSION["user"]]);
@@ -25,9 +25,9 @@ class ProjectC extends Controller
 
     public function addAction(){
         if (!isset($_SESSION['user'])) {
-            header("Location:/DarmoticsApp/public/");
+            header("Location:/");
         } elseif ($this->getpost("name") == null || $this->getpost("description") == null || $this->getpost("startDate") == null) {
-            header("Location:/DarmoticsApp/public/Project");
+            header("Location:/Project");
         } else {
             $newProject = new Project();
             $newProject->setName($this->getpost("name"));
@@ -59,7 +59,7 @@ class ProjectC extends Controller
 
     public function listAction(){
         if (!isset($_SESSION["user"])) {
-            header("Location:/DarmoticsApp/public/");
+            header("Location:/");
         } else {
             $projects = null;
             try{

@@ -18,7 +18,7 @@ class EmployeeC extends Controller
     public function indexAction()
     {
         if (!isset($_SESSION["user"])) {
-            header("Location:/DarmoticsApp/public/");
+            header("Location:/");
         } else {
             $departments = null;
             $departments = $this->db->getRepository('App\Models\Department')->findAll();
@@ -30,9 +30,9 @@ class EmployeeC extends Controller
 
     public function addAction(){
         if (!isset($_SESSION['user'])) {
-            header("Location:/DarmoticsApp/public/");
+            header("Location:/");
         } elseif ($this->getpost("first_name") == null || $this->getpost("email") == null || $this->getpost("department") == null) {
-            header("Location:/DarmoticsApp/public/Employee");
+            header("Location:/Employee");
         } else {
 
             $newEmployee = new Employee();
@@ -77,9 +77,9 @@ class EmployeeC extends Controller
     public function editAction($other,$id)
     {
         if (!isset($_SESSION['user'])) {
-            header("Location:/DarmoticsApp/public/");
+            header("Location:/");
         } elseif ($this->getpost("first_name") == null || $this->getpost("email") == null || $this->getpost("department") == null) {
-            //var_dump($this->getpost("first_name"));//header("Location:/DarmoticsApp/public/Employee");
+            //var_dump($this->getpost("first_name"));//header("Location:/Employee");
             $currentEmployee=null;
             $currentEmployee = $this->db->getRepository('App\Models\Employee')->find($id);
             $departments = null;
@@ -189,10 +189,10 @@ class EmployeeC extends Controller
     public function deleteAction()
     {
         if (!isset($_SESSION['user'])) {
-            header("Location:/DarmoticsApp/public/");
+            header("Location:/");
         } elseif ($this->getpost("id") == null || $this->getpost("reason") == null) {
             //$this->logger->info($this->getpost("reason")." 1");
-            header("Location:/DarmoticsApp/public/Employee");
+            header("Location:/Employee");
         } else {
            // echo $this->getpost("reason");
             try {
@@ -212,7 +212,7 @@ class EmployeeC extends Controller
 
                 //$this->logger->warning('Creation of a new Employee '.$newEmployee->getEmail(),["email"=>$_SESSION["user"]->getEmail()]);
                 //View::renderTemplate('Employee/list.html', ['user' => $_SESSION["user"], 'success' => "l'employé a été supprimmé"]);
-                //header("Location:/DarmoticsApp/public/Employee/list");
+                //header("Location:/Employee/list");
             } catch (\Exception $e) {
                 $arr = array('message' => 'Erreur lors de la suppréssion de l\'employé, veuillez reéssayer', 'great'=>"0");
 
@@ -226,7 +226,7 @@ class EmployeeC extends Controller
 
     public function listAction(){
         if (!isset($_SESSION["user"])) {
-            header("Location:/DarmoticsApp/public/");
+            header("Location:/");
         } else {
             $employees = null;
             try{

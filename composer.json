@@ -3,7 +3,8 @@
     "require": {
         "twig/twig": "~2.0",
         "doctrine/orm": "*",
-        "twig/extensions": "*"
+        "twig/extensions": "*",
+        "katzgrau/klogger": "dev-master"
     },
     "autoload": {
         "psr-4": {

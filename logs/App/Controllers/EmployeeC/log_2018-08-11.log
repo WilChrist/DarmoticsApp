@@ -340,3 +340,27 @@
         "projectId": "2"
     }
 }"}
+{"datetime":"2018-08-11 19:14:18.156584","logLevel":"INFO","message":"pour irne 2","context":"[]"}
+{"datetime":"2018-08-11 19:15:03.956851","logLevel":"INFO","message":"pour irne 2","context":"[]"}
+{"datetime":"2018-08-11 19:16:49.925884","logLevel":"INFO","message":"pour irne 2","context":"[]"}
+{"datetime":"2018-08-11 19:19:26.765063","logLevel":"INFO","message":"pour irne 2","context":"[]"}
+{"datetime":"2018-08-11 19:21:46.638247","logLevel":"INFO","message":"pour irne 2","context":"[]"}
+{"datetime":"2018-08-11 19:21:57.141068","logLevel":"INFO","message":"pour irne 2","context":"[]"}
+{"datetime":"2018-08-11 19:22:38.076383","logLevel":"INFO","message":"pour irne 2","context":"[]"}
+{"datetime":"2018-08-11 19:23:13.144911","logLevel":"INFO","message":"pour irne 2","context":"[]"}
+{"datetime":"2018-08-11 19:24:14.187395","logLevel":"INFO","message":"pour irne 2","context":"[]"}
+{"datetime":"2018-08-11 19:25:08.699759","logLevel":"INFO","message":"pour irne 2","context":"[]"}
+{"datetime":"2018-08-11 19:25:38.626983","logLevel":"INFO","message":"pour irne 2","context":"[]"}
+{"datetime":"2018-08-11 19:34:01.716897","logLevel":"INFO","message":"pour irne 2","context":"[]"}
+{"datetime":"2018-08-11 19:35:50.704061","logLevel":"INFO","message":"pour irne 2","context":"[]"}
+{"datetime":"2018-08-11 19:37:27.410648","logLevel":"INFO","message":"pour irne 2","context":"[]"}
+{"datetime":"2018-08-11 19:39:17.371773","logLevel":"INFO","message":"pour irne 2","context":"[]"}
+{"datetime":"2018-08-11 19:39:50.942295","logLevel":"INFO","message":"pour irne 2","context":"[]"}
+{"datetime":"2018-08-11 19:53:02.003194","logLevel":"INFO","message":"pour irne 2","context":"[]"}
+{"datetime":"2018-08-11 19:59:29.134936","logLevel":"INFO","message":"pour irne 2","context":"[]"}
+{"datetime":"2018-08-11 20:00:05.626220","logLevel":"INFO","message":"pour irne 2","context":"[]"}
+{"datetime":"2018-08-11 20:15:21.105086","logLevel":"WARNING","message":"Suppression d'un employé","context":"{
+    "authorEmail": "admin@darmotics.ma",
+    "reason": "C'est un vaut rien!!!",
+    "deletedEmployeeEmail": "moi@gmail.com"
+}"}

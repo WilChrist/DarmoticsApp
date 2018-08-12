@@ -68,8 +68,8 @@ class EmployeeC extends Controller
                 $this->logger->info('Creation of a new Employee '.$newEmployee->getEmail(),["email"=>$_SESSION["user"]->getEmail()]);
                 View::renderTemplate('Employee/index.html', ['user' => $_SESSION["user"], 'success' => "l'employé a été ajouté"]);
             } catch (\Exception $e) {
-                var_dump($e->getMessage());
-                //View::renderTemplate('Employee/index.html', ['user' => $_SESSION["user"], 'error' => "Erreur lors de l'ajout veuillez vérifier vos informations (champs bien remplis, email unique) et réessayer"]);
+                //var_dump($e->getMessage());
+                View::renderTemplate('Employee/index.html', ['user' => $_SESSION["user"], 'error' => "Erreur lors de l'ajout veuillez vérifier vos informations (champs bien remplis, email unique) et réessayer"]);
             }
         }
     }
@@ -188,6 +188,39 @@ class EmployeeC extends Controller
 
     public function deleteAction()
     {
+        if (!isset($_SESSION['user'])) {
+            header("Location:/DarmoticsApp/public/");
+        } elseif ($this->getpost("id") == null || $this->getpost("reason") == null) {
+            //$this->logger->info($this->getpost("reason")." 1");
+            header("Location:/DarmoticsApp/public/Employee");
+        } else {
+           // echo $this->getpost("reason");
+            try {
+                $currentEmployee=null;
+                $currentEmployee = $this->db->getRepository('App\Models\Employee')->find($this->getpost('id'));
+                $this->db->remove($currentEmployee);
+                $this->db->flush();
+
+                $this->logger->warning("Suppression d'un employé",[
+                    'authorEmail'=>$_SESSION['user']->getEmail(),
+                    'reason'=>$this->getpost("reason"),
+                    'deletedEmployeeEmail'=>$currentEmployee->getEmail(),
+                ]);
+                $arr = array('message' => 'Employé Supprimmé', 'great'=>"1");
+
+                echo json_encode($arr);
+
+                //$this->logger->warning('Creation of a new Employee '.$newEmployee->getEmail(),["email"=>$_SESSION["user"]->getEmail()]);
+                //View::renderTemplate('Employee/list.html', ['user' => $_SESSION["user"], 'success' => "l'employé a été supprimmé"]);
+                //header("Location:/DarmoticsApp/public/Employee/list");
+            } catch (\Exception $e) {
+                $arr = array('message' => 'Erreur lors de la suppréssion de l\'employé, veuillez reéssayer', 'great'=>"0");
+
+                echo json_encode($arr);
+                //var_dump($e->getMessage());
+                //View::renderTemplate('Employee/index.html', ['user' => $_SESSION["user"], 'error' => "Erreur lors de la suppréssion veuillez vérifier vos informations et réessayer"]);
+            }
+        }
 
     }
 

@@ -10,7 +10,6 @@ namespace App\Controllers;
 use App\Models\Department;
 use Core\Controller;
 use \Core\View;
-use \App\Models\Project;
 
 class DepartmentC extends Controller
 {
@@ -55,6 +54,36 @@ class DepartmentC extends Controller
 
     public function deleteAction()
     {
+        if (!isset($_SESSION['user'])) {
+            header("Location:/");
+        } elseif ($this->getpost("id") == null || $this->getpost("reason") == null) {
+            //$this->logger->info($this->getpost("reason")." 1");
+            header("Location:/Department");
+        } else {
+            // echo $this->getpost("reason");
+            try {
+                $currentDepartment = null;
+                $currentDepartment = $this->db->getRepository('App\Models\Department')->find($this->getpost('id'));
+                $this->db->remove($currentDepartment);
+                $this->db->flush();
+
+                $this->logger->warning("Suppression d'un employé", [
+                    'authorEmail' => $_SESSION['user']->getEmail(),
+                    'reason' => $this->getpost("reason"),
+                    'deletedDepartmentId' => $currentDepartment->getId(),
+                    'deletedDepartmentName' => $currentDepartment->getName(),
+                ]);
+                $arr = array('message' => 'Departement Supprimmé', 'great' => "1");
+
+                echo json_encode($arr);
+
+            } catch (\Exception $e) {
+                $arr = array('message' => 'Erreur lors de la suppréssion du Departement, veuillez reéssayer', 'great' => "0");
+
+                echo json_encode($arr);
+
+            }
+        }
 
     }
 

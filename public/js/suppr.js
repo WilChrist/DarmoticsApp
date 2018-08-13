@@ -1,15 +1,15 @@
-function deletee(id,email){
+function deletee(id, meaningValue) {
     $( document ).ready(function() {
         //$('#supprform').attr('action',"/EmployeeC/"+id+"/delete");
         $('#id').val(id);
-        $('#empmail').html("<b class='badge badge-warning'>"+email+"</b>");
+        $('#meaningvalue').html("<b class='badge badge-warning'>" + meaningValue + "</b>");
         $('#myModal').modal('show');
     });
 };
 $(function () {
     $("#suppBout").click(function () {//alert($("#id").val());
         $.ajax({
-            url:"/EmployeeC/"+$("#id").val()+"/delete",
+            url: "/" + $('#controller') + "/" + $("#id").val() + "/delete",
             method:"POST",
             data:{"id":$("#id").val(),"reason":$("#reason").val()}
 

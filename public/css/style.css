@@ -22,3 +22,7 @@
     -webkit-background-size: cover;
     background-size: cover;
 }
+
+.card a{
+    color: white;
+}

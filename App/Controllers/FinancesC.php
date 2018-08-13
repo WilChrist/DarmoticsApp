@@ -92,6 +92,7 @@ class FinancesC extends \Core\Controller
                 $pdf = new EntryBill(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
                 $pdf->initialise();
                 $pdf->writeData($newentry,$giver,$_SESSION['user']);
+                $this->logger->info('Adding of new Entry '.$newentry->getType().' '.$newentry->getAmount(),["email"=>$_SESSION["user"]->getEmail()]);
                 $pdf->printBill();
 
                 View::renderTemplate('Finances/entry.html', ['user' => $_SESSION["user"],
@@ -135,6 +136,7 @@ class FinancesC extends \Core\Controller
 
                 $this->db->persist($budget);
                 $this->db->flush();
+                $this->logger->info('Creation of a new Budget for project '.$budget->getProject()->getName(),["email"=>$_SESSION["user"]->getEmail()]);
                 View::renderTemplate('Finances/budgeting.html', ['user' => $_SESSION["user"],'projects'=>$this->projectsWithoutBudget(),
                     'success'=>'le budget a été alouer']);
             }
@@ -176,6 +178,7 @@ class FinancesC extends \Core\Controller
                 $pdf = new ExitBill(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
                 $pdf->initialise();
                 $pdf->writeData($newexit,$_SESSION['user']);
+                $this->logger->info('Registration of new Exit for '.$newexit->getReason().' Amount'.$newexit->getAmount(),["email"=>$_SESSION["user"]->getEmail()]);
                 $pdf->printBill();
 
                 View::renderTemplate('Finances/exit.html', ['user' => $_SESSION["user"],'budgets'=>$this->getBudgeting(),

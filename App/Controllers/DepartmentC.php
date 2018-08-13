@@ -98,7 +98,8 @@ class DepartmentC extends Controller
                 View::renderTemplate('Department/list.html', ['user' => $_SESSION["user"],"departments"=>$departments]);
             }
             catch (\Exception $e){
-                var_dump($e->getMessage());
+                //var_dump($e->getMessage());
+                print("<pre>" . print_r($e, true) . "</pre>");
             }
         }
     }

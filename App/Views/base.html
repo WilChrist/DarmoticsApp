@@ -4,16 +4,19 @@
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
 
-    <!-- Font Awesome-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
-    <script src="{{ app.request.getBaseURL()}}/DarmoticsApp/public/vendor/jquery/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <link href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/css/style.css" rel="stylesheet">
 </head>
 <body>
 
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-        <a class="navbar-brand" href="./">DarmoticApp</a>
+        <a class="navbar-brand" href="./">DarmoticsApp</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -41,22 +44,37 @@
         </div>
     </nav>
     {% block body %}
-    {{ app.request.baseUrl  }}
 
-    {{base_path}}
-
-    {{ app.request.getBaseURL() }}
     {% endblock %}
-
-    <footer class="jumbotron text-center" style="margin-bottom:0">
-            <p>Footer</p>
+    <footer class="row" style="margin-bottom:0">
+        <div class="col-md-4 col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Contact</h4>
+                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut eveniet exercitationem facilis molestiae quo! At doloribus error facere maxime molestias natus sunt totam velit! Architecto delectus deleniti sed sunt unde.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Partenaire</h4>
+                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut eveniet exercitationem facilis molestiae quo! At doloribus error facere maxime molestias natus sunt totam velit! Architecto delectus deleniti sed sunt unde.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Nos Valeurs</h4>
+                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut eveniet exercitationem facilis molestiae quo! At doloribus error facere maxime molestias natus sunt totam velit! Architecto delectus deleniti sed sunt unde.
+                    </p>
+                </div>
+            </div>
+        </div>
     </footer>
     <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-    <!-- Popper JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
-    <!-- Latest compiled JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
 </body>
 </html>

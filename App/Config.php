@@ -20,19 +20,19 @@ class Config
      * Database name
      * @var string
      */
-    const DB_NAME = 'darmotics';
+    const DB_NAME = 'festirev_darmoticsapp';
 
     /**
      * Database user
      * @var string
      */
-    const DB_USER = 'root';
+    const DB_USER = 'festirev_admin';
 
     /**
      * Database password
      * @var string
      */
-    const DB_PASSWORD = '';
+    const DB_PASSWORD = 'KhO*;4=1[fYh';
 
     /**
      * Show or hide error messages on screen

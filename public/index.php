@@ -22,7 +22,6 @@ set_exception_handler('Core\Error::exceptionHandler');
 /**
  * Routing
  */
-use \Core\View;
 $router = new Core\Router();
 
 // Add the routes
@@ -56,5 +55,6 @@ try {
 }
 catch (\Exception $e){
     //var_dump($e);
-    View::renderTemplate('404.html', ['message'=>$e->getMessage()]);
+    //print("<pre>".print_r($e,true)."</pre>");
+    //View::renderTemplate('404.html', ['message'=>$e->getMessage()]);
 }

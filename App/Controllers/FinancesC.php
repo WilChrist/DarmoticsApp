@@ -28,7 +28,7 @@ class FinancesC extends \Core\Controller
 
     public function entryAction(){
         if (!isset($_SESSION["user"])) {
-            header("Location:/DarmoticsApp/public/");
+            header("Location:/");
         } else {
             try{
                 $shareholders = $this->db->getRepository('App\Models\Shareholder')->findAll();
@@ -45,7 +45,7 @@ class FinancesC extends \Core\Controller
     public function addEntryAction(){
 
         if (!isset($_SESSION["user"])) {
-            header("Location:/DarmoticsApp/public/");
+            header("Location:/");
         } else {
 
             try {
@@ -107,7 +107,7 @@ class FinancesC extends \Core\Controller
 
     public function budgetingAction(){
         if (!isset($_SESSION["user"])) {
-            header("Location:/DarmoticsApp/public/");
+            header("Location:/");
         } else {
             try {
                 View::renderTemplate('Finances/budgeting.html', ['user' => $_SESSION["user"],'projects'=>$this->projectsWithoutBudget()]);
@@ -120,7 +120,7 @@ class FinancesC extends \Core\Controller
 
     public function addBudgetingAction(){
         if (!isset($_SESSION["user"])) {
-            header("Location:/DarmoticsApp/public/");
+            header("Location:/");
         } else {
             //test if budget is not supérior to capital
             $availablecapital = $this->getAvailableCapital();
@@ -145,7 +145,7 @@ class FinancesC extends \Core\Controller
 
     public function exitAction(){
         if (!isset($_SESSION["user"])) {
-            header("Location:/DarmoticsApp/public/");
+            header("Location:/");
         } else {
             try {
                 View::renderTemplate('Finances/exit.html', ['user' => $_SESSION["user"],'budgets'=>$this->getBudgeting()]);
@@ -158,7 +158,7 @@ class FinancesC extends \Core\Controller
 
     public function addExitAction(){
         if (!isset($_SESSION["user"])) {
-            header("Location:/DarmoticsApp/public/");
+            header("Location:/");
         } else {
             $budget = $this->getpost("budget");
             if($this->getAvailableBudget($budget) < $this->getpost("amount")){

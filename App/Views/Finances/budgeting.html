@@ -25,7 +25,7 @@
                     {% if projects | length <= 0 %}
                         <p>Il n'y a aucun projet auquel affecter un budget veuillez ajouter des projets</p>
                     {% else %}
-                        <form  method="post" action="{{ app.request.getBaseURL()}}/DarmoticsApp/public/Finances/addBudgeting">
+                    <form method="post" action="{{ app.request.getBaseURL()}}/Finances/addBudgeting">
                             <div class="form-group">
                                 <label for="project">Projet</label>
                                 <select  id="project" name="project" class="form-control" required autofocus>

@@ -30,8 +30,6 @@ class Home extends \Core\Controller
      */
     public function loginAction()
     {
-        //Le POST existe déjà donc on peut créer un USer directement
-
         $directorRepository = $this->db->getRepository('App\Models\Director');
 
         $user = $directorRepository->findOneBy(array("email"=>$this->getpost("email"),"password"=> sha1($this->getpost("password"))));

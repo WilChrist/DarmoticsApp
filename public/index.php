@@ -44,8 +44,10 @@ $router->add('Department/list', ['controller' => 'DepartmentC', 'action' => 'lis
 
 $router->add('Employee', ['controller' => 'EmployeeC', 'action' => 'index']);
 $router->add('Employee/add', ['controller' => 'EmployeeC', 'action' => 'add']);
+$router->add('Employee/edit', ['controller' => 'EmployeeC', 'action' => 'edit']);
 $router->add('Employee/list', ['controller' => 'EmployeeC', 'action' => 'list']);
 $router->add('{controller}/{action}');
+$router->add('{controller}/{id:\d+}/{action}');
 
 //je passe le $_POST au routeur afin qu'il le passe au controleur
 try {

@@ -1,11 +1,8 @@
 <?php
 
 namespace Core;
-
 use Katzgrau\KLogger\Logger;
 use Psr\Log\LogLevel;
-
-//require '/xampp/htdocs/DarmoticsApp/vendor/autoload.php';
 /**
  * Base controller
  *
@@ -15,6 +12,7 @@ use Psr\Log\LogLevel;
 
 
 abstract class Controller
+
 {
     //variable pour stocker le $post dans le controlleur
     protected $post=[];

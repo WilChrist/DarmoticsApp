@@ -22,7 +22,10 @@ class Contributor
     protected $id;
 
     /** @Column(length=255,nullable=true) */
-    protected $name;
+    protected $first_name;
+
+    /** @Column(length=255,nullable=true) */
+    protected $last_name;
 
     /** @Column(length=255,nullable=true) */
     protected $phone;
@@ -52,18 +55,35 @@ class Contributor
     /**
      * @return mixed
      */
-    public function getName()
+    public function getFirstName()
     {
-        return $this->name;
+        return $this->first_name;
     }
 
     /**
-     * @param mixed $name
+     * @param mixed $first_name
      */
-    public function setName($name)
+    public function setFirstName($first_name)
     {
-        $this->name = $name;
+        $this->first_name = $first_name;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getLastName()
+    {
+        return $this->last_name;
+    }
+
+    /**
+     * @param mixed $last_name
+     */
+    public function setLastName($last_name)
+    {
+        $this->last_name = $last_name;
+    }
+
 
     /**
      * @return mixed

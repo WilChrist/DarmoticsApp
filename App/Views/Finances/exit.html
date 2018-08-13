@@ -11,6 +11,19 @@
                 <div class="card-body">
                     <h5 class="card-title text-center">Affecter un Budget à un projet</h5>
 
+                    {% if error %}
+                    <div class="alert alert-danger alert-dismissible">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>{{error}} </strong>
+                    </div>
+                    {% elseif success %}
+                    <div class="alert alert-success alert-dismissible">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>{{success}} </strong>
+                    </div>
+                    {% endif %}
+
+
                     {% if budgets | length <= 0 %}
                     <p>Il n'y a aucun budget sur lequel on peut effectuer des sorties </p>
                     {% else %}
@@ -18,9 +31,9 @@
                         <div class="form-group">
                             <label for="budget">Budget</label>
                             <select  id="budget" name="budget" class="form-control" required autofocus>
-                                <option value="-1">Nom projet</option>
+                                <option value="-1">Nom du projet projet associé au budget</option>
                                 {% for budget in budgets %}
-                                <option value="{{budget.id}}">{{budget.id}}</option>
+                                <option value="{{budget.id}}">{{budget.project.name}}</option>
                                 {% endfor %}
                             </select>
                             <span class="alert alert-danger error" id="project_error"></span>

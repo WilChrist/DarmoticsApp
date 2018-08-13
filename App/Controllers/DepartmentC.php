@@ -78,7 +78,7 @@ class DepartmentC extends Controller
                 echo json_encode($arr);
 
             } catch (\Exception $e) {
-                $this->logger->info("erreur lors de la suppression");
+                $this->logger->info("erreur lors de la suppression" + $e->getTraceAsString());
                 $arr = array('message' => 'Erreur lors de la suppréssion du Departement, veuillez reéssayer', 'great' => "0");
 
                 echo json_encode($arr);

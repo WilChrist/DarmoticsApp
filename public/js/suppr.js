@@ -7,7 +7,9 @@ function deletee(id, meaningValue) {
     });
 };
 $(function () {
-    $("#suppBout").click(function () {//alert($("#id").val());
+    $("#suppBout").click(function () {
+        console.log($("#id").val());
+        console.log($('#controller').val());
         $.ajax({
             url: "/" + $('#controller').val() + "/" + $("#id").val() + "/delete",
             method: "POST",

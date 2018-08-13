@@ -1,10 +1,10 @@
-
 {
     "require": {
         "twig/twig": "~2.0",
         "doctrine/orm": "*",
         "twig/extensions": "*",
-        "katzgrau/klogger": "dev-master"
+        "katzgrau/klogger": "dev-master",
+        "tecnickcom/tcpdf": "6.2.16"
     },
     "autoload": {
         "psr-4": {

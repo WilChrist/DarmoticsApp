@@ -85,7 +85,7 @@
         })
 
         $("#endDate").blur(function () {
-            if ($(this).val() === "" || $(this).val() <= $("#startDate").val()) {
+            if ($(this).val() === "" || $(this).val() < $("#startDate").val()) {
                 $("#endDate_error").empty().append("la date de fin est invalide").show();
             }
             else {

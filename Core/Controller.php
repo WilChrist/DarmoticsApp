@@ -12,6 +12,7 @@ use Psr\Log\LogLevel;
 
 
 abstract class Controller
+
 {
     //variable pour stocker le $post dans le controlleur
     protected $post=[];

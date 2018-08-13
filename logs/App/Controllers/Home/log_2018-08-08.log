@@ -1,0 +1,11 @@
+[2018-08-08 21:22:28.686059] [info] admin@darmotics.ma is now connected
+[2018-08-08 21:25:03.208723] [info] admin@darmotics.ma is now disconnected
+[2018-08-08 21:25:12.387775] [info] App\Controllers\Home admin@darmotics.ma is now connected
+{"datetime":"2018-08-08 21:32:04.492594","logLevel":"INFO","message":"admin@darmotics.ma is now disconnected","context":"[]"}
+{"datetime":"2018-08-08 21:32:16.243460","logLevel":"INFO","message":"admin@darmotics.ma is now connected","context":"[]"}
+{"datetime":"2018-08-08 21:42:20.439286","logLevel":"INFO","message":"disconnected","context":"{"email":"admin@darmotics.ma"}"}
+    email: 'admin@darmotics.ma'
+{"datetime":"2018-08-08 21:42:29.066699","logLevel":"INFO","message":"connected","context":"{"email":"admin@darmotics.ma"}"}
+    email: 'admin@darmotics.ma'
+{"datetime":"2018-08-08 21:49:56.518193","logLevel":"INFO","message":"disconnected","context":"{"email":"admin@darmotics.ma"}"}
+{"datetime":"2018-08-08 21:50:18.262972","logLevel":"INFO","message":"connected","context":"{"email":"admin@darmotics.ma"}"}

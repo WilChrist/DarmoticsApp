@@ -11,16 +11,21 @@ use App\Models\Department;
 use Core\Controller;
 use \Core\View;
 
+
+$log=null;
 class DepartmentC extends Controller
 {
+
     public function indexAction()
     {
+
         if (!isset($_SESSION["user"])) {
             header("Location:/");
         } else {
 
             View::renderTemplate('Department/index.html', ['user' => $_SESSION["user"]]);
         }
+
     }
 
     public function addAction(){
@@ -39,6 +44,9 @@ class DepartmentC extends Controller
             try {
                 $this->db->persist($newDepartment);
                 $this->db->flush();
+                // add records to the log
+                $this->log->info("My First Log");
+
                 View::renderTemplate('Department/index.html', ['user' => $_SESSION["user"], 'success' => "le département a été ajouteé"]);
             } catch (\Exception $e) {
                 //var_dump($e->getMessage());

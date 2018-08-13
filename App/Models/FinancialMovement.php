@@ -9,7 +9,6 @@
 namespace App\Models;
 
 /**
- * @Entity
  * @Table(name="financialMovement")
  */
 class FinancialMovement
@@ -21,14 +20,8 @@ class FinancialMovement
      */
     protected $id;
 
-    /** @Column(type="float") */
-    protected $amountBefore;
-
     /** @Column(type="float",options={"default"=0}) */
     protected $amount;
-
-    /** @Column(type="float") */
-    protected $amountAfter;
 
     /** @Column(type="datetime",options={"default"="CURRENT_TIMESTAMP"}) */
     protected $movementDate;
@@ -52,22 +45,6 @@ class FinancialMovement
     /**
      * @return mixed
      */
-    public function getAmountBefore()
-    {
-        return $this->amountBefore;
-    }
-
-    /**
-     * @param mixed $amountBefore
-     */
-    public function setAmountBefore($amountBefore)
-    {
-        $this->amountBefore = $amountBefore;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getAmount()
     {
         return $this->amount;
@@ -84,22 +61,6 @@ class FinancialMovement
     /**
      * @return mixed
      */
-    public function getAmountAfter()
-    {
-        return $this->amountAfter;
-    }
-
-    /**
-     * @param mixed $amountAfter
-     */
-    public function setAmountAfter($amountAfter)
-    {
-        $this->amountAfter = $amountAfter;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getMovementDate()
     {
         return $this->movementDate;
@@ -108,9 +69,9 @@ class FinancialMovement
     /**
      * @param mixed $movementDate
      */
-    public function setMovementDate($movementDate)
+    public function setMovementDate()
     {
-        $this->movementDate = $movementDate;
+        $this->movementDate = new \DateTime("now");
     }
 
 

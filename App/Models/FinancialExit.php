@@ -18,6 +18,14 @@ class FinancialExit extends FinancialMovement
     protected $reason;
 
     /**
+     * Many FinancialExit are related to One Budgeting.
+     * @ManyToOne(targetEntity="Budgeting", inversedBy="financialExit")
+     * @JoinColumn(name="budgeting_id", referencedColumnName="id")
+     */
+    protected $budgeting;
+
+
+    /**
      * @return mixed
      */
     public function getReason()
@@ -31,6 +39,22 @@ class FinancialExit extends FinancialMovement
     public function setReason($reason)
     {
         $this->reason = $reason;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBudgeting()
+    {
+        return $this->budgeting;
+    }
+
+    /**
+     * @param mixed $budgeting
+     */
+    public function setBudgeting($budgeting)
+    {
+        $this->budgeting = $budgeting;
     }
 
 

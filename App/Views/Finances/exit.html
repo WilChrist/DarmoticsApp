@@ -1,0 +1,61 @@
+{% extends "dashboardbase.html" %}
+
+{% block title %}Sortie financières{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9 col-md-10 col-lg-10 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Effectuer une sortie buudgétaire</h5>
+
+                    {% if error %}
+                    <div class="alert alert-danger alert-dismissible">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>{{error}} </strong>
+                    </div>
+                    {% elseif success %}
+                    <div class="alert alert-success alert-dismissible">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>{{success}} </strong>
+                    </div>
+                    {% endif %}
+
+
+                    {% if budgets | length <= 0 %}
+                    <p>Il n'y a aucun budget sur lequel on peut effectuer des sorties </p>
+                    {% else %}
+                    <form  method="post" action="{{ app.request.getBaseURL()}}/DarmoticsApp/public/Finances/addExit">
+                        <div class="form-group">
+                            <label for="budget">Budget</label>
+                            <select  id="budget" name="budget" class="form-control" required autofocus>
+                                <option value="-1">Nom du projet projet associé au budget</option>
+                                {% for budget in budgets %}
+                                <option value="{{budget.id}}">{{budget.project.name}}</option>
+                                {% endfor %}
+                            </select>
+                            <span class="alert alert-danger error" id="project_error"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="amount">Montant de la sortie</label>
+                            <input type="number" id="amount" name="amount" class="form-control" step="0.01" min="0">
+                            <span class="alert alert-danger error" id="amount_error"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="reason">Raison</label>
+                            <textarea class="form-control" name="reason" id="reason" cols="30" rows="10" placeholder="description"></textarea>
+                            <span class="alert alert-danger error" id="reason_error"></span>
+                        </div>
+                        <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Ajouter</button>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

@@ -95,6 +95,6 @@ abstract class Controller
     }
 
     protected function getpost($key){
-        return isset($this->post[$key])? $this->post[$key] : null;
+        return isset($this->post[$key])? htmlspecialchars( $this->post[$key] ): null;
     }
 }

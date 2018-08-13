@@ -13,7 +13,7 @@
 }
 
 .maincontent {
-    background-image: url('/DarmoticsApp/public/images/welcome.jpg');
+    background-image: url('/images/welcome.jpg');
     background-color: aqua;
     height: 500px;
     margin-top: 10px;

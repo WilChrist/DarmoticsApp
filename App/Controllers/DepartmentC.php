@@ -67,7 +67,7 @@ class DepartmentC extends Controller
                 $this->db->remove($currentDepartment);
                 $this->db->flush();
 
-                $this->logger->warning("Suppression d'un employé", [
+                $this->logger->warning("Suppression d'un Département", [
                     'authorEmail' => $_SESSION['user']->getEmail(),
                     'reason' => $this->getpost("reason"),
                     'deletedDepartmentId' => $currentDepartment->getId(),
@@ -78,6 +78,7 @@ class DepartmentC extends Controller
                 echo json_encode($arr);
 
             } catch (\Exception $e) {
+                $this->logger->info("erreur lors de la suppression");
                 $arr = array('message' => 'Erreur lors de la suppréssion du Departement, veuillez reéssayer', 'great' => "0");
 
                 echo json_encode($arr);

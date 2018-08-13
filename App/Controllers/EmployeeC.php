@@ -232,11 +232,12 @@ class EmployeeC extends Controller
             try{
                 $employees = $this->db->getRepository('App\Models\Employee')->findAll();
                 //print ($employees[3]->getEmployeeProject()[0]->getProject()->getName());
-                ////print("<pre>".print_r($employees,true)."</pre>");
+                ////
                 View::renderTemplate('Employee/list.html', ['user' => $_SESSION["user"],"employees"=>$employees]);
             }
             catch (\Exception $e){
-                var_dump($e->getMessage());
+                //var_dump($e->getMessage());
+                print("<pre>" . print_r($e, true) . "</pre>");
             }
         }
     }

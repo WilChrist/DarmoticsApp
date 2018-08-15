@@ -30,7 +30,7 @@ class Employee extends User
     /**
      * One Employee has One Department.
      * @ManyToOne(targetEntity="Department", inversedBy="employees")
-     * @JoinColumn(name="department_id", referencedColumnName="id", nullable=true)
+     * @JoinColumn(name="department_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
     protected $department;
 

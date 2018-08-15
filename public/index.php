@@ -38,6 +38,7 @@ $router->add('Project/list', ['controller' => 'ProjectC', 'action' => 'list']);
 
 $router->add('Department', ['controller' => 'DepartmentC', 'action' => 'index']);
 $router->add('Department/add', ['controller' => 'DepartmentC', 'action' => 'add']);
+$router->add('Department/edit', ['controller' => 'DepartmentC', 'action' => 'edit']);
 $router->add('Department/list', ['controller' => 'DepartmentC', 'action' => 'list']);
 
 

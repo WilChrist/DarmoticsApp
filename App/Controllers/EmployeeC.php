@@ -224,6 +224,7 @@ class EmployeeC extends Controller
                 //View::renderTemplate('Employee/list.html', ['user' => $_SESSION["user"], 'success' => "l'employé a été supprimmé"]);
                 //header("Location:".Config::RACINE."/Employee/list");
             } catch (\Exception $e) {
+                //$this->logger->warning($e->getMessage());
                 $arr = array('message' => 'Erreur lors de la suppréssion de l\'employé, veuillez reéssayer', 'great' => "0");
 
                 echo json_encode($arr);

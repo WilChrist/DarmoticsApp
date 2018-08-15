@@ -89,13 +89,13 @@ class Employee_Project
 
     /**
      * @ManyToOne(targetEntity="Employee",inversedBy="employee_project")
-     * @JoinColumn(name="employee_id", referencedColumnName="id")
+     * @JoinColumn(name="employee_id", referencedColumnName="id",onDelete="CASCADE")
      */
     protected $employee;
 
     /**
      * @ManyToOne(targetEntity="Project",inversedBy="employee_project")
-     * @JoinColumn(name="project_id", referencedColumnName="id")
+     * @JoinColumn(name="project_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $project;
 

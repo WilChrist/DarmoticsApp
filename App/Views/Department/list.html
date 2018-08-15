@@ -3,7 +3,7 @@
 {% block title %}Departments{% endblock %}
 
 {% block body %}
-<script type="application/javascript" src="{{ app.request.getBaseURL()}}/js/suppr.js"></script>
+<script type="application/javascript" src="{{ app.request.getBaseURL()}}{{RACINE}}/js/suppr.js"></script>
 <div class="container">
     <div class="row">
         <div class="col-sm-9 col-md-11 col-lg-11 mx-auto">
@@ -50,10 +50,10 @@
                                 <td>{{department.description}}</td>
                                 <td>{{department.chief }}</td>
                                 <td>{{department.creationDate|date('Y-m-d')}}</td>
-                                <td><a href="{{ app.request.getBaseURL()}}/Department/edit?id={{department.id}}"><button type="button" class="btn btn-primary">Modifier</button></a></td>
+                                <td><a href="{{ app.request.getBaseURL()}}{{RACINE}}/DepartmentC/{{department.id}}/edit"><button type="button" class="btn btn-primary">Modifier</button></a></td>
                                 <td>
                                     <button type="button" class="btn btn-danger"
-                                            onclick="deletee('{{department.id}}', '{{department.Name}}')">Supprimmer
+                                            onclick="deletee('{{department.id}}', '{{department.Name}}')">Supprimer
                                     </button>
                                 </td>
                             </tr>{% set d=department.lastUpdateDate%}

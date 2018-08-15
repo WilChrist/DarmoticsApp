@@ -1,12 +1,7 @@
-<<<<<<< HEAD
-function deletee(id,email){
-    $( document ).ready(function() {
-        //$('#supprform').attr('action',"'.Config::RACINE.'/EmployeeC/"+id+"/delete");
-=======
 function deletee(id, meaningValue) {
     $(document).ready(function () {
         //$('#supprform').attr('action',"/EmployeeC/"+id+"/delete");
->>>>>>> testDeploy
+
         $('#id').val(id);
         $('#meaningvalue').html("<b class='badge badge-warning'>" + meaningValue + "</b>");
         $('#myModal').modal('show');

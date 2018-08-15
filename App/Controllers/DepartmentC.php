@@ -45,7 +45,7 @@ class DepartmentC extends Controller
                 $this->db->persist($newDepartment);
                 $this->db->flush();
 
-                View::renderTemplate('Department/index.html', ['user' => $_SESSION["user"], 'success' => "le département a été ajouteé"]);
+                View::renderTemplate('Department/index.html', ['user' => $_SESSION["user"], 'success' => "le département a été ajouté"]);
             } catch (\Exception $e) {
                 //var_dump($e->getMessage());
                 View::renderTemplate('Department/index.html', ['user' => $_SESSION["user"], 'error' => "erreur lors de l'ajout veuillez réessayer"]);
@@ -53,8 +53,52 @@ class DepartmentC extends Controller
         }
     }
 
-    public function editAction()
+    public function editAction($other, $id)
     {
+        if (!isset($_SESSION['user'])) {
+            header("Location:".Config::RACINE."/");
+        } elseif ($this->getpost("name") == null || $this->getpost("creationDate") == null) {
+            $currentDepartment=null;
+            $currentDepartment = $this->db->getRepository('App\Models\Department')->find($id);
+            View::renderTemplate('Department/edit.html',["department" => $currentDepartment]);
+        } else {
+
+            $newDepartment = $this->db->getRepository('App\Models\Department')->find($this->getpost("id"));
+
+            $currentDepartment = unserialize(serialize($newDepartment));
+
+            $newDepartment->setName($this->getpost("name"));
+            $newDepartment->setDescription($this->getpost("description"));
+            $newDepartment->setChief($this->getpost("chief"));
+            $newDepartment->setCreationDate(new \DateTime($this->getpost("creationDate")));
+            $newDepartment->setLastUpdateDate(new \DateTime("now"));
+
+            try {
+                $this->db->persist($newDepartment);
+                $this->db->flush();
+
+                $this->logger->info('Modification of an Department', [
+                    "authorEmail" => $_SESSION["user"]->getEmail(),
+                    "oldData" => [
+                        "name"=>$currentDepartment->getName(),
+                        "description"=>$currentDepartment->getDescription(),
+                        "chief"=>$currentDepartment->getChief(),
+                        "creationDate"=>$currentDepartment->getCreationDate(),
+                        "lastUpdateDate"=>$currentDepartment->getLastUpdateDate()
+                    ],
+                    "oldData" => [
+                        "name"=>$newDepartment->getName(),
+                        "description"=>$newDepartment->getDescription(),
+                        "chief"=>$newDepartment->getChief(),
+                        "creationDate"=>$newDepartment->getCreationDate(),
+                        "lastUpdateDate"=>$newDepartment->getLastUpdateDate()
+                    ]]);
+                View::renderTemplate('Department/index.html', ['user' => $_SESSION["user"], 'success' => "le département a été Modifié"]);
+            } catch (\Exception $e) {
+                //var_dump($e->getMessage());
+                View::renderTemplate('Department/index.html', ['user' => $_SESSION["user"], 'error' => "erreur lors de la modification, veuillez réessayer"]);
+            }
+        }
 
     }
 

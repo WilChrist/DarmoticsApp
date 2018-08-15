@@ -20,19 +20,19 @@ class Config
      * Database name
      * @var string
      */
-    const DB_NAME = 'festirev_darmoticsapp';
+    const DB_NAME = 'darmotics';
 
     /**
      * Database user
      * @var string
      */
-    const DB_USER = 'festirev_admin';
+    const DB_USER = 'root';
 
     /**
      * Database password
      * @var string
      */
-    const DB_PASSWORD = 'KhO*;4=1[fYh';
+    const DB_PASSWORD = '';
 
     /**
      * Show or hide error messages on screen
@@ -44,5 +44,5 @@ class Config
      * Do redirection onto public Folder
      * @var string
      */
-    const RACINE = 'Config::RACINE.';
+    const RACINE = '/DarmoticsApp/public';
 }

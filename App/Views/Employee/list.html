@@ -17,7 +17,7 @@
             <div class="card mb-3">
                 <div class="card-header">
                     <i class="fas fa-table"></i>
-                    Liste des Employées</div>
+                    Liste des Employées <input type="hidden" id="controller" value="EmployeeC"></div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -125,7 +125,8 @@
                     <div class="form-group">
                         <input type="hidden" class="form-control" id="id" name="id" value="-1">
                     </div>
-                    <p>Êtes-vous certains de vouloir supprimmer l'employé <span id="empmail"></span> ? <br/>Si oui, veuillez en donner la reason </p>
+                    <p>Êtes-vous certains de vouloir supprimmer l'employé <span id="meaningvalue"></span> ? <br/>Si oui,
+                        veuillez en donner la reason </p>
                     <div class="form-group">
                         <label for="reason">Raison:</label>
                         <input type="text" class="form-control" id="reason" name="reason" required>
@@ -142,6 +143,6 @@
 
         </div>
     </div>
-
+</div>
 
 {% endblock %}

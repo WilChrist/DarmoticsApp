@@ -12,6 +12,7 @@ use Psr\Log\LogLevel;
 
 
 abstract class Controller
+
 {
     //variable pour stocker le $post dans le controlleur
     protected $post=[];
@@ -94,6 +95,6 @@ abstract class Controller
     }
 
     protected function getpost($key){
-        return isset($this->post[$key])? $this->post[$key] : null;
+        return isset($this->post[$key])? htmlspecialchars( $this->post[$key] ): null;
     }
 }

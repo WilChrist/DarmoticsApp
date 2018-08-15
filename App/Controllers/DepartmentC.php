@@ -11,18 +11,21 @@ use App\Config;
 use App\Models\Department;
 use Core\Controller;
 use \Core\View;
-use \App\Models\Project;
+
 
 class DepartmentC extends Controller
 {
+
     public function indexAction()
     {
+
         if (!isset($_SESSION["user"])) {
             header("Location:".Config::RACINE."/");
         } else {
 
             View::renderTemplate('Department/index.html', ['user' => $_SESSION["user"]]);
         }
+
     }
 
     public function addAction(){
@@ -41,6 +44,7 @@ class DepartmentC extends Controller
             try {
                 $this->db->persist($newDepartment);
                 $this->db->flush();
+
                 View::renderTemplate('Department/index.html', ['user' => $_SESSION["user"], 'success' => "le département a été ajouteé"]);
             } catch (\Exception $e) {
                 //var_dump($e->getMessage());
@@ -56,6 +60,37 @@ class DepartmentC extends Controller
 
     public function deleteAction()
     {
+        if (!isset($_SESSION['user'])) {
+            header("Location:/");
+        } elseif ($this->getpost("id") == null || $this->getpost("reason") == null) {
+            //$this->logger->info($this->getpost("reason")." 1");
+            header("Location:/Department");
+        } else {
+            // echo $this->getpost("reason");
+            try {
+                $currentDepartment = null;
+                $currentDepartment = $this->db->getRepository('App\Models\Department')->find($this->getpost('id'));
+                $this->db->remove($currentDepartment);
+                $this->db->flush();
+
+                $this->logger->warning("Suppression d'un Département", [
+                    'authorEmail' => $_SESSION['user']->getEmail(),
+                    'reason' => $this->getpost("reason"),
+                    'deletedDepartmentId' => $currentDepartment->getId(),
+                    'deletedDepartmentName' => $currentDepartment->getName(),
+                ]);
+                $arr = array('message' => 'Departement Supprimmé', 'great' => "1");
+
+                echo json_encode($arr);
+
+            } catch (\Exception $e) {
+                $this->logger->info("erreur lors de la suppression" . $e->getMessage());
+                $arr = array('message' => 'Erreur lors de la suppréssion du Departement, veuillez reéssayer', 'great' => "0");
+
+                echo json_encode($arr);
+
+            }
+        }
 
     }
 
@@ -69,7 +104,8 @@ class DepartmentC extends Controller
                 View::renderTemplate('Department/list.html', ['user' => $_SESSION["user"],"departments"=>$departments]);
             }
             catch (\Exception $e){
-                var_dump($e->getMessage());
+                //var_dump($e->getMessage());
+                print("<pre>" . print_r($e, true) . "</pre>");
             }
         }
     }

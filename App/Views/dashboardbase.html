@@ -129,9 +129,9 @@
                 <span>Finances</span>
             </a>
             <div class="dropdown-menu" aria-labelledby="financialDropdown">
-                <a class="dropdown-item" href="#">Entrée</a>
-                <a class="dropdown-item" href="#">Sortie</a>
-                <a class="dropdown-item" href="#">Budgetisation</a>
+                <a class="dropdown-item" href="{{ app.request.getBaseURL()}}/Finances">Entrée</a>
+                <a class="dropdown-item" href="{{ app.request.getBaseURL()}}/Finances/exit">Sortie</a>
+                <a class="dropdown-item" href="{{ app.request.getBaseURL()}}/Finances/budgeting">Budgetisation</a>
             </div>
         </li>
         <li class="nav-item dropdown">

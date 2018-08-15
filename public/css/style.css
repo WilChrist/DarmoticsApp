@@ -4,3 +4,25 @@
     margin-top: 5px;
     font-size: 0.8em;
 }
+.left{
+    float: left;
+}
+
+.hidden{
+    display: none;
+}
+
+.maincontent {
+    background-image: url('/images/welcome.jpg');
+    background-color: aqua;
+    height: 500px;
+    margin-top: 10px;
+    background-repeat: no-repeat;
+    background-position: right top;
+    -webkit-background-size: cover;
+    background-size: cover;
+}
+
+.card a{
+    color: white;
+}

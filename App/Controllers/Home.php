@@ -31,7 +31,6 @@ class Home extends \Core\Controller
      */
     public function loginAction()
     {
-
         $directorRepository = $this->db->getRepository('App\Models\Director');
 
         $user = $directorRepository->findOneBy(array("email"=>$this->getpost("email"),"password"=> sha1($this->getpost("password"))));

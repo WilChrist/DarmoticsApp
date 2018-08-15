@@ -11,7 +11,6 @@
  */
 require dirname(__DIR__) . '/vendor/autoload.php';
 
-
 /**
  * Error and Exception handling
  */
@@ -22,7 +21,6 @@ set_exception_handler('Core\Error::exceptionHandler');
 /**
  * Routing
  */
-use \Core\View;
 $router = new Core\Router();
 
 // Add the routes
@@ -47,6 +45,16 @@ $router->add('Employee', ['controller' => 'EmployeeC', 'action' => 'index']);
 $router->add('Employee/add', ['controller' => 'EmployeeC', 'action' => 'add']);
 $router->add('Employee/edit', ['controller' => 'EmployeeC', 'action' => 'edit']);
 $router->add('Employee/list', ['controller' => 'EmployeeC', 'action' => 'list']);
+
+$router->add('Finances', ['controller' => 'FinancesC', 'action' => 'index']);
+$router->add('Finances/exit', ['controller' => 'FinancesC', 'action' => 'exit']);
+$router->add('Finances/budgeting', ['controller' => 'FinancesC', 'action' => 'budgeting']);
+$router->add('Finances/addEntry', ['controller' => 'FinancesC', 'action' => 'addEntry']);
+$router->add('Finances/addExit', ['controller' => 'FinancesC', 'action' => 'addExit']);
+$router->add('Finances/addBudgeting', ['controller' => 'FinancesC', 'action' => 'addBudgeting']);
+$router->add('Finances/testPdf', ['controller' => 'FinancesC', 'action' => 'testPdf']);
+
+
 $router->add('{controller}/{action}');
 $router->add('{controller}/{id:\d+}/{action}');
 
@@ -56,5 +64,6 @@ try {
 }
 catch (\Exception $e){
     //var_dump($e);
-    View::renderTemplate('404.html', ['message'=>$e->getMessage()]);
+    //print("<pre>".print_r($e,true)."</pre>");
+    //View::renderTemplate('404.html', ['message'=>$e->getMessage()]);
 }

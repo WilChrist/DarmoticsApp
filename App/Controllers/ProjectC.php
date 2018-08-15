@@ -39,7 +39,7 @@ class ProjectC extends Controller
             try {
                 $this->db->persist($newProject);
                 $this->db->flush();
-                $this->logger->info('Creation of a new Project',["email"=>$_SESSION["user"]->getEmail()]);
+                $this->logger->info('Creation of a new project '.$newProject->getName(),["email"=>$_SESSION["user"]->getEmail()]);
                 View::renderTemplate('Project/index.html', ['user' => $_SESSION["user"], 'success' => "le projet a été ajouter"]);
             } catch (\Exception $e) {
                 //var_dump($e->getMessage());

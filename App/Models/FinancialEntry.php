@@ -20,9 +20,6 @@ class FinancialEntry extends FinancialMovement
     /** @Column(type="integer") */
     protected $contributorID;
 
-    /** @Column(type="integer") */
-    protected $documentID;
-
     /**
      * @return mixed
      */
@@ -55,21 +52,6 @@ class FinancialEntry extends FinancialMovement
         $this->contributorID = $contributorID;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getDocumentID()
-    {
-        return $this->documentID;
-    }
-
-    /**
-     * @param mixed $documentID
-     */
-    public function setDocumentID($documentID)
-    {
-        $this->documentID = $documentID;
-    }
 
 
 }

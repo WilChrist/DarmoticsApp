@@ -21,15 +21,22 @@ class EmployeeC extends Controller
         if (!isset($_SESSION["user"])) {
             header("Location:".Config::RACINE."/");
         } else {
-            $departments = null;
-            $departments = $this->db->getRepository('App\Models\Department')->findAll();
-            $projects = null;
-            $projects = $this->db->getRepository('App\Models\Project')->findAll();
-            View::renderTemplate('Employee/index.html', ['user' => $_SESSION["user"],"departments"=>$departments,'projects'=>$projects]);
+            try {
+                $departments = null;
+                $departments = $this->db->getRepository('App\Models\Department')->findAll();
+                $projects = null;
+                $projects = $this->db->getRepository('App\Models\Project')->findAll();
+                View::renderTemplate('Employee/index.html', ['user' => $_SESSION["user"], "departments" => $departments, 'projects' => $projects]);
+
+            } catch (\Exception $e) {
+                //var_dump($e->getMessage());
+                print("<pre>" . print_r($e, true) . "</pre>");
+            }
         }
     }
 
-    public function addAction(){
+    public function addAction()
+    {
         if (!isset($_SESSION['user'])) {
             header("Location:".Config::RACINE."/");
         } elseif ($this->getpost("first_name") == null || $this->getpost("email") == null || $this->getpost("department") == null) {
@@ -57,7 +64,7 @@ class EmployeeC extends Controller
             try {
                 $this->db->persist($newEmployee);
                 $this->db->flush();
-                if($this->getpost("project")!=null && $this->getpost("project")!='') {
+                if ($this->getpost("project") != null && $this->getpost("project") != '') {
                     $employee_project = new Employee_Project();
                     $employee_project->setAffectionDate(new \DateTime("now"));
                     $employee_project->setProject($this->db->getRepository('App\Models\Project')->find($this->getpost("project")));
@@ -66,7 +73,7 @@ class EmployeeC extends Controller
                     $this->db->flush();
                 }
 
-                $this->logger->info('Creation of a new Employee '.$newEmployee->getEmail(),["email"=>$_SESSION["user"]->getEmail()]);
+                $this->logger->info('Creation of a new Employee ' . $newEmployee->getEmail(), ["email" => $_SESSION["user"]->getEmail()]);
                 View::renderTemplate('Employee/index.html', ['user' => $_SESSION["user"], 'success' => "l'employé a été ajouté"]);
             } catch (\Exception $e) {
                 //var_dump($e->getMessage());
@@ -75,7 +82,7 @@ class EmployeeC extends Controller
         }
     }
 
-    public function editAction($other,$id)
+    public function editAction($other, $id)
     {
         if (!isset($_SESSION['user'])) {
             header("Location:".Config::RACINE."/");
@@ -88,7 +95,7 @@ class EmployeeC extends Controller
             $projects = null;
             $projects = $this->db->getRepository('App\Models\Project')->findAll();
             //$this->logger->info( 'Edit',["employee"=>$currentEmployee->getEmail()]);
-            View::renderTemplate('Employee/edit.html', ['user' => $_SESSION["user"],'employee'=>$currentEmployee,"departments"=>$departments,'projects'=>$projects]);
+            View::renderTemplate('Employee/edit.html', ['user' => $_SESSION["user"], 'employee' => $currentEmployee, "departments" => $departments, 'projects' => $projects]);
             //var_dump($currentEmployee);
         } else {
 
@@ -97,13 +104,13 @@ class EmployeeC extends Controller
             //var_dump($this->getpost("first_name"));
             $newEmployee = $this->db->getRepository('App\Models\Employee')->find($this->getpost("id"));
 
-            $currentEmployee= unserialize(serialize($newEmployee));
-            $projectid=null;
+            $currentEmployee = unserialize(serialize($newEmployee));
+            $projectid = null;
 
             //var_dump($projectid);
-            $departmentName=null;
-            if($newEmployee->getDepartment()!=null)
-                $departmentName=$newEmployee->getDepartment()->getName();
+            $departmentName = null;
+            if ($newEmployee->getDepartment() != null)
+                $departmentName = $newEmployee->getDepartment()->getName();
 
             $newEmployee->setFirstName($this->getpost("first_name"));
             $newEmployee->setLastName($this->getpost("last_name"));
@@ -124,13 +131,13 @@ class EmployeeC extends Controller
             //print("<pre>".print_r($newEmployee,true)."</pre>");
             //var_dump($newEmployee);
             try {
-                if(isset($newEmployee->getEmployeeProject()[0])){
-                    $projectid=$newEmployee->getEmployeeProject()[0]->getProject()->getId();
+                if (isset($newEmployee->getEmployeeProject()[0])) {
+                    $projectid = $newEmployee->getEmployeeProject()[0]->getProject()->getId();
                     $newEmployee->getEmployeeProject()[0]->setAffectionDate(new \DateTime("now"));
                     $newEmployee->getEmployeeProject()[0]->setProject($this->db->getRepository('App\Models\Project')->find($this->getpost("project")));
-                    $newEmployee->getEmployeeProject()[0]->setEmployee($this->db->getRepository('App\Models\Employee')->findOneBy(array("email"=>$this->getpost("email"))));
-                }else{
-                    if($this->getpost("project")!=null && $this->getpost("project")!='') {
+                    $newEmployee->getEmployeeProject()[0]->setEmployee($this->db->getRepository('App\Models\Employee')->findOneBy(array("email" => $this->getpost("email"))));
+                } else {
+                    if ($this->getpost("project") != null && $this->getpost("project") != '') {
                         $employee_project = new Employee_Project();
                         $employee_project->setAffectionDate(new \DateTime("now"));
                         $employee_project->setProject($this->db->getRepository('App\Models\Project')->find($this->getpost("project")));
@@ -144,40 +151,42 @@ class EmployeeC extends Controller
                 $this->db->flush();
 
                 //var_dump($this->getpost("first_name"));
-                $this->logger->info('Modification of an Employee',[
-                    "authorEmail"=>$_SESSION["user"]->getEmail(),
-                    "oldData"=>[
-                        "firstName"=>$currentEmployee->getFirstName(),
-                        "lastName"=>$currentEmployee->getLastName(),
-                        "email"=>$currentEmployee->getEmail(),
-                        "phone"=>$currentEmployee->getPhone(),
-                        "address"=>$currentEmployee->getAddress(),
-                        "dateOfEntry"=>$currentEmployee->getDateOfEntry(),
-                        "education"=>$currentEmployee->getEducation(),
-                        "departmentName"=>$departmentName,
-                        "office"=>$currentEmployee->getOffice(),
-                        "skills"=>$currentEmployee->getSkills(),
-                        "lastUpdateDate"=>$currentEmployee->getLastUpdateDate(),
-                        "signUpDate"=>$currentEmployee->getSignUpDate(),
-                        "projectId"=>$projectid,
+                $this->logger->info('Modification of an Employee', [
+                    "authorEmail" => $_SESSION["user"]->getEmail(),
+                    "oldData" => [
+                        "firstName" => $currentEmployee->getFirstName(),
+                        "lastName" => $currentEmployee->getLastName(),
+                        "email" => $currentEmployee->getEmail(),
+                        "phone" => $currentEmployee->getPhone(),
+                        "address" => $currentEmployee->getAddress(),
+                        "dateOfEntry" => $currentEmployee->getDateOfEntry(),
+                        "education" => $currentEmployee->getEducation(),
+                        "departmentName" => $departmentName,
+                        "office" => $currentEmployee->getOffice(),
+                        "skills" => $currentEmployee->getSkills(),
+                        "lastUpdateDate" => $currentEmployee->getLastUpdateDate(),
+                        "signUpDate" => $currentEmployee->getSignUpDate(),
+                        "projectId" => $projectid,
 
                     ],
-                    "newData"=>[
-                        "firstName"=>$newEmployee->getFirstName(),
-                        "lastName"=>$newEmployee->getLastName(),
-                        "email"=>$newEmployee->getEmail(),
-                        "phone"=>$newEmployee->getPhone(),
-                        "address"=>$newEmployee->getAddress(),
-                        "dateOfEntry"=>$newEmployee->getDateOfEntry(),
-                        "education"=>$newEmployee->getEducation(),
-                        "departmentName"=>$newEmployee->getDepartment()->getName(),
-                        "office"=>$newEmployee->getOffice(),
-                        "skills"=>$newEmployee->getSkills(),
-                        "lastUpdateDate"=>$newEmployee->getLastUpdateDate(),
-                        "signUpDate"=>$newEmployee->getSignUpDate(),
-                        "projectId"=>$this->getpost("project")
-                ]
-                ]);unset($projectid);unset($departmentName);
+                    "newData" => [
+                        "firstName" => $newEmployee->getFirstName(),
+                        "lastName" => $newEmployee->getLastName(),
+                        "email" => $newEmployee->getEmail(),
+                        "phone" => $newEmployee->getPhone(),
+                        "address" => $newEmployee->getAddress(),
+                        "dateOfEntry" => $newEmployee->getDateOfEntry(),
+                        "education" => $newEmployee->getEducation(),
+                        "departmentName" => $newEmployee->getDepartment()->getName(),
+                        "office" => $newEmployee->getOffice(),
+                        "skills" => $newEmployee->getSkills(),
+                        "lastUpdateDate" => $newEmployee->getLastUpdateDate(),
+                        "signUpDate" => $newEmployee->getSignUpDate(),
+                        "projectId" => $this->getpost("project")
+                    ]
+                ]);
+                unset($projectid);
+                unset($departmentName);
                 View::renderTemplate('Employee/index.html', ['user' => $_SESSION["user"], 'success' => "l'employé a été Modifié"]);
             } catch (\Exception $e) {
                 //var_dump($e->getMessage());
@@ -195,19 +204,19 @@ class EmployeeC extends Controller
             //$this->logger->info($this->getpost("reason")." 1");
             header("Location:".Config::RACINE."/Employee");
         } else {
-           // echo $this->getpost("reason");
+            // echo $this->getpost("reason");
             try {
-                $currentEmployee=null;
+                $currentEmployee = null;
                 $currentEmployee = $this->db->getRepository('App\Models\Employee')->find($this->getpost('id'));
                 $this->db->remove($currentEmployee);
                 $this->db->flush();
 
-                $this->logger->warning("Suppression d'un employé",[
-                    'authorEmail'=>$_SESSION['user']->getEmail(),
-                    'reason'=>$this->getpost("reason"),
-                    'deletedEmployeeEmail'=>$currentEmployee->getEmail(),
+                $this->logger->warning("Suppression d'un employé", [
+                    'authorEmail' => $_SESSION['user']->getEmail(),
+                    'reason' => $this->getpost("reason"),
+                    'deletedEmployeeEmail' => $currentEmployee->getEmail(),
                 ]);
-                $arr = array('message' => 'Employé Supprimmé', 'great'=>"1");
+                $arr = array('message' => 'Employé Supprimmé', 'great' => "1");
 
                 echo json_encode($arr);
 
@@ -215,7 +224,7 @@ class EmployeeC extends Controller
                 //View::renderTemplate('Employee/list.html', ['user' => $_SESSION["user"], 'success' => "l'employé a été supprimmé"]);
                 //header("Location:".Config::RACINE."/Employee/list");
             } catch (\Exception $e) {
-                $arr = array('message' => 'Erreur lors de la suppréssion de l\'employé, veuillez reéssayer', 'great'=>"0");
+                $arr = array('message' => 'Erreur lors de la suppréssion de l\'employé, veuillez reéssayer', 'great' => "0");
 
                 echo json_encode($arr);
                 //var_dump($e->getMessage());
@@ -225,19 +234,20 @@ class EmployeeC extends Controller
 
     }
 
-    public function listAction(){
+    public function listAction()
+    {
         if (!isset($_SESSION["user"])) {
             header("Location:".Config::RACINE."/");
         } else {
             $employees = null;
-            try{
+            try {
                 $employees = $this->db->getRepository('App\Models\Employee')->findAll();
                 //print ($employees[3]->getEmployeeProject()[0]->getProject()->getName());
-                ////print("<pre>".print_r($employees,true)."</pre>");
-                View::renderTemplate('Employee/list.html', ['user' => $_SESSION["user"],"employees"=>$employees]);
-            }
-            catch (\Exception $e){
-                var_dump($e->getMessage());
+                ////
+                View::renderTemplate('Employee/list.html', ['user' => $_SESSION["user"], "employees" => $employees]);
+            } catch (\Exception $e) {
+                //var_dump($e->getMessage());
+                print("<pre>" . print_r($e, true) . "</pre>");
             }
         }
     }

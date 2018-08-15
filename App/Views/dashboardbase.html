@@ -12,21 +12,21 @@
     <title>{% block title %}{% endblock %}</title>
 
     <!-- Bootstrap core CSS-->
-    <link href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/vendor/bootstrap/css/bootstrap.min.css"
+    <link href="{{ app.request.getBaseURL()}}{{RACINE}}/vendor/bootstrap/css/bootstrap.min.css"
           rel="stylesheet">
 
     <!-- Custom fonts for this template-->
-    <link href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/vendor/fontawesome-free/css/all.min.css"
+    <link href="{{ app.request.getBaseURL()}}{{RACINE}}/vendor/fontawesome-free/css/all.min.css"
           rel="stylesheet" type="text/css">
 
     <!-- Page level plugin CSS-->
-    <link href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/vendor/datatables/dataTables.bootstrap4.css"
+    <link href="{{ app.request.getBaseURL()}}{{RACINE}}/vendor/datatables/dataTables.bootstrap4.css"
           rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/css/sb-admin.css" rel="stylesheet">
-    <link href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/css/style.css" rel="stylesheet">
-    <script src="{{ app.request.getBaseURL()}}/DarmoticsApp/public/vendor/jquery/jquery.min.js"></script>
+    <link href="{{ app.request.getBaseURL()}}{{RACINE}}/css/sb-admin.css" rel="stylesheet">
+    <link href="{{ app.request.getBaseURL()}}{{RACINE}}/css/style.css" rel="stylesheet">
+    <script src="{{ app.request.getBaseURL()}}{{RACINE}}/vendor/jquery/jquery.min.js"></script>
 </head>
 
 <body id="page-top">
@@ -101,25 +101,25 @@
     <!-- Sidebar -->
     <ul class="sidebar navbar-nav">
         <li class="nav-item dropdown active">
-            <a class="nav-link dropdown-toggle" href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/Shareholder" id="shareholderDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a class="nav-link dropdown-toggle" href="{{ app.request.getBaseURL()}}{{RACINE}}/Shareholder" id="shareholderDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Actionnaires</span>
             </a>
             <div class="dropdown-menu" aria-labelledby="shareholderDropdown">
-                <a class="dropdown-item" href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/Shareholder">Ajouter</a>
-                <a class="dropdown-item" href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/Shareholder/list">Lister</a>
+                <a class="dropdown-item" href="{{ app.request.getBaseURL()}}{{RACINE}}/Shareholder">Ajouter</a>
+                <a class="dropdown-item" href="{{ app.request.getBaseURL()}}{{RACINE}}/Shareholder/list">Lister</a>
             </div>
         </li>
 
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/Project" id="pagesDropdown" role="button" data-toggle="dropdown"
+            <a class="nav-link dropdown-toggle" href="{{ app.request.getBaseURL()}}{{RACINE}}/Project" id="pagesDropdown" role="button" data-toggle="dropdown"
                aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-fw fa-folder"></i>
                 <span>Projets</span>
             </a>
             <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-                <a class="dropdown-item" href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/Project">Ajouter</a>
-                <a class="dropdown-item" href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/Project/list">Lister</a>
+                <a class="dropdown-item" href="{{ app.request.getBaseURL()}}{{RACINE}}/Project">Ajouter</a>
+                <a class="dropdown-item" href="{{ app.request.getBaseURL()}}{{RACINE}}/Project/list">Lister</a>
             </div>
         </li>
 
@@ -135,24 +135,24 @@
             </div>
         </li>
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/Employee" id="employeeDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a class="nav-link dropdown-toggle" href="{{ app.request.getBaseURL()}}{{RACINE}}/Employee" id="employeeDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-fw fa-table"></i>
                 <span>Employés</span>
             </a>
             <div class="dropdown-menu" aria-labelledby="employeeDropdown">
-                <a class="dropdown-item" href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/Employee">Ajouter</a>
-                <a class="dropdown-item" href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/Employee/list">Lister</a>
+                <a class="dropdown-item" href="{{ app.request.getBaseURL()}}{{RACINE}}/Employee">Ajouter</a>
+                <a class="dropdown-item" href="{{ app.request.getBaseURL()}}{{RACINE}}/Employee/list">Lister</a>
             </div>
         </li>
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/Department" id="deparmentDropdown" role="button" data-toggle="dropdown"
+            <a class="nav-link dropdown-toggle" href="{{ app.request.getBaseURL()}}{{RACINE}}/Department" id="deparmentDropdown" role="button" data-toggle="dropdown"
                aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-fw fa-folder"></i>
                 <span>Départements</span>
             </a>
             <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-                <a class="dropdown-item" href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/Department">Ajouter</a>
-                <a class="dropdown-item" href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/Department/list">Lister</a>
+                <a class="dropdown-item" href="{{ app.request.getBaseURL()}}{{RACINE}}/Department">Ajouter</a>
+                <a class="dropdown-item" href="{{ app.request.getBaseURL()}}{{RACINE}}/Department/list">Lister</a>
             </div>
         </li>
 
@@ -196,29 +196,29 @@
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
                 <a class="btn btn-primary"
-                   href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/Home/logout">Logout</a>
+                   href="{{ app.request.getBaseURL()}}{{RACINE}}/Home/logout">Logout</a>
             </div>
         </div>
     </div>
 </div>
 
 <!-- Bootstrap core JavaScript-->
-<script src="{{ app.request.getBaseURL()}}/DarmoticsApp/public/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="{{ app.request.getBaseURL()}}{{RACINE}}/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <!-- Core plugin JavaScript-->
-<script src="{{ app.request.getBaseURL()}}/DarmoticsApp/public/vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="{{ app.request.getBaseURL()}}{{RACINE}}/vendor/jquery-easing/jquery.easing.min.js"></script>
 
 <!-- Page level plugin JavaScript-->
-<script src="{{ app.request.getBaseURL()}}/DarmoticsApp/public/vendor/chart.js/Chart.min.js"></script>
-<script src="{{ app.request.getBaseURL()}}/DarmoticsApp/public/vendor/datatables/jquery.dataTables.js"></script>
-<script src="{{ app.request.getBaseURL()}}/DarmoticsApp/public/vendor/datatables/dataTables.bootstrap4.js"></script>
+<script src="{{ app.request.getBaseURL()}}{{RACINE}}/vendor/chart.js/Chart.min.js"></script>
+<script src="{{ app.request.getBaseURL()}}{{RACINE}}/vendor/datatables/jquery.dataTables.js"></script>
+<script src="{{ app.request.getBaseURL()}}{{RACINE}}/vendor/datatables/dataTables.bootstrap4.js"></script>
 
 <!-- Custom scripts for all pages-->
-<script src="{{ app.request.getBaseURL()}}/DarmoticsApp/public/js/sb-admin.min.js"></script>
+<script src="{{ app.request.getBaseURL()}}{{RACINE}}/js/sb-admin.min.js"></script>
 
 <!-- Demo scripts for this page-->
-<script src="{{ app.request.getBaseURL()}}/DarmoticsApp/public/js/demo/datatables-demo.js"></script>
-<script src="{{ app.request.getBaseURL()}}/DarmoticsApp/public/js/demo/chart-area-demo.js"></script>
+<script src="{{ app.request.getBaseURL()}}{{RACINE}}/js/demo/datatables-demo.js"></script>
+<script src="{{ app.request.getBaseURL()}}{{RACINE}}/js/demo/chart-area-demo.js"></script>
 
 </body>
 

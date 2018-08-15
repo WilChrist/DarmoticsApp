@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Config;
 use Core\Controller;
 use \Core\View;
 
@@ -38,7 +39,7 @@ class Home extends \Core\Controller
         if($user!==null){
             $_SESSION["user"]=$user;
             $this->logger->info( 'Login',["email"=>$user->getEmail()]);
-            header("Location:/DarmoticsApp/public/Shareholder");
+            header("Location:".Config::RACINE."/Shareholder");
         }
         else{
             View::renderTemplate('Home/index.html',["error"=>"email ou mot de passe incorrecte"]);
@@ -49,6 +50,6 @@ class Home extends \Core\Controller
     public function logoutAction(){
         session_destroy();
         $this->logger->info('Logout',["email"=>$_SESSION["user"]->getEmail()]);
-        header("Location:/DarmoticsApp/public/Home");
+        header("Location:'.Config::RACINE.'/Home");
     }
 }

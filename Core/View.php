@@ -2,11 +2,13 @@
 
 namespace Core;
 
+
 /**
  * View
  *
  * PHP version 7.0
  */
+use App\Config;
 class View
 {
 
@@ -47,6 +49,7 @@ class View
             $loader = new \Twig_Loader_Filesystem(dirname(__DIR__) . '/App/Views');
             $twig = new \Twig_Environment($loader,array('debug' => true));
             $twig->addExtension(new \Twig_Extension_Debug());
+            $twig->addGlobal('RACINE', Config::RACINE);
         }
 
         echo $twig->render($template, $args);

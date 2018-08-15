@@ -1,15 +1,16 @@
 function deletee(id,email){
     $( document ).ready(function() {
-        //$('#supprform').attr('action',"/DarmoticsApp/public/EmployeeC/"+id+"/delete");
+        //$('#supprform').attr('action',"'.Config::RACINE.'/EmployeeC/"+id+"/delete");
         $('#id').val(id);
         $('#empmail').html("<b class='badge badge-warning'>"+email+"</b>");
         $('#myModal').modal('show');
     });
 };
 $(function () {
+    const RACINE="/DarmoticsApp/public";
     $("#suppBout").click(function () {//alert($("#id").val());
         $.ajax({
-            url:"/DarmoticsApp/public/EmployeeC/"+$("#id").val()+"/delete",
+            url:RACINE+"/EmployeeC/"+$("#id").val()+"/delete",
             method:"POST",
             data:{"id":$("#id").val(),"reason":$("#reason").val()}
 

@@ -39,4 +39,10 @@ class Config
      * @var boolean
      */
     const SHOW_ERRORS = true;
+
+    /**
+     * Do redirection onto public Folder
+     * @var string
+     */
+    const RACINE = 'Config::RACINE.';
 }

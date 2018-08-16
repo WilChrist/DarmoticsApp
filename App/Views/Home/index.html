@@ -29,11 +29,7 @@
                 <!-- Modal body -->
                 <div class="modal-body">
 
-<<<<<<< HEAD
-                    <form method="post" action="{{ app.request.getBaseURL()}}'.Config::RACINE.'/Home/login" enctype="application/x-www-form-urlencoded">
-=======
-                    <form method="post" action="{{ app.request.getBaseURL()}}/Home/login" enctype="application/x-www-form-urlencoded">
->>>>>>> testDeploy
+                    <form method="post" action="{{ app.request.getBaseURL()}}{{RACINE}}/Home/login" enctype="application/x-www-form-urlencoded">
                         <div class="form-group">
                             <label for="email">Email address:</label>
                             <input type="email" class="form-control" id="email" name="email">

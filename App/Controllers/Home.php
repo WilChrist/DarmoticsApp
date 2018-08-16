@@ -21,7 +21,11 @@ class Home extends \Core\Controller
      */
     public function indexAction()
     {
-        View::renderTemplate('Home/index.html');
+        if (!isset($_SESSION['user'])) {
+            View::renderTemplate('Home/index.html');
+        }else{
+            header("Location:".Config::RACINE."/Home/dashboard");
+        }
     }
 
     /**
@@ -38,7 +42,7 @@ class Home extends \Core\Controller
         if($user!==null){
             $_SESSION["user"]=$user;
             $this->logger->info( 'Login',["email"=>$user->getEmail()]);
-            header("Location:".Config::RACINE."/Shareholder");
+            header("Location:".Config::RACINE."/Home/dashboard");
         }
         else{
             View::renderTemplate('Home/index.html',["error"=>"email ou mot de passe incorrecte"]);
@@ -46,9 +50,37 @@ class Home extends \Core\Controller
         }
     }
 
+    public function dashboardAction()
+    {
+        if (!isset($_SESSION['user'])) {
+            header("Location:".Config::RACINE."/");
+
+        }else{
+            $numberOfShareholders=$this->getNumberOf('App\Models\Shareholder');
+            $numberOfDepartments=$this->getNumberOf('App\Models\Department');
+            $numberOfEmployees=$this->getNumberOf('App\Models\Employee');
+            $numberOfProjects=$this->getNumberOf('App\Models\Project');
+
+            View::renderTemplate('Home/dashboard.html',
+                [
+                    "numberOfShareholders"=>$numberOfShareholders,
+                    "numberOfDepartments"=>$numberOfDepartments,
+                    "numberOfEmployees"=>$numberOfEmployees,
+                    "numberOfProjects"=>$numberOfProjects
+                ]);
+        }
+    }
+
     public function logoutAction(){
         session_destroy();
         $this->logger->info('Logout',["email"=>$_SESSION["user"]->getEmail()]);
-        header("Location:'.Config::RACINE.'/Home");
+        header("Location:".Config::RACINE."/Home");
+    }
+
+    private function getNumberOf($objet){
+
+        $query= $this->db->createQuery("SELECT COUNT(o.id) FROM ".$objet." o");
+        //print("<pre>" . print_r($query, true) . "</pre>");
+        return $query->getSingleScalarResult();
     }
 }

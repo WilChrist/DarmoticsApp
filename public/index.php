@@ -22,18 +22,21 @@ set_exception_handler('Core\Error::exceptionHandler');
  * Routing
  */
 $router = new Core\Router();
-
 // Add the routes
 $router->add('', ['controller' => 'Home', 'action' => 'index']);
 $router->add('Home', ['controller' => 'Home', 'action' => 'index']);
 $router->add('Home/login', ['controller' => 'Home', 'action' => 'login']);
+$router->add('Home/dashboard', ['controller' => 'Home', 'action' => 'dashboard']);
 
 $router->add('Shareholder', ['controller' => 'ShareholderC', 'action' => 'index']);
 $router->add('Shareholder/index', ['controller' => 'ShareholderC', 'action' => 'index']);
 $router->add('Shareholder/add', ['controller' => 'ShareholderC', 'action' => 'add']);
+$router->add('Shareholder/edit', ['controller' => 'ShareholderC', 'action' => 'edit']);
 $router->add('Shareholder/list', ['controller' => 'ShareholderC', 'action' => 'list']);
+
 $router->add('Project', ['controller' => 'ProjectC', 'action' => 'index']);
 $router->add('Project/add', ['controller' => 'ProjectC', 'action' => 'add']);
+$router->add('Project/edit', ['controller' => 'ProjectC', 'action' => 'edit']);
 $router->add('Project/list', ['controller' => 'ProjectC', 'action' => 'list']);
 
 $router->add('Department', ['controller' => 'DepartmentC', 'action' => 'index']);
@@ -60,11 +63,15 @@ $router->add('{controller}/{action}');
 $router->add('{controller}/{id:\d+}/{action}');
 
 //je passe le $_POST au routeur afin qu'il le passe au controleur
+
 try {
+    //print("<pre>".print_r($_GET,true)."</pre>");
+
     $router->dispatch($_SERVER['QUERY_STRING'], $_POST);
+
 }
 catch (\Exception $e){
     //var_dump($e);
-    //print("<pre>".print_r($e,true)."</pre>");
+    print("<pre>".print_r($e,true)."</pre>");
     //View::renderTemplate('404.html', ['message'=>$e->getMessage()]);
 }

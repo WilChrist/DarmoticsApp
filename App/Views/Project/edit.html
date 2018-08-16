@@ -1,0 +1,102 @@
+{% extends "dashboardbase.html" %}
+
+{% block title %}Modification de Projet{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9 col-md-10 col-lg-10 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Modifier un Projet</h5>
+
+                    {% if error %}
+                    <div class="alert alert-danger alert-dismissible">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>{{error}} </strong>
+                    </div>
+                    {% elseif success %}
+                    <div class="alert alert-success alert-dismissible">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>{{success}} </strong>
+                    </div>
+                    {% endif %}
+
+
+                    <form class="addshareholder" method="post"
+                          action="{{ app.request.getBaseURL()}}{{RACINE}}/Project/edit">
+                        <div class="form-group">
+                            <input type="hidden" name="id" id="id" value="{{project.id}}">
+                            <label for="name">Nom Projet</label>
+                            <input type="text" id="name" name="name" class="form-control" placeholder="Nom"
+                                   value="{{project.name}}"
+                                   required autofocus>
+                            <span class="alert alert-danger error" id="name_error"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description Projet</label>
+                            <textarea class="form-control" name="description" id="description" cols="30" rows="10" placeholder="description">
+                                {{project.description}}
+                            </textarea>
+                            <span class="alert alert-danger error" id="description_error"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="startDate">Date de début du projet</label>
+                            <input type="date" id="startDate" name="startDate" class="form-control" value="{{project.startDate|date('Y-m-d')}}" required>
+                            <span class="alert alert-danger error" id="startdate_error"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="endDate">Date de fin du projet</label>
+                            <input type="date" id="endDate" name="endDate" class="form-control" value="{{project.endDate|date('Y-m-d')}}" required>
+                            <span class="alert alert-danger error" id="endDate_error"></span>
+                        </div>
+                        <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Modifier</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $("#name").blur(function () {
+            if ($(this).val() === "") {
+                $("#name_error").empty().append("le nom ne peut être vide").show();
+            }
+            else {
+                $("#name_error").hide();
+            }
+        })
+
+        $("#description").blur(function () {
+            if ($(this).val() === "") {
+                $("#description_error").empty().append("la description ne peut être vide").show();
+            }
+            else {
+                $("#description_error").hide();
+            }
+        })
+
+        $("#startDate").blur(function () {
+            if ($(this).val() === "") {
+                $("#startdate_error").empty().append("la date de début est invalide").show();
+            }
+            else {
+                $("#startdate_error").hide();
+            }
+        })
+
+        $("#endDate").blur(function () {
+            if ($(this).val() === "" || $(this).val() < $("#startDate").val()) {
+                $("#endDate_error").empty().append("la date de fin est invalide").show();
+            }
+            else {
+                $("#endDate_error").hide();
+            }
+        })
+    })
+
+</script>
+{% endblock %}

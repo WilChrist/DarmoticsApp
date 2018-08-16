@@ -22,15 +22,15 @@
                         <div id="collapse{{i}}" class="collapse{% if i==0 %}{{' show'}}{% endif %}" data-parent="#accordion">
                             <div class="card-body">
                                 <p class="card-text">Prenom: {{shareholder.firstname}}</p>
-                                <p class="card-text">Email: {{shareholder.phone}}</p>
-                                <p class="card-text">Téléphone: {{shareholder.email}}</p>
-                                <p class="card-text">Téléphone: {{shareholder.address}}</p>
+                                <p class="card-text">Email: {{shareholder.email}}</p>
+                                <p class="card-text">Téléphone: {{shareholder.phone}}</p>
+                                <p class="card-text">Adresse: {{shareholder.address}}</p>
                                 <p class="card-text">Pourcentage d'Actions: {{shareholder.sharesPercentage}}%</p>
                             </div>
                             <div class="card-footer">
                                 <div class="container">
-                                    <a href="{{ app.request.getBaseURL()}}{{RACINE}}/Shareholder/edit?id={{shareholder.id}}"><button type="button" class="btn btn-primary">Modifier</button></a>
-                                    <a href="{{ app.request.getBaseURL()}}{{RACINE}}/Shareholder/delete?id={{shareholder.id}}"><button type="button" class="btn btn-danger">Supprimer</button></a>
+                                    <a href="{{ app.request.getBaseURL()}}{{RACINE}}/ShareholderC/{{shareholder.id}}/edit"><button type="button" class="btn btn-primary">Modifier</button></a>
+                                    <button type="button" class="btn btn-danger">Supprimer</button>
                                 </div>
                             </div>
                         </div>

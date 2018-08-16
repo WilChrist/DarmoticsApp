@@ -86,7 +86,7 @@ class DepartmentC extends Controller
                         "creationDate"=>$currentDepartment->getCreationDate(),
                         "lastUpdateDate"=>$currentDepartment->getLastUpdateDate()
                     ],
-                    "oldData" => [
+                    "newData" => [
                         "name"=>$newDepartment->getName(),
                         "description"=>$newDepartment->getDescription(),
                         "chief"=>$newDepartment->getChief(),
@@ -105,10 +105,10 @@ class DepartmentC extends Controller
     public function deleteAction()
     {
         if (!isset($_SESSION['user'])) {
-            header("Location:/");
+            header("Location:".Config::RACINE."/");
         } elseif ($this->getpost("id") == null || $this->getpost("reason") == null) {
             //$this->logger->info($this->getpost("reason")." 1");
-            header("Location:/Department");
+            header("Location:".Config::RACINE."/Department");
         } else {
             // echo $this->getpost("reason");
             try {

@@ -1,0 +1,129 @@
+{% extends "dashboardbase.html" %}
+
+{% block title %}Modification de Shareholder{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9 col-md-10 col-lg-10 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Modifier un Actionnaire</h5>
+
+                    {% if error %}
+                    <div class="alert alert-danger alert-dismissible">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>{{error}} </strong>
+                    </div>
+                    {% elseif success %}
+                    <div class="alert alert-success alert-dismissible">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>{{success}} </strong>
+                    </div>
+                    {% endif %}
+
+
+                    <form class="addshareholder" method="post"
+                          action="{{ app.request.getBaseURL()}}{{RACINE}}/Shareholder/edit">
+                        <div class="form-group">
+                            <input type="hidden" name="id" id="id" value="{{shareholder.id}}">
+                            <label for="last_name">Nom Actionnaire</label>
+                            <input type="text" id="last_name" name="last_name" class="form-control" placeholder="Nom"
+                                   value="{{shareholder.lastName}}"
+                                   required autofocus>
+                            <span class="alert alert-danger error" id="last_name_error"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="first_name">Prenom Actionnaire</label>
+                            <input type="text" id="first_name" name="first_name" class="form-control"
+                                   value="{{shareholder.firstName}}"
+                                   placeholder="Prenom">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Actionnaire</label>
+                            <input type="email" id="email" name="email" class="form-control" placeholder="Email"
+                                   value="{{shareholder.email}}"
+                                   required>
+                            <span class="alert alert-danger error" id="email_error"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Téléphone Actionnaire</label>
+                            <input type="number" id="phone" name="phone" class="form-control" placeholder="Téléphone"
+                                   value="{{shareholder.phone}}"
+                                   required>
+                            <span class="alert alert-danger error" id="phone_error"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Adresse Actionnaire</label>
+                            <input type="text" id="address" name="address" class="form-control" placeholder="adresse"
+                                   value="{{shareholder.address}}"
+                                   required>
+                            <span class="alert alert-danger error" id="address_error"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="sharespercentage">Pourcentage Action</label>
+                            <input type="number" min="0" max="100" step="any" id="sharespercentage"
+                                   name="sharespercentage" class="form-control" placeholder="Pourcentage">
+                            <span class="alert alert-danger error" id="sharespercentage_error"></span>
+                        </div>
+                        <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Modifier</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $("#last_name").blur(function () {
+            if ($(this).val() === "") {
+                $("#last_name_error").empty().append("le nom ne peut être vide").show();
+            }
+            else {
+                $("#last_name_error").hide();
+            }
+        })
+
+        $("#email").blur(function () {
+            var value = $(this).val();
+            if (/^[a-zA-Z0-9\-_]+[a-zA-Z0-9\.\-_]*@[a-zA-Z0-9\-_]+\.[a-zA-Z\.\-_]{1,}[a-zA-Z\-_]+/.test(value)) {
+                $("#email_error").hide();
+            }
+            else {
+                $("#email_error").empty().append("email invalide").show();
+            }
+
+        })
+
+        $("#phone").blur(function () {
+            if (!/^[0-9]{9,10}$/.test($(this).val())) {
+                $("#phone_error").empty().append("numero de téléphone invalide").show();
+            }
+            else {
+                $("#phone_error").hide();
+            }
+        })
+        $("#address").blur(function () {
+            if ($(this).val() === "") {
+                $("#address_error").empty().append("veuillez entrez une adresse").show();
+            }
+            else {
+                $("#address_error").hide();
+            }
+        })
+
+        $("#sharespercentage").blur(function () {
+            let value = Number.parseFloat($(this).val());
+            if (!$.isNumeric(value) || value < 0) {
+                $("#sharespercentage_error").empty().append("veuillez entrez un pourcentage valide").show();
+            }
+            else {
+                $("#sharespercentage_error").hide();
+            }
+        })
+    })
+
+</script>
+{% endblock %}

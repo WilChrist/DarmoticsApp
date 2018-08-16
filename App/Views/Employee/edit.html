@@ -28,8 +28,8 @@
                           action="{{ app.request.getBaseURL()}}{{RACINE}}/Employee/edit">
                         <div class="row">
                             <div class="form-group col-sm-6">
-                                <label for="first_name">Nom</label>
                                 <input type="hidden" name="id" id="id" value="{{employee.id}}">
+                                <label for="first_name">Nom</label>
                                 <input type="text" id="first_name" name="first_name" class="form-control"
                                        placeholder="Nom"
                                        value="{{employee.firstName}}"

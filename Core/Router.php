@@ -106,6 +106,7 @@ class Router
      */
     public function dispatch($url, $others)
     {
+        
         //récupération et test du post
         $this->other=$others;
         $url = $this->removeQueryStringVariables($url);
@@ -116,6 +117,7 @@ class Router
             $controller = $this->getNamespace() . $controller;
             //var_dump($this->params);
             if (class_exists($controller)) {
+
                 $controller_object = new $controller($this->params);
 
                 $action = $this->params['action'];
@@ -125,7 +127,7 @@ class Router
                     //$controller_object->$action($this->other);
                     if(!isset($this->params['id'])){
                         $this->params['id']=null;
-                    }//var_dump($this->params);
+                    }//var_dump($this->other);
                     $controller_object->$action($this->other,$this->params['id']);
 
                 } else {

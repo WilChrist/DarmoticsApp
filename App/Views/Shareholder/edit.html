@@ -1,6 +1,6 @@
 {% extends "dashboardbase.html" %}
 
-{% block title %}Modification de Shareholder{% endblock %}
+{% block title %}Modification d'un Actionnaire{% endblock %}
 
 {% block body %}
 
@@ -61,12 +61,6 @@
                                    required>
                             <span class="alert alert-danger error" id="address_error"></span>
                         </div>
-                        <div class="form-group">
-                            <label for="sharespercentage">Pourcentage Action</label>
-                            <input type="number" min="0" max="100" step="any" id="sharespercentage"
-                                   name="sharespercentage" class="form-control" placeholder="Pourcentage">
-                            <span class="alert alert-danger error" id="sharespercentage_error"></span>
-                        </div>
                         <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Modifier</button>
                     </form>
                 </div>
@@ -105,6 +99,7 @@
                 $("#phone_error").hide();
             }
         })
+
         $("#address").blur(function () {
             if ($(this).val() === "") {
                 $("#address_error").empty().append("veuillez entrez une adresse").show();
@@ -114,15 +109,7 @@
             }
         })
 
-        $("#sharespercentage").blur(function () {
-            let value = Number.parseFloat($(this).val());
-            if (!$.isNumeric(value) || value < 0) {
-                $("#sharespercentage_error").empty().append("veuillez entrez un pourcentage valide").show();
-            }
-            else {
-                $("#sharespercentage_error").hide();
-            }
-        })
+
     })
 
 </script>

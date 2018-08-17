@@ -1,0 +1,67 @@
+{% extends "dashboardbase.html" %}
+
+{% block title %}Liste des Budgets{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12 mx-auto">
+            <div id="mess" class="">
+            </div>
+            {% if budgets|length <= 0 %}
+            <p>Aucun Budget n'existe pour l'instant</p>
+            {% else %}
+            {% set i=0 %}
+            <!-- DataTables Example -->
+            <div class="card mb-3">
+                <div class="card-header">
+                    <i class="fas fa-table"></i>
+                    Liste des Budgets <input type="hidden" id="controller" value="FinancesC"></div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th>N°</th>
+                                <th>Projet</th>
+                                <th>Montant</th>
+                                <th>Date d'affectation</th>
+                                <th>Modifier</th>
+                                <th>Supprimer</th>
+                            </tr>
+                            </thead>
+                            <tfoot>
+                            <tr>
+                                <th>N°</th>
+                                <th>Projet</th>
+                                <th>Montant</th>
+                                <th>Date d'affectation</th>
+                                <th>Modifier</th>
+                                <th>Supprimer</th>
+                            </tr>
+                            </tfoot>
+                            <tbody>
+                            {% for budget in budgets %}
+                            <tr id="{{employee.id}}">
+                                <td> {{i}} </td>
+                                <td>{{budget.project.name}}</td>
+                                <td>{{budget.amount}}</td>
+                                <td>{{budget.movementDate|date('Y-m-d')}}</td>
+                                <td><a href="{{ app.request.getBaseURL()}}{{RACINE}}/FinancesC/{{budget.id}}/edit"><button type="button" class="btn btn-primary">Modifier</button></a></td>
+                                <td><button type="button" class="btn btn-danger">Supprimer</button></td>
+                            </tr>
+                            {% set i=i+1 %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -82,14 +82,29 @@
     </div>
 
     <!-- Area Chart Example-->
-    <div class="card mb-3">
-        <div class="card-header">
-            <i class="fas fa-chart-area"></i>
-            Courbe d'évolution des entrées Journalières</div>
-        <div class="card-body">
-            <canvas id="myAreaChart" width="100%" height="30"></canvas>
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <i class="fas fa-chart-pie"></i>
+                    Répartition de la tésorerie</div>
+                <div class="card-body">
+                    <canvas id="treasuryChart" width="100%" height="100"></canvas>
+                </div>
+                <div class="card-footer small text-muted">Mise à jour du {{ "now"|date("m/d/Y") }}</div>
+            </div>
         </div>
-        <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+        <div class="col-lg-4">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <i class="fas fa-chart-pie"></i>
+                    Répartition du capital</div>
+                <div class="card-body">
+                    <canvas id="capitalChart" width="100%" height="100"></canvas>
+                </div>
+                <div class="card-footer small text-muted">Mise à jour du {{ "now"|date("m/d/Y") }}</div>
+            </div>
+        </div>
     </div>
 
     <!-- DataTables Example -->

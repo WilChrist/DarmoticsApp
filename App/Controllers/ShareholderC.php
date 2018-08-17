@@ -31,7 +31,7 @@ class ShareholderC extends \Core\Controller
     {
         if (!isset($_SESSION['user'])) {
             header("Location:".Config::RACINE."/");
-        } elseif ($this->getpost("last_name") == null || $this->getpost("email") == null || $this->getpost("sharespercentage") == null) {
+        } elseif ($this->getpost("last_name") == null || $this->getpost("email") == null || $this->getpost("phone") == null) {
             header("Location:".Config::RACINE."/Shareholder");
         } else {
             $newShareholder = new Shareholder();
@@ -40,7 +40,7 @@ class ShareholderC extends \Core\Controller
             $newShareholder->setEmail($this->getpost("email"));
             $newShareholder->setPhone($this->getpost("phone"));
             $newShareholder->setAddress($this->getpost("address"));
-            $newShareholder->setSharesPercentage($this->getpost("sharespercentage"));
+            $newShareholder->setSharesPercentage(0);
             $newShareholder->setPassword(md5("default"));
 
             try {

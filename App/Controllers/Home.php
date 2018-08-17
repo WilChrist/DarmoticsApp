@@ -71,6 +71,32 @@ class Home extends \Core\Controller
         }
     }
 
+    public function chartDataAction(){
+        if (!isset($_SESSION['user'])) {
+            header("Location:".Config::RACINE."/");
+
+        }else{
+
+            $apportA = $this->db->getRepository('App\Models\CapitalUpdate')->findOneBy(array(), array('id' => 'desc'))->getAmountafter();
+            $don = $this->db->getRepository('App\Models\DonationUpdate')->findOneBy(array(), array('id' => 'desc'))->getAmountafter();
+            $total =$apportA+$don;
+
+            $treasuryData = array(
+                'apports'=> ($apportA/$total)*100,
+                'dons'=> ($don/$total)*100
+            );
+
+            $capitalData=array();
+            $shareholders = $this->db->getRepository('App\Models\Shareholder')->findAll();
+            foreach ($shareholders as $shareholder){
+                $capitalData[$shareholder->getLastName()]=$shareholder->getSharesPercentage();
+            }
+
+            echo json_encode(array('treasuryData'=>$treasuryData,'capitalData'=>$capitalData));
+        }
+    }
+
+
     public function logoutAction(){
         session_destroy();
         $this->logger->info('Logout',["email"=>$_SESSION["user"]->getEmail()]);

@@ -27,6 +27,7 @@ $router->add('', ['controller' => 'Home', 'action' => 'index']);
 $router->add('Home', ['controller' => 'Home', 'action' => 'index']);
 $router->add('Home/login', ['controller' => 'Home', 'action' => 'login']);
 $router->add('Home/dashboard', ['controller' => 'Home', 'action' => 'dashboard']);
+$router->add('Home/chartData', ['controller' => 'Home', 'action' => 'chartData']);
 
 $router->add('Shareholder', ['controller' => 'ShareholderC', 'action' => 'index']);
 $router->add('Shareholder/index', ['controller' => 'ShareholderC', 'action' => 'index']);
@@ -53,6 +54,7 @@ $router->add('Employee/list', ['controller' => 'EmployeeC', 'action' => 'list'])
 $router->add('Finances', ['controller' => 'FinancesC', 'action' => 'index']);
 $router->add('Finances/exit', ['controller' => 'FinancesC', 'action' => 'exit']);
 $router->add('Finances/budgeting', ['controller' => 'FinancesC', 'action' => 'budgeting']);
+$router->add('Finances/list', ['controller' => 'FinancesC', 'action' => 'list']);
 $router->add('Finances/addEntry', ['controller' => 'FinancesC', 'action' => 'addEntry']);
 $router->add('Finances/addExit', ['controller' => 'FinancesC', 'action' => 'addExit']);
 $router->add('Finances/addBudgeting', ['controller' => 'FinancesC', 'action' => 'addBudgeting']);

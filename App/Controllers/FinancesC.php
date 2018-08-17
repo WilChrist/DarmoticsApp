@@ -14,7 +14,8 @@ use App\Models\Budgeting;
 use App\Models\FinancialEntry;
 use App\Models\FinancialExit;
 use App\Models\Contributor;
-use App\Models\AccountUpdate;
+use App\Models\CapitalUpdate;
+use App\Models\DonationUpdate;
 use App\Models\EntryBill;
 use App\Models\ExitBill;
 use App\Models\Shareholder;
@@ -52,11 +53,30 @@ class FinancesC extends \Core\Controller
                 //creation of the new entry
                 $newentry = new FinancialEntry();
                 $giver = null;
+                $newupdate = null;
+
                 if ($this->getpost("type") == "shareholder") {
                     $newentry->setType("apport actionnaire");
                     $newentry->setAmount($this->getpost("amount"));
                     $newentry->setContributorID($this->getpost("shareholder"));
                     $giver = $this->getSingleShareholder($this->getpost("shareholder"));
+
+                    //updating account state for capital
+                    $newupdate = new CapitalUpdate();
+                    $this->setAccountUpdate($newupdate,'\CapitalUpdate');
+
+                    //adding date
+                    $newupdate->setDate();
+                    $newentry->setMovementDate();
+
+                    //save modification
+                    $this->db->persist($newentry);
+                    $this->db->persist($newupdate);
+                    $this->db->flush();
+
+                    //update shareholder
+                    $this->updateSharesPercentage();
+
                 } else {
                     //adding contributor in case of donatio type entry
                     $donor = new Contributor();
@@ -70,23 +90,22 @@ class FinancesC extends \Core\Controller
                     $newentry->setAmount($this->getpost("amount"));
                     $newentry->setContributorID($donor->getId());
                     $giver = $donor;
+
+                    //updating account state for donation
+                    $newupdate = new DonationUpdate();
+                    $this->setAccountUpdate($newupdate,'\DonationUpdate');
+
+                    //adding date
+                    $newupdate->setDate();
+                    $newentry->setMovementDate();
+
+                    //save modification
+                    $this->db->persist($newentry);
+                    $this->db->persist($newupdate);
+                    $this->db->flush();
                 }
 
-                //updating account state
-                $previousupdate = $this->db->getRepository('App\Models\AccountUpdate')->findOneBy(array(), array('id' => 'desc'));
-                $newupdate = new AccountUpdate();
-                $newupdate->setAmountbefore($previousupdate->getAmountafter());
-                $newupdate->setAmount($this->getpost("amount"));
-                $newupdate->setAmountafter($this->getpost("amount") + $previousupdate->getAmountafter());
 
-
-                $newupdate->setDate();
-                $newentry->setMovementDate();
-
-                //save modification
-                $this->db->persist($newentry);
-                $this->db->persist($newupdate);
-                $this->db->flush();
 
                 //generate pdf
                 $pdf = new EntryBill(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
@@ -123,10 +142,10 @@ class FinancesC extends \Core\Controller
             header("Location:".Config::RACINE."/");
         } else {
             //test if budget is not supérior to capital
-            $availablecapital = $this->getAvailableCapital();
+            $availablecapital = $this->getAvailableTreasury();
             if( $availablecapital < $this->getpost("amount")){
                 View::renderTemplate('Finances/budgeting.html', ['user' => $_SESSION["user"],'projects'=>$this->projectsWithoutBudget(),
-                    'error'=>'budget supérieur au capital non alouer qui est de '.$availablecapital]);
+                    'error'=>'budget supérieur à la trésorerie non alouée qui est de '.$availablecapital]);
             }
             else{
                 $budget = new Budgeting();
@@ -188,34 +207,79 @@ class FinancesC extends \Core\Controller
         }
     }
 
+    public function listAction(){
+        if (!isset($_SESSION["user"])) {
+            header("Location:".Config::RACINE."/");
+        } else {
+            try {
+                View::renderTemplate('Finances/list.html', ['user' => $_SESSION["user"],'budgets'=>$this->getBudgeting()]);
+            }
+            catch (\Exception $e){
+                View::renderTemplate('500.html');
+            }
+        }
+    }
 
+    /*this function return all project that doesn't have a budget assigned*/
     private function projectsWithoutBudget(){
         $projects = $this->db->getRepository('App\Models\Project')->findAll();
         return array_filter($projects,function ($v){return $v->getBudget()==null;});
     }
 
-    private function getAvailableCapital(){
+    /*return all the capital that can't be use for a new budget*/
+    private function getAvailableTreasury(){
 
         $query= $this->db->createQuery("SELECT SUM(b.amount) FROM App\Models\Budgeting b");
-        $capital= $this->db->getRepository('App\Models\AccountUpdate')->findOneBy(array(), array('id' => 'desc'))->getAmountafter();
-        return $capital - $query->getSingleScalarResult();
+        $capital= $this->db->getRepository('App\Models\CapitalUpdate')->findOneBy(array(), array('id' => 'desc'))->getAmountafter();
+        $donation= $this->db->getRepository('App\Models\DonationUpdate')->findOneBy(array(), array('id' => 'desc'))->getAmountafter();
+        return $capital+$donation - $query->getSingleScalarResult();
     }
 
+    /*get the remaining amount of a budget */
     private function getAvailableBudget($id){
         $query= $this->db->createQuery("SELECT SUM(e.amount) FROM App\Models\FinancialExit e WHERE e.budgeting = ?1");
         $query->setParameter(1, $id);
         return $this->getSingleBudget($id)->getAmount() - $query->getSingleScalarResult();
     }
 
+    /*return all budgets*/
     private function getBudgeting(){
         return $this->db->getRepository('App\Models\Budgeting')->findAll();
     }
 
+    /*get a single budget by id*/
     private function getSingleBudget($id){
         return $this->db->getRepository('App\Models\Budgeting')->findOneBy(array('id'=>$id));
     }
 
+    /*get a single shareholder by id*/
     private function getSingleShareholder($id){
         return $this->db->getRepository('App\Models\Shareholder')->findOneBy(array('id'=>$id));
+    }
+
+    /*set the new account update by the type of account*/
+    private function setAccountUpdate(&$newupdate,$type){
+        $previousupdate = $this->db->getRepository('App\Models'.$type)->findOneBy(array(), array('id' => 'desc'));
+        $newupdate->setAmountbefore($previousupdate->getAmountafter());
+        $newupdate->setAmount($this->getpost("amount"));
+        $newupdate->setAmountafter($this->getpost("amount") + $previousupdate->getAmountafter());
+    }
+
+    /*this function update shares percentage of a shareholder*/
+    private function updateSharesPercentage(){
+
+        $shareholders = $this->db->getRepository('App\Models\Shareholder')->findAll();
+        $capital= $this->db->getRepository('App\Models\CapitalUpdate')->findOneBy(array(), array('id' => 'desc'))->getAmountafter();
+
+        foreach ($shareholders as $shareholder){
+            $query= $this->db->createQuery("SELECT SUM(f.amount) FROM App\Models\FinancialEntry f WHERE f.type=?1 AND f.contributorID=?2");
+            $query->setParameter(1, "apport actionnaire");
+            $query->setParameter(2, $shareholder->getId());
+            $shareholderpart = $query->getSingleScalarResult();
+            $shareholder->setSharesPercentage(($shareholderpart/$capital)*100);
+            $this->db->persist($shareholder);
+        }
+
+        $this->db->flush();
     }
 }

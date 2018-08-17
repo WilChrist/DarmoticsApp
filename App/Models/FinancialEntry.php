@@ -28,6 +28,13 @@ class FinancialEntry extends FinancialMovement
         return $this->type;
     }
 
+
+    /**
+     * One entryBill is for One entry.
+     * @OneToOne(targetEntity="EntryBill", mappedBy="entry")
+     */
+    protected $entrybill;
+
     /**
      * @param mixed $type
      */
@@ -50,6 +57,22 @@ class FinancialEntry extends FinancialMovement
     public function setContributorID($contributorID)
     {
         $this->contributorID = $contributorID;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEntrybill()
+    {
+        return $this->entrybill;
+    }
+
+    /**
+     * @param mixed $entrybill
+     */
+    public function setEntrybill($entrybill)
+    {
+        $this->entrybill = $entrybill;
     }
 
 

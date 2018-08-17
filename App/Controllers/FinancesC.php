@@ -47,7 +47,8 @@ class FinancesC extends \Core\Controller
 
         if (!isset($_SESSION["user"])) {
             header("Location:".Config::RACINE."/");
-        } else {
+        }
+        else {
 
             try {
                 //creation of the new entry
@@ -110,7 +111,15 @@ class FinancesC extends \Core\Controller
                 //generate pdf
                 $pdf = new EntryBill(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
                 $pdf->initialise();
-                $pdf->writeData($newentry,$giver,$_SESSION['user']);
+                $pdf->setEntry($newentry);
+                $pdf->setGiver($giver);
+                $pdf->setUser($_SESSION['user']);
+                $pdf->setCreationDate(new \DateTime("now"));
+                $this->db->persist($pdf);
+                $this->db->flush();
+
+
+                $pdf->writeData();
                 $this->logger->info('Adding of new Entry '.$newentry->getType().' '.$newentry->getAmount(),["email"=>$_SESSION["user"]->getEmail()]);
                 $pdf->printBill();
 
@@ -118,7 +127,7 @@ class FinancesC extends \Core\Controller
                     'shareholders' => $this->db->getRepository('App\Models\Shareholder')->findAll()]);
             }
             catch (\Exception $e){
-                View::renderTemplate('500.html');
+                View::renderTemplate('404.html',['message'=>$e->getMessage()]);
             }
         }
 
@@ -178,7 +187,11 @@ class FinancesC extends \Core\Controller
     public function addExitAction(){
         if (!isset($_SESSION["user"])) {
             header("Location:".Config::RACINE."/");
-        } else {
+        } elseif($this->getpost("budget")<=0 || $this->getpost("amount")==null || $this->getpost("reason")==null ){
+            View::renderTemplate('Finances/exit.html', ['user' => $_SESSION["user"],'budgets'=>$this->getBudgeting(),
+                'error'=>'veuillez remplir tous les champs']);
+        }
+        else {
             $budget = $this->getpost("budget");
             if($this->getAvailableBudget($budget) < $this->getpost("amount")){
                 View::renderTemplate('Finances/exit.html', ['user' => $_SESSION["user"],'budgets'=>$this->getBudgeting(),
@@ -196,7 +209,13 @@ class FinancesC extends \Core\Controller
 
                 $pdf = new ExitBill(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
                 $pdf->initialise();
-                $pdf->writeData($newexit,$_SESSION['user']);
+                $pdf->setExit($newexit);
+                $pdf->setUser($_SESSION['user']);
+                $pdf->setCreationDate(new \DateTime("now"));
+                $this->db->persist($pdf);
+                $this->db->flush();
+                
+                $pdf->writeData();
                 $this->logger->info('Registration of new Exit for '.$newexit->getReason().' Amount'.$newexit->getAmount(),["email"=>$_SESSION["user"]->getEmail()]);
                 $pdf->printBill();
 

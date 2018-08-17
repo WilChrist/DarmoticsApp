@@ -14,6 +14,7 @@ namespace App\Models;
  */
 class Director extends  User
 {
+
     /** @Column(length=255,nullable=true) */
     protected $department;
 
@@ -32,4 +33,23 @@ class Director extends  User
     {
         $this->department = $department;
     }
+
+
+    /**
+     * @return mixed
+     */
+    public function getExitbill()
+    {
+        return $this->exitbill;
+    }
+
+    /**
+     * @param mixed $exitbill
+     */
+    public function setExitbill($exitbill)
+    {
+        $this->exitbill = $exitbill;
+    }
+
+
 }

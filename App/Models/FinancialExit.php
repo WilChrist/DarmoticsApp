@@ -26,6 +26,13 @@ class FinancialExit extends FinancialMovement
 
 
     /**
+     * One entryBill is for One entry.
+     * @OneToOne(targetEntity="ExitBill", mappedBy="exit")
+     */
+    protected $exitbill;
+
+
+    /**
      * @return mixed
      */
     public function getReason()
@@ -55,6 +62,22 @@ class FinancialExit extends FinancialMovement
     public function setBudgeting($budgeting)
     {
         $this->budgeting = $budgeting;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getExitbill()
+    {
+        return $this->exitbill;
+    }
+
+    /**
+     * @param mixed $exitbill
+     */
+    public function setExitbill($exitbill)
+    {
+        $this->exitbill = $exitbill;
     }
 
 

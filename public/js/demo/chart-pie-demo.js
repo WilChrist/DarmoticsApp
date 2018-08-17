@@ -21,21 +21,19 @@
             var treasuryChart = new Chart(treasury, {
                 type: 'pie',
                 data: {
-                    labels: ["Apports Actionnaires", "DONS"],
+                    labels: Object.keys(treasuryData),
                     datasets: [{
-                        data: [treasuryData.apports, treasuryData.dons],
-                        backgroundColor: ['#007bff', '#dc3545'],
+                        data: Object.values(treasuryData),
+                        backgroundColor: ['#007bff', '#dc3545','#ffc107', '#28a745','#f8c74a', '#fc3545','#307bfe', '#6b3545', '#7b3545', '#6a354e'],
                     }],
                 },
             })
 
             /*drawing of capital chart*/
-            var colors = "";
-            /*for (let i =0,m=Object.keys(capitalData).length; i<m;i++){
-              color = '#0'+i+'fe'+i+'b,';
-              colors+=color;
+            /* colors = {};
+            for (let i =0,m=Object.keys(capitalData).length; i<m;i++){
+              colors[i.toString()] = '#0'+i+'fe'+i+'b';
             }
-            colors=colors.slice(0,colors.length-2);
             console.log(colors);*/
             var capital = document.getElementById("capitalChart");
             var capitalChart = new Chart(capital, {
@@ -44,7 +42,7 @@
                     labels: Object.keys(capitalData),
                     datasets: [{
                         data: Object.values(capitalData),
-                        backgroundColor: ['#007bff', '#dc3545','#ffc107', '#28a745','#f8c74a', '#fc3545','#307bfe', '#6b3545'],
+                        backgroundColor: ['#007bff', '#dc3545','#ffc107', '#28a745','#f8c74a', '#fc3545','#307bfe', '#6b3545', '#7b3545', '#6a354e'],
                     }],
                 },
             });

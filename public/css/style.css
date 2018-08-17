@@ -11,7 +11,7 @@
 .hidden{
     display: none;
 }
-.
+
 .maincontent {
     background-image: url('../images/welcome.jpg');
     background-color: aqua;
@@ -22,6 +22,9 @@
     background-size: cover;
 }
 
-.card a{
+.cardlist{
+    margin-bottom: 5px;
+}
+.cardlist a{
     color: white;
 }

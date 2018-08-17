@@ -82,7 +82,7 @@ class Home extends \Core\Controller
             $total =$apportA+$don;
 
             $treasuryData = array(
-                'apports'=> ($apportA/$total)*100,
+                'apports Actionnaires'=> ($apportA/$total)*100,
                 'dons'=> ($don/$total)*100
             );
 

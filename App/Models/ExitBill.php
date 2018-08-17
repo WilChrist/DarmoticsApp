@@ -10,19 +10,46 @@ namespace App\Models;
 
 use \TCPDF;
 
+/**
+ * @Entity
+ * @Table(name="exitbill")
+ */
 class ExitBill extends TCPDF
 {
+
+    /**
+     * @Id
+     * @Column(type="bigint")
+     */
+    protected $id;
+
+    /**
+     * One exitbill has One exit.
+     * @OneToOne(targetEntity="FinancialExit", inversedBy="exitbill")
+     * @JoinColumn(name="exit_id", referencedColumnName="id")
+     */
+    protected $exit;
+
+    /** @Column(type="integer") */
+    protected $user_id;
+
+    protected $user;
+
+    /** @Column(type="datetime",options={"default"="CURRENT_TIMESTAMP"}) */
+    protected $creation_date;
+
     public function initialise(){
         // set document information
+        $this->setId( random_int(1000000000,9999999999));
         $this->SetCreator(PDF_CREATOR);
         $this->SetAuthor('Darmotics');
-        $this->SetTitle('Entry Bill');
+        $this->SetTitle('Exit Bill');
         $this->setPrintHeader(false);
         $this->setPrintFooter(false);
         $this->SetMargins(0, 0, 0);
     }
 
-    public function writeData($exit,$user){
+    public function writeData(){
         $html='<style>
             .brand{
                 font-weight: bold;
@@ -102,6 +129,12 @@ class ExitBill extends TCPDF
             <td></td>
             <td></td>
             </tr>
+            </tr>
+            
+            <tr>
+            <td colspan="2">Ref: '.$this->getId().'</td>
+            <td></td><td></td><td></td><td></td><td></td>
+            </tr>
         </table>
         
         
@@ -117,7 +150,7 @@ class ExitBill extends TCPDF
     <td></td>
     <td></td>
     <td><label>Nom:</label></td>
-    <td colspan="2"><span class="info">'.$user->getLastName().' '.$user->getFirstName().'</span></td>
+    <td colspan="2"><span class="info">'.$this->user->getLastName().' '.$this->user->getFirstName().'</span></td>
     <td></td>
     <td></td>
     </tr>
@@ -126,7 +159,7 @@ class ExitBill extends TCPDF
     <td></td>
     <td></td>
     <td><label>Téléphone:</label></td>
-    <td colspan="2"><span class="info">'.$user->getPhone().'</span></td>
+    <td colspan="2"><span class="info">'.$this->user->getPhone().'</span></td>
     <td></td>
     <td></td>
     </tr>
@@ -135,7 +168,7 @@ class ExitBill extends TCPDF
     <td></td>
     <td></td>
     <td><label>Email:</label></td>
-    <td colspan="2"><span class="info">'.$user->getEmail().'</span></td>
+    <td colspan="2"><span class="info">'.$this->user->getEmail().'</span></td>
     <td></td>
     <td></td>
     </tr>
@@ -144,7 +177,7 @@ class ExitBill extends TCPDF
     <td></td>
     <td></td>
     <td><label>Adresse:</label></td>
-    <td colspan="2"><span class="info">'.$user->getAddress().'</span></td>
+    <td colspan="2"><span class="info">'.$this->user->getAddress().'</span></td>
     <td></td>
     <td></td>
     </tr>
@@ -160,7 +193,7 @@ class ExitBill extends TCPDF
     <td></td>
     <td></td>
     <td><label>Raison</label></td>
-    <td colspan="2"><span class="info">'.$exit->getReason().'</span></td>
+    <td colspan="2"><span class="info">'.$this->exit->getReason().'</span></td>
     <td></td>
     <td></td>
     </tr>
@@ -169,7 +202,7 @@ class ExitBill extends TCPDF
     <td></td>
     <td></td>
     <td><label>Montant:</label></td>
-    <td  colspan="2"><span class="info">'.$exit->getAmount().'</span></td>
+    <td  colspan="2"><span class="info">'.$this->exit->getAmount().'</span></td>
     <td></td>
     <td></td>
     </tr>
@@ -180,12 +213,95 @@ class ExitBill extends TCPDF
     <div class="footer">
         <p class="footertext">©Darmotics '.date('Y-M-D H:m:s').'</p>
     </div>';
+
         $this->AddPage();
         $this->writeHTML($html, true, false, true, false, '');
     }
 
     public function printBill(){
-        $this->Output('facture_sortie.pdf', 'I');
+        $this->Output($this->getId().'.pdf', 'I');
     }
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getExit()
+    {
+        return $this->exit;
+    }
+
+    /**
+     * @param mixed $exit
+     */
+    public function setExit($exit)
+    {
+        $this->exit = $exit;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param mixed $user
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+        $this->setUserId($this->user->getId());
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreationDate()
+    {
+        return $this->creation_date;
+    }
+
+    /**
+     * @param mixed $creation_date
+     */
+    public function setCreationDate($creation_date)
+    {
+        $this->creation_date = $creation_date;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUserId()
+    {
+        return $this->user_id;
+    }
+
+    /**
+     * @param mixed $user_id
+     */
+    public function setUserId($user_id)
+    {
+        $this->user_id = $user_id;
+    }
+
 
 }

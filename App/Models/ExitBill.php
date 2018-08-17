@@ -129,11 +129,10 @@ class ExitBill extends TCPDF
             <td></td>
             <td></td>
             </tr>
-            </tr>
             
             <tr>
             <td colspan="2">Ref: '.$this->getId().'</td>
-            <td></td><td></td><td></td><td></td><td></td>
+            <td></td><td></td><td></td><td></td>
             </tr>
         </table>
         
@@ -211,7 +210,7 @@ class ExitBill extends TCPDF
 
 
     <div class="footer">
-        <p class="footertext">©Darmotics '.date('Y-M-D H:m:s').'</p>
+        <p class="footertext">©Darmotics '.$this->getCreationDate().'</p>
     </div>';
 
         $this->AddPage();

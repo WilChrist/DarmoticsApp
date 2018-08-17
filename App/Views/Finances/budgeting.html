@@ -50,5 +50,27 @@
     </div>
 </div>
 
+<script>
+    $(function () {
+        $("#project").change(function () {
+            if ($(this).val() <0 ) {
+                $("#project_error").empty().append("veuillez selectionner un projet").show();
+            }
+            else {
+                $("#project_error").hide();
+            }
+        })
+
+        $("#amount").blur(function(){
+            if(!$.isNumeric($(this).val()) || $(this).val()==="" ){
+                $("#amount_error").empty().append("le montant ne peut être vide et doit être numérque").show();
+            }
+            else {
+                $("#amount_error").hide();
+            }
+        })
+    })
+
+</script>
 
 {% endblock %}

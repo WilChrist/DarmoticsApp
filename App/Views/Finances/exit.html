@@ -36,7 +36,7 @@
                                 <option value="{{budget.id}}">{{budget.project.name}}</option>
                                 {% endfor %}
                             </select>
-                            <span class="alert alert-danger error" id="project_error"></span>
+                            <span class="alert alert-danger error" id="budget_error"></span>
                         </div>
                         <div class="form-group">
                             <label for="amount">Montant de la sortie</label>
@@ -56,6 +56,36 @@
         </div>
     </div>
 </div>
+<script>
+    $(function () {
+        $("#budget").change(function () {
+            if ($(this).val() <0 ) {
+                $("#budget_error").empty().append("veuillez nom de projet budgétisé").show();
+            }
+            else {
+                $("#budget_error").hide();
+            }
+        })
 
+        $("#amount").blur(function(){
+            if(!$.isNumeric($(this).val()) || $(this).val()==null ){
+                $("#amount_error").empty().append("le montant ne peut être vide et doit être numérque").show();
+            }
+            else {
+                $("#amount_error").hide();
+            }
+        })
+
+        $("#reason").blur(function(){
+            if($(this).val() === "" ){
+                $("#reason_error").empty().append("la raison ne peut être vide").show();
+            }
+            else{
+                $("#reason_error").hide();
+            }
+        })
+    })
+
+</script>
 
 {% endblock %}

@@ -254,7 +254,7 @@ class EntryBill extends TCPDF
 
 
     <div class="footer">
-        <p class="footertext">©Darmotics '.date('Y-M-D H:m:s').'</p>
+        <p class="footertext">©Darmotics '.$this->getCreationDate().'</p>
     </div>';
         $this->AddPage();
         $this->writeHTML($html, true, false, true, false, '');

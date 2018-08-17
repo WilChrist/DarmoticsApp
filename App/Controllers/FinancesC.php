@@ -238,6 +238,66 @@ class FinancesC extends \Core\Controller
             }
         }
     }
+    /* ================================================================================================================*/
+    public function editBudgetAction($other,$id){
+        if (!isset($_SESSION['user'])) {
+            header("Location:".Config::RACINE."/");
+        } elseif ($this->getpost("amount") == null || $this->getpost("reason") == null) {
+            $currentbudget=null;
+            $currentbudget = $this->db->getRepository('App\Models\Budgeting')->find($id);
+            View::renderTemplate('Finances/editbudget.html',["budget" => $currentbudget ]);
+        } else {
+            $newbudget = $this->db->getRepository('App\Models\Budgeting')->find($this->getpost("id"));
+            $currentbudget = unserialize(serialize($newbudget));
+
+            /*check amount constraints of budget*/
+            $query= $this->db->createQuery("SELECT SUM(e.amount) FROM App\Models\FinancialExit e WHERE e.budgeting = ?1");
+            $query->setParameter(1, $this->getpost("id"));
+            $usedpart = $query->getSingleScalarResult();
+            $availabletreasury = $this->getAvailableTreasury();
+
+            if($availabletreasury<$this->getpost("amount") || $this->getpost("amount")<$usedpart  ){
+                View::renderTemplate('Finances/list.html', ['user' => $_SESSION["user"],'budgets'=>$this->getBudgeting(),
+                    'error' => "le montant ne peut supérieur à la trésorerie disponible qui est de ".$availabletreasury." 
+                    et ne peut être inférieur aux dépenses déjà rélisés qui sont de ".$usedpart]);
+            }
+            else{
+
+                $newbudget->setAmount($this->getpost("amount"));
+
+                try {
+                    $this->db->persist($newbudget);
+                    $this->db->flush();
+                    $this->logger->info('Modification of a Budget', [
+                        "authorEmail" => $_SESSION["user"]->getEmail(),
+                        "oldData" => [
+                            "Amount"=>$currentbudget->getAmount(),
+                        ],
+                        "newData" => [
+                            "Amount"=>$newbudget->getAmount(),
+                            "Modification reason"=>$this->getpost("reason")
+                        ]]);
+                    View::renderTemplate('Finances/list.html', ['user' => $_SESSION["user"],'budgets'=>$this->getBudgeting(), 'success' => "Modification correctement éffectuée"]);
+                } catch (\Exception $e) {
+                    //var_dump($e->getMessage());
+                    View::renderTemplate('Finances/list.html', ['user' => $_SESSION["user"],'budgets'=>$this->getBudgeting(), 'error' => "erreur lors de la modification veuillez réessayer"]);
+                }
+            }
+
+
+
+        }
+    }
+
+
+
+
+
+
+
+
+
+    /* ================================================================================================================*/
 
     /*this function return all project that doesn't have a budget assigned*/
     private function projectsWithoutBudget(){
@@ -301,4 +361,5 @@ class FinancesC extends \Core\Controller
 
         $this->db->flush();
     }
+
 }

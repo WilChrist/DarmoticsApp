@@ -7,6 +7,17 @@
     <div class="row">
         <div class="col-sm-12 col-md-12 col-lg-12 mx-auto">
             <div id="mess" class="">
+                {% if error %}
+                <div class="alert alert-danger alert-dismissible">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>{{error}} </strong>
+                </div>
+                {% elseif success %}
+                <div class="alert alert-success alert-dismissible">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>{{success}} </strong>
+                </div>
+                {% endif %}
             </div>
             {% if budgets|length <= 0 %}
             <p>Aucun Budget n'existe pour l'instant</p>
@@ -47,7 +58,7 @@
                                 <td>{{budget.project.name}}</td>
                                 <td>{{budget.amount}}</td>
                                 <td>{{budget.movementDate|date('Y-m-d')}}</td>
-                                <td><a href="{{ app.request.getBaseURL()}}{{RACINE}}/FinancesC/{{budget.id}}/edit"><button type="button" class="btn btn-primary">Modifier</button></a></td>
+                                <td><a href="{{ app.request.getBaseURL()}}{{RACINE}}/FinancesC/{{budget.id}}/editbudget"><button type="button" class="btn btn-primary">Modifier</button></a></td>
                                 <td><button type="button" class="btn btn-danger">Supprimer</button></td>
                             </tr>
                             {% set i=i+1 %}

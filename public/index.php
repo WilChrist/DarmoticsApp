@@ -58,7 +58,8 @@ $router->add('Finances/list', ['controller' => 'FinancesC', 'action' => 'list'])
 $router->add('Finances/addEntry', ['controller' => 'FinancesC', 'action' => 'addEntry']);
 $router->add('Finances/addExit', ['controller' => 'FinancesC', 'action' => 'addExit']);
 $router->add('Finances/addBudgeting', ['controller' => 'FinancesC', 'action' => 'addBudgeting']);
-$router->add('Finances/testPdf', ['controller' => 'FinancesC', 'action' => 'testPdf']);
+$router->add('Finances/listEntryBill', ['controller' => 'FinancesC', 'action' => 'listEntryBill']);
+$router->add('Finances/listExitBill', ['controller' => 'FinancesC', 'action' => 'listExitBill']);
 
 
 $router->add('{controller}/{action}');

@@ -49,6 +49,15 @@ class ExitBill extends TCPDF
         $this->SetMargins(0, 0, 0);
     }
 
+    public function init(){
+        $this->SetCreator(PDF_CREATOR);
+        $this->SetAuthor('Darmotics');
+        $this->SetTitle('Entry Bill');
+        $this->setPrintHeader(false);
+        $this->setPrintFooter(false);
+        $this->SetMargins(0, 0, 0);
+    }
+
     public function writeData(){
         $html='<style>
             .brand{
@@ -210,7 +219,7 @@ class ExitBill extends TCPDF
 
 
     <div class="footer">
-        <p class="footertext">©Darmotics '.$this->getCreationDate().'</p>
+        <p class="footertext">©Darmotics '.$this->getCreationDate()->format('Y-m-d H:i:s').'</p>
     </div>';
 
         $this->AddPage();

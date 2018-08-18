@@ -81,10 +81,17 @@ class Home extends \Core\Controller
             $don = $this->db->getRepository('App\Models\DonationUpdate')->findOneBy(array(), array('id' => 'desc'))->getAmountafter();
             $total =$apportA+$don;
 
-            $treasuryData = array(
-                'apports Actionnaires'=> ($apportA/$total)*100,
-                'dons'=> ($don/$total)*100
-            );
+            if($total!=null && $total!=0){
+                $treasuryData = array(
+                    'apports Actionnaires'=> ($apportA/$total)*100,
+                    'dons'=> ($don/$total)*100
+                );
+            }else {
+                $treasuryData = array(
+                    'apports Actionnaires' => 0,
+                    'dons' => 0
+                );
+            }
 
             $capitalData=array();
             $shareholders = $this->db->getRepository('App\Models\Shareholder')->findAll();

@@ -10,8 +10,8 @@ function deletee(id, meaningValue) {
 $(function () {
     const RACINE="/DarmoticsApp/public";
     $("#suppBout").click(function () {
-        console.log($("#id").val());
-        console.log($('#controller').val());
+        //console.log($("#id").val());
+        //console.log($('#controller').val());
         $.ajax({
             url: RACINE+"/" + $('#controller').val() + "/" + $("#id").val() + "/delete",
             method: "POST",
@@ -20,10 +20,10 @@ $(function () {
         })
             .done(function (data) {
                 //console.log($("#reason").val());
-                console.log(JSON.parse(data));
-                $('#' + $("#id").val()).remove();
+                //console.log(JSON.parse(data));
                 $('#myModal').modal('hide');
                 if (JSON.parse(data).great == "1") {
+                    $('#' + $("#id").val()).remove();
                     $('#mess').attr('class', 'alert alert-success alert-dismissible');
                 } else {
                     $('#mess').attr('class', 'alert alert-warning alert-dismissible');

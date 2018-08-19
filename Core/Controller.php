@@ -97,4 +97,12 @@ abstract class Controller
     protected function getpost($key){
         return isset($this->post[$key])? htmlspecialchars( $this->post[$key] ): null;
     }
+
+    protected function setMessage($key,$value){
+        $_SESSION[$key] = $value;
+    }
+
+    protected function getMessage($key){
+        return isset($_SESSION[$key])? $_SESSION[$key] : null;
+    }
 }

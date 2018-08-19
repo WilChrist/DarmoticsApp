@@ -53,7 +53,7 @@
                                 <td> {{i}} </td>
                                 <td>{{entrybill.id}}</td>
                                 <td>{{entrybill.creationDate}}</td>
-                                <td><a href="{{ app.request.getBaseURL()}}{{RACINE}}/FinancesC/{{entrybill.id}}/entryprint"><button type="button" class="btn btn-primary">Télécharger</button></a></td>
+                                <td><a href="{{ app.request.getBaseURL()}}{{RACINE}}/FinancesC/{{entrybill.id}}/entryprint" target="_blank"><button type="button" class="btn btn-primary">Télécharger</button></a></td>
                             </tr>
                             {% set i=i+1 %}
                             {% endfor %}

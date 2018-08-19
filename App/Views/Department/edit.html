@@ -1,6 +1,6 @@
 {% extends "dashboardbase.html" %}
 
-{% block title %}Projets{% endblock %}
+{% block title %}Departements{% endblock %}
 
 {% block body %}
 
@@ -11,21 +11,21 @@
                 <div class="card-body">
                     <h5 class="card-title text-center">Modifier un Département</h5>
 
-                    {% if error %}
+                    {% if error is not empty %}
                     <div class="alert alert-danger alert-dismissible">
                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                        <strong>{{error}} </strong>
+                        <strong>{{error|raw}} </strong>
                     </div>
-                    {% elseif success %}
+                    {% elseif success is not empty %}
                     <div class="alert alert-success alert-dismissible">
                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                        <strong>{{success}} </strong>
+                        <strong>{{success|raw}} </strong>
                     </div>
                     {% endif %}
 
 
                     <form class="editDepartment" method="post"
-                          action="{{ app.request.getBaseURL()}}{{RACINE}}/Department/edit">
+                          action="{{ app.request.getBaseURL()}}{{RACINE}}/DepartmentC/{{department.id}}/edit">
                         <input type="hidden" name="id" id="id" value="{{department.id}}">
                         <div class="form-group">
                             <label for="name">Nom du Département</label>

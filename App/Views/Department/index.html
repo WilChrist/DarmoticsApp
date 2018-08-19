@@ -1,6 +1,6 @@
 {% extends "dashboardbase.html" %}
 
-{% block title %}Projets{% endblock %}
+{% block title %}Departements{% endblock %}
 
 {% block body %}
 
@@ -11,15 +11,15 @@
                 <div class="card-body">
                     <h5 class="card-title text-center">Ajouter un Département</h5>
 
-                    {% if error %}
+                    {% if error is not empty %}
                     <div class="alert alert-danger alert-dismissible">
                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                        <strong>{{error}} </strong>
+                        <strong>{{error|raw}} </strong>
                     </div>
-                    {% elseif success %}
+                    {% elseif success is not empty %}
                     <div class="alert alert-success alert-dismissible">
                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                        <strong>{{success}} </strong>
+                        <strong>{{success|raw}} </strong>
                     </div>
                     {% endif %}
 

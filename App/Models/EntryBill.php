@@ -81,13 +81,12 @@ class EntryBill extends TCPDF
                 text-align: center;
                 font-style: italic;
                 font-weight: bolder;
-                font-size: 15px;
+                font-size: 10px;
                 color: #0894e6;
             }
             .recapbloc p label{
                 display: inline-block;
                 margin-left: 50px;
-                padding: 5px;
                 width: 150px;
             }
             .info{
@@ -99,7 +98,7 @@ class EntryBill extends TCPDF
             .billname{
                 margin-top: 100px;
                 color: #0894e6;
-                padding-bottom: 15px;
+                padding-bottom: 12px;
                 text-align: center;
             }
             .header{
@@ -122,7 +121,7 @@ class EntryBill extends TCPDF
             
     </style>
     <div class="header">
-        <table cellpadding="5px">
+        <table cellpadding="2px">
             <tr>
             <td>
                 
@@ -142,7 +141,7 @@ class EntryBill extends TCPDF
             </tr>
             
             <tr>
-            <td colspan="2">Ref: '.$this->getId().'</td>
+            <td colspan="3">Ref: '.$this->getId().'</td>
             <td></td><td></td><td></td><td></td><td></td>
             </tr>
         </table>
@@ -160,7 +159,7 @@ class EntryBill extends TCPDF
     <td></td>
     <td></td>
     <td><label>Nom:</label></td>
-    <td colspan="2"><span class="info">'.$this->giver->getLastName().' '.$this->giver->getFirstName().'</span></td>
+    <td colspan="3"><span class="info">'.$this->giver->getLastName().' '.$this->giver->getFirstName().'</span></td>
     <td></td>
     <td></td>
     </tr>
@@ -169,7 +168,7 @@ class EntryBill extends TCPDF
     <td></td>
     <td></td>
     <td><label>Téléphone:</label></td>
-    <td colspan="2"><span class="info">'.$this->giver->getPhone().'</span></td>
+    <td colspan="3"><span class="info">'.$this->giver->getPhone().'</span></td>
     <td></td>
     <td></td>
     </tr>
@@ -178,7 +177,7 @@ class EntryBill extends TCPDF
     <td></td>
     <td></td>
     <td><label>Email:</label></td>
-    <td colspan="2"><span class="info">'.$this->giver->getEmail().'</span></td>
+    <td colspan="3"><span class="info">'.$this->giver->getEmail().'</span></td>
     <td></td>
     <td></td>
     </tr>
@@ -187,7 +186,7 @@ class EntryBill extends TCPDF
     <td></td>
     <td></td>
     <td><label>Adresse:</label></td>
-    <td colspan="2"><span class="info">'.$this->giver->getAddress().'</span></td>
+    <td colspan="3"><span class="info">'.$this->giver->getAddress().'</span></td>
     <td></td>
     <td></td>
     </tr>
@@ -203,7 +202,7 @@ class EntryBill extends TCPDF
     <td></td>
     <td></td>
     <td><label>Type:</label></td>
-    <td colspan="2"><span class="info">'.$this->entry->getType().'</span></td>
+    <td colspan="3"><span class="info">'.$this->entry->getType().'</span></td>
     <td></td>
     <td></td>
     </tr>
@@ -212,7 +211,7 @@ class EntryBill extends TCPDF
     <td></td>
     <td></td>
     <td><label>Montant:</label></td>
-    <td colspan="2"><span class="info">'.$this->entry->getAmount().'</span></td>
+    <td colspan="3"><span class="info">'.$this->entry->getAmount().'</span></td>
     <td></td>
     <td></td>
     </tr>
@@ -220,14 +219,14 @@ class EntryBill extends TCPDF
     </div>
 
     <div class="recapbloc">
-        <p class="titlebloc">Encaisseur</p>
+        <p class="titlebloc">Caissier</p>
         <table cellpadding="5px">
     
     <tr>
     <td></td>
     <td></td>
     <td><label>Nom:</label></td>
-    <td colspan="2"><span class="info">'.$this->user->getLastName().' '.$this->user->getFirstName().'</span></td>
+    <td colspan="3"><span class="info">'.$this->user->getLastName().' '.$this->user->getFirstName().'</span></td>
     <td></td>
     <td></td>
     </tr>
@@ -236,7 +235,7 @@ class EntryBill extends TCPDF
     <td></td>
     <td></td>
     <td><label>Téléphone:</label></td>
-    <td colspan="2"><span class="info">'.$this->user->getPhone().'</span></td>
+    <td colspan="3"><span class="info">'.$this->user->getPhone().'</span></td>
     <td></td>
     <td></td>
     </tr>
@@ -245,7 +244,7 @@ class EntryBill extends TCPDF
     <td></td>
     <td></td>
     <td><label>Email:</label></td>
-    <td colspan="2"><span class="info">'.$this->user->getEmail().'</span></td>
+    <td colspan="3"><span class="info">'.$this->user->getEmail().'</span></td>
     <td></td>
     <td></td>
     </tr>
@@ -254,7 +253,7 @@ class EntryBill extends TCPDF
     <td></td>
     <td></td>
     <td><label>Adresse:</label></td>
-    <td colspan="2"><span class="info">'.$this->user->getAddress().'</span></td>
+    <td colspan="3"><span class="info">'.$this->user->getAddress().'</span></td>
     <td></td>
     <td></td>
     </tr>
@@ -263,7 +262,7 @@ class EntryBill extends TCPDF
 
 
     <div class="footer">
-        <p class="footertext">©Darmotics '.$this->getCreationDate()->format('Y-m-d H:i:s').'</p>
+        <p class="footertext">Copyright©Darmotics '.$this->getCreationDate()->format('Y-m-d H:i:s').'</p>
     </div>';
         $this->AddPage();
         $this->writeHTML($html, true, false, true, false, '');

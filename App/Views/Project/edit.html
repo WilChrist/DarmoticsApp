@@ -11,21 +11,21 @@
                 <div class="card-body">
                     <h5 class="card-title text-center">Modifier un Projet</h5>
 
-                    {% if error %}
+                    {% if error is not empty %}
                     <div class="alert alert-danger alert-dismissible">
                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                        <strong>{{error}} </strong>
+                        <strong>{{error|raw}} </strong>
                     </div>
-                    {% elseif success %}
+                    {% elseif success is not empty %}
                     <div class="alert alert-success alert-dismissible">
                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                        <strong>{{success}} </strong>
+                        <strong>{{success|raw}} </strong>
                     </div>
                     {% endif %}
 
 
                     <form class="addshareholder" method="post"
-                          action="{{ app.request.getBaseURL()}}{{RACINE}}/Project/edit">
+                          action="{{ app.request.getBaseURL()}}{{RACINE}}/ProjectC/{{project.id}}/edit">
                         <div class="form-group">
                             <input type="hidden" name="id" id="id" value="{{project.id}}">
                             <label for="name">Nom Projet</label>

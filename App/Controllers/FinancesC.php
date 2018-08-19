@@ -9,7 +9,7 @@
 namespace App\Controllers;
 
 use Core\Controller;
-use \Core\View;
+use Core\View;
 use App\Models\Budgeting;
 use App\Models\FinancialEntry;
 use App\Models\FinancialExit;
@@ -19,8 +19,8 @@ use App\Models\DonationUpdate;
 use App\Models\EntryBill;
 use App\Models\ExitBill;
 use App\Models\Shareholder;
-
-class FinancesC extends \Core\Controller
+use App\Config;
+class FinancesC extends Controller
 {
     public function indexAction()
     {
@@ -33,8 +33,15 @@ class FinancesC extends \Core\Controller
             header("Location:" . Config::RACINE . "/");
         } else {
             try {
+                $error = $this->getMessage('error'); $this->setMessage('error','');
+                $success = $this->getMessage('success'); $this->setMessage('success','');
                 $shareholders = $this->db->getRepository('App\Models\Shareholder')->findAll();
-                View::renderTemplate('Finances/entry.html', ['user' => $_SESSION["user"], 'shareholders' => $shareholders]);
+
+                View::renderTemplate('Finances/entry.html', ['user' => $_SESSION["user"],
+                    'shareholders' => $shareholders,
+                    'error'=>$error,
+                    'success'=>$success]);
+
             } catch (\Exception $e) {
                 echo $e->getMessage();
                 //View::renderTemplate('500.html');
@@ -56,76 +63,92 @@ class FinancesC extends \Core\Controller
                 $giver = null;
                 $newupdate = null;
 
-                if ($this->getpost("type") == "shareholder") {
-                    $newentry->setType("apport actionnaire");
-                    $newentry->setAmount($this->getpost("amount"));
-                    $newentry->setContributorID($this->getpost("shareholder"));
-                    $giver = $this->getSingleShareholder($this->getpost("shareholder"));
+                if ($this->getpost("type") == "shareholder" && ($this->getpost("amount") == null || $this->getpost("amount")==0 || $this->getpost("shareholder") < 0)) {
 
-                    //updating account state for capital
-                    $newupdate = new CapitalUpdate();
-                    $this->setAccountUpdate($newupdate, '\CapitalUpdate');
+                    $this->setMessage('error','veuillez remplir tous les champs');
+                    header("Location:" . Config::RACINE . "/Finances/entry");
 
-                    //adding date
-                    $newupdate->setDate();
-                    $newentry->setMovementDate();
+                } elseif ($this->getpost("type") != "shareholder" && ($this->getpost("amount") == null || $this->getpost("amount")==0 || $this->getpost("contributorName") == null)) {
 
-                    //save modification
-                    $this->db->persist($newentry);
-                    $this->db->persist($newupdate);
-                    $this->db->flush();
-
-                    //update shareholder
-                    $this->updateSharesPercentage();
+                    $this->setMessage('error','veuillez remplir tous les champs');
+                    header("Location:" . Config::RACINE . "/Finances/entry");
 
                 } else {
-                    //adding contributor in case of donatio type entry
-                    $donor = new Contributor();
-                    $donor->setLastName($this->getpost("contributorName"));
-                    $donor->setPhone($this->getpost("contributorPhone"));
+                    if ($this->getpost("type") == "shareholder") {
+                        $newentry->setType("apport actionnaire");
+                        $newentry->setAmount($this->getpost("amount"));
+                        $newentry->setContributorID($this->getpost("shareholder"));
+                        $giver = $this->getSingleShareholder($this->getpost("shareholder"));
 
-                    $this->db->persist($donor);
+                        //updating account state for capital
+                        $newupdate = new CapitalUpdate();
+                        $this->setAccountUpdate($newupdate, '\CapitalUpdate');
+
+                        //adding date
+                        $newupdate->setDate();
+                        $newentry->setMovementDate();
+
+                        //save modification
+                        $this->db->persist($newentry);
+                        $this->db->persist($newupdate);
+                        $this->db->flush();
+
+                        //update shareholder
+                        $this->updateSharesPercentage();
+
+                    } else {
+                        //adding contributor in case of donatio type entry
+                        $donor = new Contributor();
+                        $donor->setLastName($this->getpost("contributorName"));
+                        $donor->setPhone($this->getpost("contributorPhone"));
+                        $donor->setEmail($this->getpost("contributorEmail"));
+
+                        $this->db->persist($donor);
+                        $this->db->flush();
+
+                        $newentry->setType("don");
+                        $newentry->setAmount($this->getpost("amount"));
+                        $newentry->setContributorID($donor->getId());
+                        $giver = $donor;
+
+                        //updating account state for donation
+                        $newupdate = new DonationUpdate();
+                        $this->setAccountUpdate($newupdate, '\DonationUpdate');
+
+                        //adding date
+                        $newupdate->setDate();
+                        $newentry->setMovementDate();
+
+                        //save modification
+                        $this->db->persist($newentry);
+                        $this->db->persist($newupdate);
+                        $this->db->flush();
+                    }
+
+
+                    //generate pdf
+                    $pdf = new EntryBill(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+                    $pdf->initialise();
+                    $pdf->setEntry($newentry);
+                    $pdf->setGiver($giver);
+                    $pdf->setUser($_SESSION['user']);
+                    $pdf->setCreationDate(new \DateTime("now"));
+                    $this->db->persist($pdf);
                     $this->db->flush();
 
-                    $newentry->setType("don");
-                    $newentry->setAmount($this->getpost("amount"));
-                    $newentry->setContributorID($donor->getId());
-                    $giver = $donor;
 
-                    //updating account state for donation
-                    $newupdate = new DonationUpdate();
-                    $this->setAccountUpdate($newupdate, '\DonationUpdate');
+                    //$pdf->writeData();
+                    $this->logger->info('Adding of new Entry ' . $newentry->getType() . ' ' . $newentry->getAmount(), ["email" => $_SESSION["user"]->getEmail()]);
+                    //$pdf->printBill();
+                    $message = 'l\'apport a correctement été enregistrée cliquer sur ce <a href = "'.Config::RACINE .'/FinancesC/'.$pdf->getId().'/entryprint" target="_blank">lien</a> pour télécharger la facture';
+                    $this->setMessage('success',$message);
+                    header("Location:" . Config::RACINE . "/Finances/entry");
 
-                    //adding date
-                    $newupdate->setDate();
-                    $newentry->setMovementDate();
 
-                    //save modification
-                    $this->db->persist($newentry);
-                    $this->db->persist($newupdate);
-                    $this->db->flush();
                 }
-
-
-                //generate pdf
-                $pdf = new EntryBill(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-                $pdf->initialise();
-                $pdf->setEntry($newentry);
-                $pdf->setGiver($giver);
-                $pdf->setUser($_SESSION['user']);
-                $pdf->setCreationDate(new \DateTime("now"));
-                $this->db->persist($pdf);
-                $this->db->flush();
-
-
-                $pdf->writeData();
-                $this->logger->info('Adding of new Entry ' . $newentry->getType() . ' ' . $newentry->getAmount(), ["email" => $_SESSION["user"]->getEmail()]);
-                $pdf->printBill();
-
-                View::renderTemplate('Finances/entry.html', ['user' => $_SESSION["user"],
-                    'shareholders' => $this->db->getRepository('App\Models\Shareholder')->findAll()]);
-            } catch (\Exception $e) {
-                View::renderTemplate('404.html', ['message' => $e->getMessage()]);
+            }
+            catch (\Exception $e) {
+                View::renderTemplate('404.html');
             }
         }
 
@@ -137,9 +160,16 @@ class FinancesC extends \Core\Controller
             header("Location:" . Config::RACINE . "/");
         } else {
             try {
-                View::renderTemplate('Finances/budgeting.html', ['user' => $_SESSION["user"], 'projects' => $this->projectsWithoutBudget()]);
+                $error = $this->getMessage('error'); $this->setMessage('error','');
+                $success = $this->getMessage('success'); $this->setMessage('success','');
+
+                View::renderTemplate('Finances/budgeting.html', ['user' => $_SESSION["user"],
+                    'projects' => $this->projectsWithoutBudget(),
+                    'error'=>$error,
+                    'success'=>$success]);
+
             } catch (\Exception $e) {
-                View::renderTemplate('500.html');
+                View::renderTemplate('404.html');
             }
         }
     }
@@ -149,22 +179,34 @@ class FinancesC extends \Core\Controller
         if (!isset($_SESSION["user"])) {
             header("Location:" . Config::RACINE . "/");
         } else {
-            //test if budget is not supérior to capital
-            $availablecapital = $this->getAvailableTreasury();
-            if ($availablecapital < $this->getpost("amount")) {
-                View::renderTemplate('Finances/budgeting.html', ['user' => $_SESSION["user"], 'projects' => $this->projectsWithoutBudget(),
-                    'error' => 'budget supérieur à la trésorerie non alouée qui est de ' . $availablecapital]);
-            } else {
-                $budget = new Budgeting();
-                $budget->setAmount($this->getpost("amount"));
-                $budget->setProject($this->db->getRepository('App\Models\Project')->findOneBy(array('id' => $this->getpost("project"))));
-                $budget->setMovementDate();
+            try {
+                $availablecapital = $this->getAvailableTreasury();
+                if($this->getpost("amount")==null || $this->getpost("project")<0){
+                    $this->setMessage('error','veuillez remplir tous les champs');
+                    header("Location:" . Config::RACINE . "/Finances/budgeting");
+                }
+                elseif ($availablecapital< $this->getpost("amount")){
+                    $this->setMessage('error','budget supérieur à la trésorerie non alouée qui est de \' . $availablecapital');
+                    header("Location:" . Config::RACINE . "/Finances/budgeting");
+                }
 
-                $this->db->persist($budget);
-                $this->db->flush();
-                $this->logger->info('Creation of a new Budget for project ' . $budget->getProject()->getName(), ["email" => $_SESSION["user"]->getEmail()]);
-                View::renderTemplate('Finances/budgeting.html', ['user' => $_SESSION["user"], 'projects' => $this->projectsWithoutBudget(),
-                    'success' => 'le budget a été alouer']);
+                else {
+                    $budget = new Budgeting();
+                    $budget->setAmount($this->getpost("amount"));
+                    $budget->setProject($this->db->getRepository('App\Models\Project')->findOneBy(array('id' => $this->getpost("project"))));
+                    $budget->setMovementDate();
+
+                    $this->db->persist($budget);
+                    $this->db->flush();
+                    $this->logger->info('Creation of a new Budget for project ' . $budget->getProject()->getName(), ["email" => $_SESSION["user"]->getEmail()]);
+
+                    $this->setMessage('success','le budget a été alouer');
+                    header("Location:" . Config::RACINE . "/Finances/budgeting");
+
+                }
+            }
+            catch (\Exception $e){
+                View::renderTemplate('404.html');
             }
         }
     }
@@ -175,9 +217,15 @@ class FinancesC extends \Core\Controller
             header("Location:" . Config::RACINE . "/");
         } else {
             try {
-                View::renderTemplate('Finances/exit.html', ['user' => $_SESSION["user"], 'budgets' => $this->getBudgeting()]);
+                $error = $this->getMessage('error'); $this->setMessage('error','');
+                $success = $this->getMessage('success'); $this->setMessage('success','');
+
+                View::renderTemplate('Finances/exit.html', ['user' => $_SESSION["user"],
+                    'budgets' => $this->getBudgeting(),
+                    'error'=>$error,
+                    'success'=>$success]);
             } catch (\Exception $e) {
-                View::renderTemplate('500.html');
+                View::renderTemplate('404.html');
             }
         }
     }
@@ -187,13 +235,13 @@ class FinancesC extends \Core\Controller
         if (!isset($_SESSION["user"])) {
             header("Location:" . Config::RACINE . "/");
         } elseif ($this->getpost("budget") <= 0 || $this->getpost("amount") == null || $this->getpost("reason") == null) {
-            View::renderTemplate('Finances/exit.html', ['user' => $_SESSION["user"], 'budgets' => $this->getBudgeting(),
-                'error' => 'veuillez remplir tous les champs']);
+            $this->setMessage('error','veuillez remplir tous les champs');
+            header("Location:" . Config::RACINE . "/Finances/exit");
         } else {
             $budget = $this->getpost("budget");
             if ($this->getAvailableBudget($budget) < $this->getpost("amount")) {
-                View::renderTemplate('Finances/exit.html', ['user' => $_SESSION["user"], 'budgets' => $this->getBudgeting(),
-                    'error' => 'le budget n\'est pas/plus suffisant ou épuisé']);
+                $this->setMessage('error','le budget n\'est pas/plus suffisant ou épuisé');
+                header("Location:" . Config::RACINE . "/Finances/exit");
             } else {
                 $newexit = new FinancialExit();
                 $newexit->setAmount($this->getpost("amount"));
@@ -212,12 +260,12 @@ class FinancesC extends \Core\Controller
                 $this->db->persist($pdf);
                 $this->db->flush();
 
-                $pdf->writeData();
+                //$pdf->writeData();
                 $this->logger->info('Registration of new Exit for ' . $newexit->getReason() . ' Amount' . $newexit->getAmount(), ["email" => $_SESSION["user"]->getEmail()]);
-                $pdf->printBill();
-
-                View::renderTemplate('Finances/exit.html', ['user' => $_SESSION["user"], 'budgets' => $this->getBudgeting(),
-                    'success' => 'la sortie a correctement été enregistrée']);
+                //$pdf->printBill();
+                $message = 'la sortie a correctement été enregistrée cliquer sur ce <a href = "'.Config::RACINE .'/FinancesC/'.$pdf->getId().'/exitprint" target="_blank">lien</a> pour télécharger la facture';
+                $this->setMessage('success',$message);
+                header("Location:" . Config::RACINE . "/Finances/exit");
             }
 
         }
@@ -229,9 +277,15 @@ class FinancesC extends \Core\Controller
             header("Location:" . Config::RACINE . "/");
         } else {
             try {
-                View::renderTemplate('Finances/list.html', ['user' => $_SESSION["user"], 'budgets' => $this->getBudgeting()]);
+                $error = $this->getMessage('error');
+                $this->setMessage('error', '');
+                $success = $this->getMessage('success');
+                $this->setMessage('success', '');
+                View::renderTemplate('Finances/list.html', ['user' => $_SESSION["user"], 'budgets' => $this->getBudgeting(),
+                    'error' => $error,
+                    'success' => $success]);
             } catch (\Exception $e) {
-                View::renderTemplate('500.html');
+                View::renderTemplate('404.html');
             }
         }
     }
@@ -241,47 +295,63 @@ class FinancesC extends \Core\Controller
     {
         if (!isset($_SESSION['user'])) {
             header("Location:" . Config::RACINE . "/");
-        } elseif ($this->getpost("amount") == null || $this->getpost("reason") == null) {
-            $currentbudget = null;
-            $currentbudget = $this->db->getRepository('App\Models\Budgeting')->find($id);
-            View::renderTemplate('Finances/editbudget.html', ["budget" => $currentbudget]);
+
         } else {
-            $newbudget = $this->db->getRepository('App\Models\Budgeting')->find($this->getpost("id"));
-            $currentbudget = unserialize(serialize($newbudget));
+            try {
+                $budgetid = isset($id)?$id:$this->getpost("id");
+                if ($this->getpost("amount") == null || $this->getpost("reason") == null) {
 
-            /*check amount constraints of budget*/
-            $query = $this->db->createQuery("SELECT SUM(e.amount) FROM App\Models\FinancialExit e WHERE e.budgeting = ?1");
-            $query->setParameter(1, $this->getpost("id"));
-            $usedpart = $query->getSingleScalarResult();
-            $availabletreasury = $this->getAvailableTreasury();
+                    $currentbudget = null;
+                    if($this->getpost("amount") != null || $this->getpost("reason") != null){
+                        $this->setMessage('error', 'veuillez remplir tous les champs');
+                    }
+                    $error = $this->getMessage('error');
+                    $this->setMessage('error', '');
+                    $success = $this->getMessage('success');
+                    $this->setMessage('success', '');
+                    $currentbudget = $this->db->getRepository('App\Models\Budgeting')->find($budgetid);
 
-            if ($availabletreasury < $this->getpost("amount") || $this->getpost("amount") < $usedpart) {
-                View::renderTemplate('Finances/list.html', ['user' => $_SESSION["user"], 'budgets' => $this->getBudgeting(),
-                    'error' => "le montant ne peut supérieur à la trésorerie disponible qui est de " . $availabletreasury . " 
-                    et ne peut être inférieur aux dépenses déjà rélisés qui sont de " . $usedpart]);
-            } else {
+                    View::renderTemplate('Finances/editbudget.html', ["budget" => $currentbudget,
+                        'error' => $error,
+                        'success' => $success]);
 
-                $newbudget->setAmount($this->getpost("amount"));
+                } else {
 
-                try {
-                    $this->db->persist($newbudget);
-                    $this->db->flush();
-                    $this->logger->info('Modification of a Budget', [
-                        "authorEmail" => $_SESSION["user"]->getEmail(),
-                        "oldData" => [
-                            "Amount" => $currentbudget->getAmount(),
-                        ],
-                        "newData" => [
-                            "Amount" => $newbudget->getAmount(),
-                            "Modification reason" => $this->getpost("reason")
-                        ]]);
-                    View::renderTemplate('Finances/list.html', ['user' => $_SESSION["user"], 'budgets' => $this->getBudgeting(), 'success' => "Modification correctement éffectuée"]);
-                } catch (\Exception $e) {
-                    //var_dump($e->getMessage());
-                    View::renderTemplate('Finances/list.html', ['user' => $_SESSION["user"], 'budgets' => $this->getBudgeting(), 'error' => "erreur lors de la modification veuillez réessayer"]);
+                    $newbudget = $this->db->getRepository('App\Models\Budgeting')->find($budgetid);
+                    $currentbudget = unserialize(serialize($newbudget));
+
+                    /*check amount constraints of budget*/
+                    $query = $this->db->createQuery("SELECT SUM(e.amount) FROM App\Models\FinancialExit e WHERE e.budgeting = ?1");
+                    $query->setParameter(1, $this->getpost("id"));
+                    $usedpart = $query->getSingleScalarResult();
+                    $availabletreasury = $this->getAvailableTreasury();
+
+                    if ($availabletreasury < $this->getpost("amount") || $this->getpost("amount") < $usedpart || $newbudget->getAmount()==$this->getpost("amount")) {
+                        $this->setMessage('error','le montant ne peut supérieur à la trésorerie disponible qui est de' . $availabletreasury .' ,ne peut être inférieur aux dépenses déjà rélisés qui sont de ' . $usedpart.' et ne peut être égal au budget actuel');
+                        header("Location:" . Config::RACINE . "/FinancesC/".$budgetid."/editbudget");
+                    } else {
+
+                        $newbudget->setAmount($this->getpost("amount"));
+
+                        $this->db->persist($newbudget);
+                        $this->db->flush();
+                        $this->logger->info('Modification of a Budget', [
+                            "authorEmail" => $_SESSION["user"]->getEmail(),
+                            "oldData" => [
+                                "Amount" => $currentbudget->getAmount(),
+                            ],
+                            "newData" => [
+                                "Amount" => $newbudget->getAmount(),
+                                "Modification reason" => $this->getpost("reason")
+                            ]]);
+                        $this->setMessage('success', 'Modification correctement éffectuée');
+                        header("Location:" . Config::RACINE . "/Finances/list");
+                    }
                 }
+            } catch (\Exception $e) {
+               // var_dump($e->getMessage());
+                View::renderTemplate('404.html');
             }
-
 
         }
     }

@@ -25,7 +25,7 @@
 
 
                     <form class="addshareholder" method="post"
-                          action="{{ app.request.getBaseURL()}}{{RACINE}}/Shareholder/edit">
+                          action="{{ app.request.getBaseURL()}}{{RACINE}}/ShareholderC/{{shareholder.id}}/edit">
                         <div class="form-group">
                             <input type="hidden" name="id" id="id" value="{{shareholder.id}}">
                             <label for="last_name">Nom Actionnaire</label>

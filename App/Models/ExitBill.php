@@ -52,7 +52,7 @@ class ExitBill extends TCPDF
     public function init(){
         $this->SetCreator(PDF_CREATOR);
         $this->SetAuthor('Darmotics');
-        $this->SetTitle('Entry Bill');
+        $this->SetTitle('Exit Bill');
         $this->setPrintHeader(false);
         $this->setPrintFooter(false);
         $this->SetMargins(0, 0, 0);
@@ -79,13 +79,12 @@ class ExitBill extends TCPDF
                 text-align: center;
                 font-style: italic;
                 font-weight: bolder;
-                font-size: 15px;
+                font-size: 10px;
                 color: #0894e6;
             }
             .recapbloc p label{
                 display: inline-block;
                 margin-left: 50px;
-                padding: 5px;
                 width: 150px;
             }
             .info{
@@ -97,7 +96,7 @@ class ExitBill extends TCPDF
             .billname{
                 margin-top: 100px;
                 color: #0894e6;
-                padding-bottom: 15px;
+                padding-bottom: 12px;
                 text-align: center;
             }
             .header{
@@ -140,7 +139,7 @@ class ExitBill extends TCPDF
             </tr>
             
             <tr>
-            <td colspan="2">Ref: '.$this->getId().'</td>
+            <td colspan="3">Ref: '.$this->getId().'</td>
             <td></td><td></td><td></td><td></td>
             </tr>
         </table>
@@ -158,7 +157,7 @@ class ExitBill extends TCPDF
     <td></td>
     <td></td>
     <td><label>Nom:</label></td>
-    <td colspan="2"><span class="info">'.$this->user->getLastName().' '.$this->user->getFirstName().'</span></td>
+    <td colspan="3"><span class="info">'.$this->user->getLastName().' '.$this->user->getFirstName().'</span></td>
     <td></td>
     <td></td>
     </tr>
@@ -167,7 +166,7 @@ class ExitBill extends TCPDF
     <td></td>
     <td></td>
     <td><label>Téléphone:</label></td>
-    <td colspan="2"><span class="info">'.$this->user->getPhone().'</span></td>
+    <td colspan="3"><span class="info">'.$this->user->getPhone().'</span></td>
     <td></td>
     <td></td>
     </tr>
@@ -176,7 +175,7 @@ class ExitBill extends TCPDF
     <td></td>
     <td></td>
     <td><label>Email:</label></td>
-    <td colspan="2"><span class="info">'.$this->user->getEmail().'</span></td>
+    <td colspan="3"><span class="info">'.$this->user->getEmail().'</span></td>
     <td></td>
     <td></td>
     </tr>
@@ -185,7 +184,7 @@ class ExitBill extends TCPDF
     <td></td>
     <td></td>
     <td><label>Adresse:</label></td>
-    <td colspan="2"><span class="info">'.$this->user->getAddress().'</span></td>
+    <td colspan="3"><span class="info">'.$this->user->getAddress().'</span></td>
     <td></td>
     <td></td>
     </tr>
@@ -201,7 +200,7 @@ class ExitBill extends TCPDF
     <td></td>
     <td></td>
     <td><label>Raison</label></td>
-    <td colspan="2"><span class="info">'.$this->exit->getReason().'</span></td>
+    <td colspan="3"><span class="info">'.$this->exit->getReason().'</span></td>
     <td></td>
     <td></td>
     </tr>
@@ -210,7 +209,7 @@ class ExitBill extends TCPDF
     <td></td>
     <td></td>
     <td><label>Montant:</label></td>
-    <td  colspan="2"><span class="info">'.$this->exit->getAmount().'</span></td>
+    <td  colspan="3"><span class="info">'.$this->exit->getAmount().'</span></td>
     <td></td>
     <td></td>
     </tr>
@@ -219,7 +218,7 @@ class ExitBill extends TCPDF
 
 
     <div class="footer">
-        <p class="footertext">©Darmotics '.$this->getCreationDate()->format('Y-m-d H:i:s').'</p>
+        <p class="footertext">Copyright©Darmotics '.$this->getCreationDate()->format('Y-m-d H:i:s').'</p>
     </div>';
 
         $this->AddPage();

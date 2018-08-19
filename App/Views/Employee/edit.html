@@ -11,21 +11,21 @@
                 <div class="card-body">
                     <h5 class="card-title text-center">Modifier un Employé</h5>
 
-                    {% if error %}
+                    {% if error is not empty %}
                     <div class="alert alert-danger alert-dismissible">
                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                        <strong>{{error}} </strong>
+                        <strong>{{error|raw}} </strong>
                     </div>
-                    {% elseif success %}
+                    {% elseif success is not empty %}
                     <div class="alert alert-success alert-dismissible">
                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                        <strong>{{success}} </strong>
+                        <strong>{{success|raw}} </strong>
                     </div>
                     {% endif %}
 
 
                     <form class="editEmployee" method="post"
-                          action="{{ app.request.getBaseURL()}}{{RACINE}}/Employee/edit">
+                          action="{{ app.request.getBaseURL()}}{{RACINE}}/EmployeeC/{{employee.id}}/edit">
                         <div class="row">
                             <div class="form-group col-sm-6">
                                 <input type="hidden" name="id" id="id" value="{{employee.id}}">

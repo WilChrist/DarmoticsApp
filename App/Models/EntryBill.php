@@ -42,7 +42,7 @@ class EntryBill extends TCPDF
 
     public function initialise(){
         // set document information
-        $this->setId( random_int(1000000000,9999999999));
+        $this->setId( random_int(1000000000,2147483647));
         $this->SetCreator(PDF_CREATOR);
         $this->SetAuthor('Darmotics');
         $this->SetTitle('Entry Bill');

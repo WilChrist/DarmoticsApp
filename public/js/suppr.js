@@ -8,7 +8,7 @@ function deletee(id, meaningValue) {
     });
 };
 $(function () {
-    const RACINE="";
+    const RACINE="/DarmoticsApp/public";
     $("#suppBout").click(function () {
         //console.log($("#id").val());
         //console.log($('#controller').val());

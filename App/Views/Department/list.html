@@ -26,6 +26,7 @@
                                 <th>Nom</th>
                                 <th>Description</th>
                                 <th>Nom du Chef</th>
+                                <th>Membres</th>
                                 <th>Date de Création</th>
                                 <th>Modifier</th>
                                 <th>Supprimer</th>
@@ -37,6 +38,7 @@
                                 <th>Nom</th>
                                 <th>Description</th>
                                 <th>Nom du Chef</th>
+                                <th>Membres</th>
                                 <th>Date de Création</th>
                                 <th>Modifier</th>
                                 <th>Supprimer</th>
@@ -49,7 +51,12 @@
                                 <td> {{i}} </td>
                                 <td>{{department.name}}</td>
                                 <td>{{department.description}}</td>
-                                <td>{{department.chief }}</td>
+                                <td>{{department.chief.lastName }} {{department.chief.firstName }}</td>
+                                <td>
+                                    {% for e in department.employees%}
+                                        <a href="{{ app.request.getBaseURL()}}{{RACINE}}/EmployeeC/{{e.id}}/edit"><span class="badge badge-dark">{{e.firstname}}</span></a>
+                                    {% endfor %}
+                                </td>
                                 <td>{{department.creationDate|date('Y-m-d')}}</td>
                                 <td><a href="{{ app.request.getBaseURL()}}{{RACINE}}/DepartmentC/{{department.id}}/edit"><button type="button" class="btn btn-primary">Modifier</button></a></td>
                                 <td>

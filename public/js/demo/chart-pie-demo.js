@@ -2,7 +2,7 @@
 (function ($,Window,document,Chart) {
     Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
     Chart.defaults.global.defaultFontColor = '#292b2c';
-    const RACINE="";
+    const RACINE="/DarmoticsApp/public";
 // Pie Chart Example
 
     $.ajax({

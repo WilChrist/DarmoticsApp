@@ -33,9 +33,47 @@ class Department
     /** @Column(type="datetime",options={"default":"CURRENT_TIMESTAMP"}) */
     protected $lastUpdateDate;
 
-    /** @Column(length=255,nullable=true) */
-    protected $chief;
+    /** @Column(type="integer",nullable=true) */
+    protected $chief_id;
 
+    /**
+     * @return mixed
+     */
+    public function getChiefId()
+    {
+        return $this->chief_id;
+    }
+
+    /**
+     * @param mixed $chief_id
+     */
+    public function setChiefId($chief_id)
+    {
+        $this->chief_id = $chief_id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEmployees()
+    {
+        return $this->employees;
+    }
+
+    /**
+     * @param mixed $employees
+     */
+    public function setEmployees($employees)
+    {
+        $this->employees = $employees;
+    }
+
+    /**
+     * One Department has One Chief(Employee).
+     * @OneToOne(targetEntity="Employee")
+     * @JoinColumn(name="chief_id", referencedColumnName="id")
+     */
+    protected $chief;
 
     /**
      * One Department has Many Employee.

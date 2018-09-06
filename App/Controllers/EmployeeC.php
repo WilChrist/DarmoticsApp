@@ -265,4 +265,24 @@ class EmployeeC extends Controller
             }
         }
     }
+
+
+    /*return all Employees*/
+    private function getEmployees()
+    {
+        return $this->db->getRepository('App\Models\Employee')->findAll();
+    }
+
+    /*get a single Employee by id*/
+    private function getEmployee($id)
+    {
+        return $this->db->getRepository('App\Models\Employee')->findOneBy(array('id' => $id));
+    }
+    /*
+     * get employees whom are not chiefs*/
+    public function notChiefEmployees(){
+        $query = $this->db->createQuery('select e from App\Models\Employee e where e.id NOT in (select f.chief_id from App\Models\Department f where f.chief_id is not null )');
+        $employees = $query->getResult();
+        return $employees;
+    }
 }

@@ -10,6 +10,7 @@ namespace App\Controllers;
 use App\Config;
 use App\Models\Department;
 use Core\Controller;
+use Core\Model;
 use Core\View;
 
 
@@ -25,9 +26,13 @@ class DepartmentC extends Controller
             $error = $this->getMessage('error'); $this->setMessage('error','');
             $success = $this->getMessage('success'); $this->setMessage('success','');
 
-            View::renderTemplate('Department/index.html', ['user' => $_SESSION["user"],
-                'error'=>$error,
-                'success'=>$success]);
+            View::renderTemplate('Department/index.html',
+                [
+                    'employees'=>$this->notChiefEmployees(),
+                    'user' => $_SESSION["user"],
+                    'error'=>$error,
+                    'success'=>$success
+                ]);
         }
 
     }
@@ -42,7 +47,7 @@ class DepartmentC extends Controller
             $newDepartment = new Department();
             $newDepartment->setName($this->getpost("name"));
             $newDepartment->setDescription($this->getpost("description"));
-            $newDepartment->setChief($this->getpost("chief"));
+            $newDepartment->setChief($this->findById(Model::models('emp'),$this->getpost("chief")));
             $newDepartment->setCreationDate(new \DateTime($this->getpost("creationDate")));
             $newDepartment->setLastUpdateDate(new \DateTime("now"));
 
@@ -69,44 +74,57 @@ class DepartmentC extends Controller
                 if($this->getpost("name") != null || $this->getpost("creationDate") != null){
                     $this->setMessage('error','veuillez remplir tous les champs');
                 }
-
+                $employees=[];
                 $currentDepartment=null;
                 $error = $this->getMessage('error'); $this->setMessage('error','');
                 $success = $this->getMessage('success'); $this->setMessage('success','');
 
-                $currentDepartment = $this->db->getRepository('App\Models\Department')->find($did);
+                $currentDepartment = $this->findById(Model::models('dep'),$did);
+
+                if($currentDepartment==null){
+                    $this->setMessage('error','ce Département n\'existe pas');
+                    header("Location:".Config::RACINE."/Department");
+                }
+                if($currentDepartment->getChiefId()!=null)
+                    $employees=$this->thisChiefAndNotChiefEmployees($currentDepartment->getChiefId());
+
                 View::renderTemplate('Department/edit.html',["department" => $currentDepartment,
+                    'employees'=>$employees,
                     'error'=>$error,
                     'success'=>$success]);
             } else {
 
-                $newDepartment = $this->db->getRepository('App\Models\Department')->find($did);
-
+                $newDepartment = $this->findById(Model::models('dep'),$did);
+                $chemail=null;
+                if($newDepartment->getChief()!=null)
+                    $chemail=$newDepartment->getChief()->getEmail();
                 $currentDepartment = unserialize(serialize($newDepartment));
 
                 $newDepartment->setName($this->getpost("name"));
                 $newDepartment->setDescription($this->getpost("description"));
-                $newDepartment->setChief($this->getpost("chief"));
+                $newDepartment->setChief($this->findById(Model::models('emp'),$this->getpost("chief")));
                 $newDepartment->setCreationDate(new \DateTime($this->getpost("creationDate")));
                 $newDepartment->setLastUpdateDate(new \DateTime("now"));
 
                 try {
                     $this->db->persist($newDepartment);
                     $this->db->flush();
-
+                    $nchemail=null;
+                    if($newDepartment->getChief()!=null)
+                        $nchemail=$newDepartment->getChief()->getEmail();
                     $this->logger->info('Modification of an Department', [
                         "authorEmail" => $_SESSION["user"]->getEmail(),
                         "oldData" => [
                             "name"=>$currentDepartment->getName(),
                             "description"=>$currentDepartment->getDescription(),
-                            "chief"=>$currentDepartment->getChief(),
+                            "chief"=>$chemail,
                             "creationDate"=>$currentDepartment->getCreationDate(),
                             "lastUpdateDate"=>$currentDepartment->getLastUpdateDate()
                         ],
                         "newData" => [
                             "name"=>$newDepartment->getName(),
                             "description"=>$newDepartment->getDescription(),
-                            "chief"=>$newDepartment->getChief(),
+                            "chief"=>$nchemail,
                             "creationDate"=>$newDepartment->getCreationDate(),
                             "lastUpdateDate"=>$newDepartment->getLastUpdateDate()
                         ]]);
@@ -134,7 +152,7 @@ class DepartmentC extends Controller
                 // echo $this->getpost("reason");
                 try {
                     $currentDepartment = null;
-                    $currentDepartment = $this->db->getRepository('App\Models\Department')->find($this->getpost('id'));
+                    $currentDepartment = $this->findById(Model::models('dep'),$this->getpost('id'));
                     $this->db->remove($currentDepartment);
                     $this->db->flush();
 
@@ -169,7 +187,7 @@ class DepartmentC extends Controller
             try{
                 $error = $this->getMessage('error'); $this->setMessage('error','');
                 $success = $this->getMessage('success'); $this->setMessage('success','');
-                $departments = $this->db->getRepository('App\Models\Department')->findAll();
+                $departments = $this->findAll(Model::models('dep'));
                 View::renderTemplate('Department/list.html', ['user' => $_SESSION["user"],
                     "departments"=>$departments,
                     'error'=>$error,
@@ -179,5 +197,21 @@ class DepartmentC extends Controller
                 View::renderTemplate('404.html');
             }
         }
+    }
+
+    /*
+     * get employees whom are not chiefs*/
+    public function notChiefEmployees(){
+        $query = $this->db->createQuery('select e from App\Models\Employee e where e.id NOT in (select f.chief_id from App\Models\Department f where f.chief_id is not null )');
+        $employees = $query->getResult();
+        return $employees;
+    }
+
+    /*
+     * get employees whom are not chiefs*/
+    public function thisChiefAndNotChiefEmployees($id){
+        $employees=$this->notChiefEmployees();
+        array_push($employees,$this->findById(Model::models('emp'),$id));
+        return $employees;
     }
 }

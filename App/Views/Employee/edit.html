@@ -103,13 +103,13 @@
                             <div class="form-group col-sm-6">
                                 <label for="department">Département</label>
                                 <select class="custom-select" name="department" id="department" required>
-                                    <option value="-1" disabled>Sélectionez</option>
+                                    <option value="-1" selected disabled>Sélectionez</option>
                                     {% for department in departments %}
-                                    {% if department.id==employee.departement.id%}
-                                    <option value={{department.id}} selected>{{department.name}}</option>
-                                    {% else %}
-                                    <option value={{department.id}}>{{department.name}}</option>
-                                    {% endif %}
+                                        {% if (department.id==employee.department.id)%}
+                                            <option value={{department.id}} selected>{{department.name}}</option>
+                                        {% else %}
+                                            <option value={{department.id}}>{{department.name}}</option>
+                                        {% endif %}
                                     {% endfor %}
                                 </select>
                                 <span class="alert alert-danger error" id="department_error"></span>
@@ -130,9 +130,9 @@
                                     <option value="-1" selected disabled>Sélectionez</option>
                                     {% for project in projects %}
                                     {% if project.id==employee.employeeProject[0].project.id%}
-                                    <option value={{project.id}} selected>{{project.name}}</option>
+                                        <option value={{project.id}} selected>{{project.name}}</option>
                                     {% else %}
-                                    <option value={{project.id}}>{{project.name}}</option>
+                                        <option value={{project.id}}>{{project.name}}</option>
                                     {% endif %}
                                     {% endfor %}
                                 </select>

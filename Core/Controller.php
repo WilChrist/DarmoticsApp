@@ -17,6 +17,7 @@ abstract class Controller
     //variable pour stocker le $post dans le controlleur
     protected $post=[];
 
+
     /**
      * Parameters from the matched route
      * @var array
@@ -105,4 +106,23 @@ abstract class Controller
     protected function getMessage($key){
         return isset($_SESSION[$key])? $_SESSION[$key] : null;
     }
+    /*
+     * get objects of type @className
+     * @params string $className Class Name of the Objects
+     * @return object ObjectOf $className
+     */
+    protected function findAll($className){
+        return $this->db->getRepository($className)->findAll();
+    }
+
+    /*
+     * get objects of type @className by @id
+     * @params string $className Class Name of the object
+     * @params integer $id Id of the Object
+     * @return  array ObjectOf $className
+     */
+    protected function findById($className, $id){
+        return $this->db->getRepository($className)->findOneBy(array('id' => $id));;
+    }
+
 }

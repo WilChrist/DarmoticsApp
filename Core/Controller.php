@@ -98,6 +98,16 @@ abstract class Controller
     protected function getpost($key){
         return isset($this->post[$key])? htmlspecialchars( $this->post[$key] ): null;
     }
+    protected function getPostMultiple($key){
+        $values= isset($this->post[$key])?  $this->post[$key] : null;
+        $pureValues=array();
+        if($values!=null){
+            foreach ($values as $value){
+                array_push($pureValues,$value);
+            }
+        }
+        return $pureValues;
+    }
 
     protected function setMessage($key,$value){
         $_SESSION[$key] = $value;

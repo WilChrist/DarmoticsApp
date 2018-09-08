@@ -123,22 +123,6 @@
                                 <span class="alert alert-danger error" id="office_error"></span>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="form-group col-sm-6">
-                                <label for="project">Projet</label>
-                                <select class="custom-select" name="project" id="project" required>
-                                    <option value="-1" selected disabled>Sélectionez</option>
-                                    {% for project in projects %}
-                                    {% if project.id==employee.employeeProject[0].project.id%}
-                                        <option value={{project.id}} selected>{{project.name}}</option>
-                                    {% else %}
-                                        <option value={{project.id}}>{{project.name}}</option>
-                                    {% endif %}
-                                    {% endfor %}
-                                </select>
-                                <span class="alert alert-danger error" id="project_error"></span>
-                            </div>
-                        </div>
 
                         <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Modifier</button>
                     </form>

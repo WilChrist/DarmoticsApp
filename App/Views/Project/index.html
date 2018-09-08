@@ -47,6 +47,31 @@
                             <input type="date" id="endDate" name="endDate" class="form-control" required>
                             <span class="alert alert-danger error" id="endDate_error"></span>
                         </div>
+                        <div class="form-group">
+                            <label for="chief">Chef du Projet</label>
+                            <select class="select-chief custom-select" id="chief" name="chief" autofocus>
+                                <option value="-1" selected disabled>Nom du Chef</option>
+                                {% for emp in employees %}
+                                {%if(emp.id==department.chief.id)%}
+                                <option value={{emp.id}} selected>{{emp.firstName}}</option>
+                                {%else%}
+                                <option value={{emp.id}}>{{emp.firstName}}</option>
+                                {%endif%}
+
+                                {% endfor %}
+                            </select>
+                            <span class="alert alert-danger error" id="chief_name_error"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="employees[]">Employées Travaillant sur ce Project (vous pouvez en selectionner plusieurs)</label>
+                            <span class="alert alert-danger error" id="employees_name_error"></span>
+                            <select class="select-employees custom-select" id="employees[]" name="employees[]" autofocus multiple="multiple" style="width: 100%;">
+                                    <option value="-1" selected disabled>Sélectionnez des employées</option>
+                                {% for emp in employees %}
+                                    <option value={{emp.id}}>{{emp.firstName}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
                         <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Ajouter</button>
                     </form>
                 </div>
@@ -93,6 +118,11 @@
             }
         })
     })
-
+    $(document).ready(function() {
+        $('.select-employees').select2();
+    });
+    $(document).ready(function() {
+        $('.select-chief').select2();
+    });
 </script>
 {% endblock %}

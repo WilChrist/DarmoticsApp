@@ -84,12 +84,16 @@
                                 <td>{{employee.education}}</td>
                                 <td>
                                     {% for s in skills%}
-                                       <span class="badge badge-pill badge-info">{{s}}</span>
+                                       <span class="badge badge-pill badge-success">{{s}}</span>
                                     {% endfor %}
                                 </td>
                                 <td>{{employee.department.name}}</td>
                                 <td>{{employee.office}}</td>
-                                <td>{{employee.employeeProject[0].project.name}}    {{employee.employeeProject[1].project.name}}</td>
+                                <td>
+                                    {% for ep in employee.employeeProject%}
+                                        <a href="{{ app.request.getBaseURL()}}{{RACINE}}/ProjectC/{{ep.project.id}}/edit"><span class="badge badge-info">{{ep.project.name}}</span></a>
+                                    {% endfor %}
+                                </td>
                                 <td>{{employee.dateOfEntry|date('Y-m-d')}}</td>
                                 <td><a href="{{ app.request.getBaseURL()}}{{RACINE}}/EmployeeC/{{employee.id}}/edit"><button type="button" class="btn btn-primary">Modifier</button></a></td>
                                 <td><button type="button" class="btn btn-danger" onclick="deletee('{{employee.id}}', '{{employee.email}}')">Supprimer</button></td>

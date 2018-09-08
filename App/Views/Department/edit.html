@@ -45,8 +45,8 @@
                             <span class="alert alert-danger error" id="creationdate_error"></span>
                         </div>
                         <div class="form-group">
-                            <label for="name">Chef du Département</label>
-                            <select class="select-chief custom-select" id="chief" name="chief" placeholder="Nom du Chef" autofocus required>
+                            <label for="chief">Chef du Département</label>
+                            <select class="select-chief custom-select" id="chief" name="chief" autofocus>
                                 <option value="-1" selected disabled>Nom du Chef</option>
                                 {% for emp in employees %}
                                     {%if(emp.id==department.chief.id)%}

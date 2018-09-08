@@ -11,6 +11,7 @@ use App\Config;
 use App\Models\Employee;
 use App\Models\Employee_Project;
 use Core\Controller;
+use Core\Model;
 use Core\View;
 use App\Models\Project;
 
@@ -25,12 +26,10 @@ class EmployeeC extends Controller
                 $departments = null;
                 $error = $this->getMessage('error'); $this->setMessage('error','');
                 $success = $this->getMessage('success'); $this->setMessage('success','');
-                $departments = $this->db->getRepository('App\Models\Department')->findAll();
+                $departments = $this->findAll(Model::models('dep'));
                 $projects = null;
-                $projects = $this->db->getRepository('App\Models\Project')->findAll();
                 View::renderTemplate('Employee/index.html', ['user' => $_SESSION["user"],
                     'departments' => $departments,
-                    'projects' => $projects,
                     'error'=>$error,
                     'success'=>$success]);
 
@@ -57,26 +56,26 @@ class EmployeeC extends Controller
             $newEmployee->setAddress($this->getpost("address"));
             $newEmployee->setDateOfEntry(new \DateTime($this->getpost("dateOfEntry")));
             $newEmployee->setEducation($this->getpost("education"));
-            $newEmployee->setDepartment($this->db->getRepository('App\Models\Department')->find($this->getpost("department")));
+            $newEmployee->setDepartment($this->findById(Model::models('dep'),$this->getpost("department")));
             $newEmployee->setOffice($this->getpost("office"));
             $newEmployee->setSkills($this->getpost("skills"));
             $newEmployee->setPassword(sha1("password"));
-            $newEmployee->setLastUpdateDate(new \DateTime("now"));
+            $newEmployee->setLastUpdateDate();
             $newEmployee->setSignUpDate();
 
             try {
                 $this->db->persist($newEmployee);
                 $this->db->flush();
-                if ($this->getpost("project") != null && $this->getpost("project") != '') {
+                /*if ($this->getpost("project") != null && $this->getpost("project") != '') {
                     $employee_project = new Employee_Project();
                     $employee_project->setAffectionDate(new \DateTime("now"));
                     $employee_project->setProject($this->db->getRepository('App\Models\Project')->find($this->getpost("project")));
                     $employee_project->setEmployee($this->db->getRepository('App\Models\Employee')->findOneBy(array("email" => $this->getpost("email"))));
                     $this->db->persist($employee_project);
                     $this->db->flush();
-                }
+                }*/
 
-                $this->logger->info('Creation of a new Employee ' . $newEmployee->getEmail(), ["email" => $_SESSION["user"]->getEmail()]);
+                $this->logger->info('Creation of a new Employee ' . $newEmployee->getEmail(), ["authorEmail" => $_SESSION["user"]->getEmail()]);
                 $this->setMessage('success','l\'employé a été ajouté');
                 header("Location:".Config::RACINE."/Employee");
             } catch (\Exception $e) {
@@ -102,25 +101,21 @@ class EmployeeC extends Controller
             $success = $this->getMessage('success'); $this->setMessage('success','');
 
             $currentEmployee=null;
-            $currentEmployee = $this->db->getRepository('App\Models\Employee')->find($eid);
+            $currentEmployee = $this->findById(Model::models('emp'),$eid);
             $departments = null;
-            $departments = $this->db->getRepository('App\Models\Department')->findAll();
-            $projects = null;
-            $projects = $this->db->getRepository('App\Models\Project')->findAll();
+            $departments = $this->findAll(Model::models('dep'));
 
             View::renderTemplate('Employee/edit.html', ['user' => $_SESSION["user"],
                 'employee' => $currentEmployee,
                 'departments' => $departments,
-                'projects' => $projects,
                 'error'=>$error,
                 'success'=>$success]);
 
         } else {
 
-            $newEmployee = $this->db->getRepository('App\Models\Employee')->find($eid);
+            $newEmployee = $this->findById(Model::models('emp'),$eid);
 
             $currentEmployee = unserialize(serialize($newEmployee));
-            $projectid = null;
 
             $departmentName = null;
             if ($newEmployee->getDepartment() != null)
@@ -133,30 +128,15 @@ class EmployeeC extends Controller
             $newEmployee->setAddress($this->getpost("address"));
             $newEmployee->setDateOfEntry(new \DateTime($this->getpost("dateOfEntry")));
             $newEmployee->setEducation($this->getpost("education"));
-            $newEmployee->setDepartment($this->db->getRepository('App\Models\Department')->find($this->getpost("department")));
+            $newEmployee->setDepartment($this->findById(Model::models('dep'),$this->getpost("department")));
             $newEmployee->setOffice($this->getpost("office"));
             $newEmployee->setSkills($this->getpost("skills"));
             $newEmployee->setPassword(sha1("password"));
-            $newEmployee->setLastUpdateDate(new \DateTime("now"));
+            $newEmployee->setLastUpdateDate();
             $newEmployee->setSignUpDate();
 
 
             try {
-                if (isset($newEmployee->getEmployeeProject()[0])) {
-                    $projectid = $newEmployee->getEmployeeProject()[0]->getProject()->getId();
-                    $newEmployee->getEmployeeProject()[0]->setAffectionDate(new \DateTime("now"));
-                    $newEmployee->getEmployeeProject()[0]->setProject($this->db->getRepository('App\Models\Project')->find($this->getpost("project")));
-                    $newEmployee->getEmployeeProject()[0]->setEmployee($this->db->getRepository('App\Models\Employee')->findOneBy(array("email" => $this->getpost("email"))));
-                } else {
-                    if ($this->getpost("project") != null && $this->getpost("project") != '') {
-                        $employee_project = new Employee_Project();
-                        $employee_project->setAffectionDate(new \DateTime("now"));
-                        $employee_project->setProject($this->db->getRepository('App\Models\Project')->find($this->getpost("project")));
-                        $employee_project->setEmployee($this->db->getRepository('App\Models\Employee')->findOneBy(array("email" => $this->getpost("email"))));
-                        $this->db->persist($employee_project);
-                        $this->db->flush();
-                    }
-                }
 
                 $this->db->persist($newEmployee);
                 $this->db->flush();
@@ -177,7 +157,6 @@ class EmployeeC extends Controller
                         "skills" => $currentEmployee->getSkills(),
                         "lastUpdateDate" => $currentEmployee->getLastUpdateDate(),
                         "signUpDate" => $currentEmployee->getSignUpDate(),
-                        "projectId" => $projectid,
 
                     ],
                     "newData" => [
@@ -193,10 +172,8 @@ class EmployeeC extends Controller
                         "skills" => $newEmployee->getSkills(),
                         "lastUpdateDate" => $newEmployee->getLastUpdateDate(),
                         "signUpDate" => $newEmployee->getSignUpDate(),
-                        "projectId" => $this->getpost("project")
                     ]
                 ]);
-                unset($projectid);
                 unset($departmentName);
 
                 $this->setMessage('success','l\'employé a été Modifié');
@@ -220,7 +197,7 @@ class EmployeeC extends Controller
             // echo $this->getpost("reason");
             try {
                 $currentEmployee = null;
-                $currentEmployee = $this->db->getRepository('App\Models\Employee')->find($this->getpost('id'));
+                $currentEmployee = $this->findById(Model::models('emp'),$this->getpost('id'));
                 $this->db->remove($currentEmployee);
                 $this->db->flush();
 
@@ -254,7 +231,7 @@ class EmployeeC extends Controller
             try {
                 $error = $this->getMessage('error'); $this->setMessage('error','');
                 $success = $this->getMessage('success'); $this->setMessage('success','');
-                $employees = $this->db->getRepository('App\Models\Employee')->findAll();
+                $employees = $this->findAll(Model::models('emp'));
 
                 View::renderTemplate('Employee/list.html', ['user' => $_SESSION["user"],
                     'employees' => $employees,
@@ -266,23 +243,18 @@ class EmployeeC extends Controller
         }
     }
 
-
-    /*return all Employees*/
-    private function getEmployees()
-    {
-        return $this->db->getRepository('App\Models\Employee')->findAll();
-    }
-
-    /*get a single Employee by id*/
-    private function getEmployee($id)
-    {
-        return $this->db->getRepository('App\Models\Employee')->findOneBy(array('id' => $id));
-    }
     /*
      * get employees whom are not chiefs*/
     public function notChiefEmployees(){
         $query = $this->db->createQuery('select e from App\Models\Employee e where e.id NOT in (select f.chief_id from App\Models\Department f where f.chief_id is not null )');
         $employees = $query->getResult();
+        return $employees;
+    }
+    /*
+     * get employees whom are not chiefs and chief of the currentDepartment*/
+    public function thisChiefAndNotChiefEmployees($id){
+        $employees=$this->notChiefEmployees();
+        array_push($employees,$this->findById(Model::models('emp'),$id));
         return $employees;
     }
 }

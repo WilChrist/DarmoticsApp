@@ -21,6 +21,18 @@ class Employee_Project
     protected $id;
 
     /**
+     * @Employee_id
+     * @Column(type="integer", nullable=true)
+     */
+    protected $employee_id;
+
+    /**
+     * @Project_id
+     * @Column(type="integer",nullable=true)
+     */
+    protected $project_id;
+
+    /**
      * @return mixed
      */
     public function getId()
@@ -88,13 +100,13 @@ class Employee_Project
     protected $affectionDate;
 
     /**
-     * @ManyToOne(targetEntity="Employee",inversedBy="employee_project")
+     * @ManyToOne(targetEntity="Employee",inversedBy="employee_project",cascade={"persist"})
      * @JoinColumn(name="employee_id", referencedColumnName="id",onDelete="CASCADE")
      */
     protected $employee;
 
     /**
-     * @ManyToOne(targetEntity="Project",inversedBy="employee_project")
+     * @ManyToOne(targetEntity="Project",inversedBy="employee_project", cascade={"persist"})
      * @JoinColumn(name="project_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $project;

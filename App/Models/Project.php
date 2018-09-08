@@ -21,7 +21,7 @@ class Project
      */
     protected $id ;
 
-    /** @Column(length=255) */
+    /** @Column(length=255,unique=true) */
     protected $name;
 
     /** @Column(type="text") */
@@ -40,11 +40,74 @@ class Project
      */
     protected $budget;
 
+    /** @Column(length=255, options={"default":"created"}) */
+    protected $state;
+
     /**
      * One Project has Many Employee_Project.
-     * @OneToMany(targetEntity="Employee_Project", mappedBy="project")
+     * @OneToMany(targetEntity="Employee_Project", mappedBy="project", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     protected $employee_project;
+
+    /** @Column(type="integer",nullable=true) */
+    protected $chief_id;
+
+    /**
+     * One Project has One Chief(Employee).
+     * @ManyToOne(targetEntity="Employee")
+     * @JoinColumn(name="chief_id", referencedColumnName="id")
+     */
+    protected $chief;
+
+    /**
+     * @return mixed
+     */
+    public function getChief()
+    {
+        return $this->chief;
+    }
+
+    /**
+     * @param mixed $chief
+     */
+    public function setChief($chief)
+    {
+        $this->chief = $chief;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getChiefId()
+    {
+        return $this->chief_id;
+    }
+
+    /**
+     * @param mixed $chief_id
+     */
+    public function setChiefId($chief_id)
+    {
+        $this->chief_id = $chief_id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * @param mixed $state
+     */
+    public function setState($state)
+    {
+        $this->state = $state;
+    }
+
+
 
     /**
      * @return mixed
@@ -160,5 +223,43 @@ class Project
 
     public function __construct() {
         $this->employee_project = new ArrayCollection();
+    }
+    public static function states(){
+        return [
+            "created" => ["Créé","light"],
+            "notstarted" => ["Non Démarré","dark"],
+            "started" => ["Démarré","primary"],
+            "running" => ["En Cours","warning"],
+            "stoped" => ["Stoppé","danger"],
+            "finished" => ["Terminé","success"],
+            "canceled" => ["Annulé","info"],
+        ];
+    }
+
+    /**
+     * @param Employee_Project $employeeProject
+     */
+    public function removeEmployeeProject(Employee_Project $employeeProject)
+    {
+        if (!$this->employee_project->contains($employeeProject)) {
+            echo'notgood';
+            return false;
+        }
+        $this->employee_project->remove($employeeProject);
+        return true;
+    }
+    /**
+     * @param Employee_Project[] $employeeProjects
+     */
+    public function removeEmployeeProjects($employeeProjects)
+    {
+        try{
+            foreach ($employeeProjects as $ep){
+                $this->removeEmployeeProject($ep);
+            }
+        }catch (\Exception $exe){
+            var_dump($exe);
+        }
+        return true;
     }
 }

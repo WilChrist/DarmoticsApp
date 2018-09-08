@@ -10,6 +10,7 @@ namespace App\Controllers;
 
 use App\Config;
 use Core\Controller;
+use Core\Model;
 use Core\View;
 use App\Models\Shareholder;
 
@@ -73,6 +74,7 @@ class ShareholderC extends Controller
 
                 View::renderTemplate('Shareholder/list.html', ['user' => $_SESSION["user"],
                     'shareholders'=>$shareholders,
+                    'totalOfShareholdersEntry'=>$this->totalOfShareholdersEntry(),
                     'error'=>$error,
                     'success'=>$success]);
             }
@@ -146,5 +148,14 @@ class ShareholderC extends Controller
     public function deleteAction()
     {
 
+    }
+    public function totalOfShareholdersEntry(){
+        $financialEntries=$this->findAll(Model::models('fce'));
+        $total=0;
+        foreach ($financialEntries as $fce){
+            if($fce->gettype()=='apport actionnaire')
+                $total+=$fce->getAmount();
+        }
+        return $total;
     }
 }

@@ -55,6 +55,10 @@ class DepartmentC extends Controller
                 $this->db->persist($newDepartment);
                 $this->db->flush();
                 $this->setMessage('success','le département a été ajouté');
+                $this->logger->info("création d'un Département", [
+                    'authorEmail' => $_SESSION['user']->getEmail(),
+                    'departmentName' => $newDepartment->getName(),
+                ]);
                 header("Location:".Config::RACINE."/Department");
             } catch (\Exception $e) {
                 View::renderTemplate('404.html');
@@ -208,7 +212,7 @@ class DepartmentC extends Controller
     }
 
     /*
-     * get employees whom are not chiefs*/
+     * get employees whom are not chiefs and chief of the currentDepartment*/
     public function thisChiefAndNotChiefEmployees($id){
         $employees=$this->notChiefEmployees();
         array_push($employees,$this->findById(Model::models('emp'),$id));

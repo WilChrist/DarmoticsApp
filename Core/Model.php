@@ -43,6 +43,7 @@ abstract class Model
             'dep'=>'App\Models\Department',
             'emp'=>'App\Models\Employee',
             'pro'=>'App\Models\Project',
+            'fce'=>'App\Models\FinancialEntry',
         ];
         return $models[$modelAbbreviation];
     }

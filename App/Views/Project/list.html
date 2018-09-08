@@ -6,7 +6,7 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-sm-9 col-md-6 col-lg-6 mx-auto">
+        <div class="col mx-auto">
 
             {% if error is not empty %}
             <div class="alert alert-danger alert-dismissible">
@@ -26,6 +26,7 @@
             {% else %}
             {% set i=0 %}
             <div id="accordion">
+
                 {% for project in projects %}
                 <div class="card bg-dark  text-white cardlist">
                     <div class="card-header">
@@ -35,9 +36,69 @@
                     </div>
                     <div id="collapse{{i}}" class="collapse{% if i==0 %}{{' show'}}{% endif %}" data-parent="#accordion">
                         <div class="card-body">
-                            <p class="card-text"><h5>Description</h5>{{project.description}}</p>
-                            <p class="card-text">Date de début: {{project.startDate|date("d/m/Y")}}</p>
-                            <p class="card-text">Date de fin: {{project.endDate|date("d/m/Y")}}</p>
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-toggle="tab" href="#home{{project.id}}">Informations</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#menu1{{project.id}}">Equipe</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#menu2{{project.id}}">Budget</a>
+                                </li>
+                            </ul>
+
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div class="tab-pane container active" id="home{{project.id}}">
+
+                                    <p class="card-text"><h5>Description</h5>{{project.description}}</p>
+                                    <p class="card-text">Date de début: {{project.startDate|date("d/m/Y")}}</p>
+                                    <p class="card-text">Date de fin: {{project.endDate|date("d/m/Y")}}</p>
+                                    <p class="card-text">Etat d'avancement: <b class="alert alert-{{states[project.state][1]}}"> {{states[project.state][0]}} </b></p>
+
+                                </div>
+                                <div class="tab-pane container fade" id="menu1{{project.id}}">
+                                    <p class="card-text">Chef de Projet : <a href="{{ app.request.getBaseURL()}}{{RACINE}}/EmployeeC/{{project.chief.id}}/edit"><b class="badge badge-pill badge-primary"> {{project.chief.firstName}} ({{project.chief.email}})</b> </a></p>
+                                    <h5> Employés de ce projet </h5>
+
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Nom(s)</th>
+                                                <th>Prénom(s)</th>
+                                                <th>Email</th>
+                                                <th>Department</th>
+                                                <th data-toggle="tooltip" title="Date d'affectation de cet employée à ce project!">Affectation</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for ep in project.employeeProject%}
+
+                                            <tr>
+                                                <td>{{ep.employee.id}}</td>
+                                                <td><a href="{{ app.request.getBaseURL()}}{{RACINE}}/EmployeeC/{{ep.employee.id}}/edit" class="text-primary">{{ep.employee.firstName}}</a></td>
+                                                <td>{{ep.employee.lastName}}</td>
+                                                <td>{{ep.employee.email}}</td>
+                                                <td>{{ep.employee.Department.name}}</td>
+                                                <td>{{ep.affectionDate|date('d-m-Y H:i:s')}}</td>
+                                            </tr>
+
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="tab-pane container fade" id="menu2{{project.id}}">
+                                    <p class="card-text">Montant : <a href="{{ app.request.getBaseURL()}}{{RACINE}}/FinancesC/{{project.budget.id}}/editbudget"><b class="badge badge-info"> {{project.budget.amount}}</b> </a></p>
+                                    <p class="card-text">Date du Mouvement : {{project.budget.movementDate|date('d-m-Y H:i:s')}}</p>
+                                </div>
+                            </div>
+
+
                         </div>
                         <div class="card-footer">
                             <div class="container">
@@ -55,6 +116,9 @@
         </div>
     </div>
 </div>
-
-
+<script>
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
 {% endblock %}

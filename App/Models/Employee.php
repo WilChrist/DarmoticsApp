@@ -8,6 +8,8 @@
 
 namespace App\Models;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Tests\Models\Reflection\ParentClass;
+
 /**
  * @Entity
  * @Table(name="employee",uniqueConstraints={@UniqueConstraint(name="email_unique",columns={"email"})})
@@ -140,7 +142,11 @@ class Employee extends User
     }
 
 
+    /**
+     * Employee constructor.
+     */
     public function __construct() {
+        parent::__construct();
         $this->employee_project = new ArrayCollection();
     }
 }

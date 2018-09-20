@@ -1,0 +1,66 @@
+{% extends "dashboardbase.html" %}
+
+{% block title %}Historique{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9 col-md-10 col-lg-10 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    {% if budgetupdates|length <= 0 %}
+                    <p>Le Budget n'a jamais été modifié</p>
+                    {% else %}
+                    {% set i=0 %}
+                    <!-- DataTables Example -->
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <i class="fas fa-table"></i>
+                            Historique du budget<input type="hidden" id="controller" value="FinancesC"></div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                    <tr>
+                                        <th>N°</th>
+                                        <th>Date</th>
+                                        <th>Montant avant modification</th>
+                                        <th>Montant Ajouter/retrancher</th>
+                                        <th>Montant Après modification</th>
+                                    </tr>
+                                    </thead>
+                                    <tfoot>
+                                    <tr>
+                                        <th>N°</th>
+                                        <th>Date</th>
+                                        <th>Montant avant modification</th>
+                                        <th>Montant Ajouter/retrancher</th>
+                                        <th>Montant Après modification</th>
+                                    </tr>
+                                    </tfoot>
+                                    <tbody>
+                                    {% for budgetupdate in budgetupdates %}
+                                    <tr id="{{employee.id}}">
+                                        <td> {{i}} </td>
+                                        <td>{{budgetupdate.movementDate|date('Y-m-d')}}</td>
+                                        <td>{{budgetupdate.AmountBefore}}</td>
+                                        <td>{{budgetupdate.Amount}}</td>
+                                        <td>{{budgetupdate.AmountAfter}}</td>
+                                    </tr>
+                                    {% set i=i+1 %}
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

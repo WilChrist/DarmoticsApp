@@ -35,6 +35,7 @@
                             <tr>
                                 <th>N°</th>
                                 <th>Ref</th>
+                                <th>Id Contributeur</th>
                                 <th>Date de creation</th>
                                 <th>Lien</th>
                             </tr>
@@ -43,6 +44,7 @@
                             <tr>
                                 <th>N°</th>
                                 <th>Ref</th>
+                                <th>Id Contributeur</th>
                                 <th>Date de creation</th>
                                 <th>Lien</th>
                             </tr>
@@ -52,6 +54,7 @@
                             <tr id="{{employee.id}}">
                                 <td> {{i}} </td>
                                 <td>{{entrybill.id}}</td>
+                                <td>{{entrybill.contributorID}}</td>
                                 <td>{{entrybill.creationDate}}</td>
                                 <td><a href="{{ app.request.getBaseURL()}}{{RACINE}}/FinancesC/{{entrybill.id}}/entryprint" target="_blank"><button type="button" class="btn btn-primary">Télécharger</button></a></td>
                             </tr>

@@ -8,6 +8,8 @@
 
 namespace App\Controllers;
 
+use App\Models\BudgetingUpdate;
+use App\Models\File;
 use Core\Controller;
 use Core\View;
 use App\Models\Budgeting;
@@ -186,13 +188,14 @@ class FinancesC extends Controller
                     header("Location:" . Config::RACINE . "/Finances/budgeting");
                 }
                 elseif ($availablecapital< $this->getpost("amount")){
-                    $this->setMessage('error','budget supérieur à la trésorerie non alouée qui est de \' . $availablecapital');
+                    $this->setMessage('error','budget supérieur à la trésorerie non alouée qui est de ' . $availablecapital);
                     header("Location:" . Config::RACINE . "/Finances/budgeting");
                 }
 
                 else {
                     $budget = new Budgeting();
-                    $budget->setAmount($this->getpost("amount"));
+                    $budget->setOriginAmount($this->getpost("amount")); $budget->setAmount($this->getpost("amount"));
+                    $budget->setUsedPart(0); $budget->setRest($this->getpost("amount"));
                     $budget->setProject($this->db->getRepository('App\Models\Project')->findOneBy(array('id' => $this->getpost("project"))));
                     $budget->setMovementDate();
 
@@ -206,7 +209,8 @@ class FinancesC extends Controller
                 }
             }
             catch (\Exception $e){
-                View::renderTemplate('404.html');
+                var_dump($e->getMessage());
+                //View::renderTemplate('404.html');
             }
         }
     }
@@ -238,18 +242,29 @@ class FinancesC extends Controller
             $this->setMessage('error','veuillez remplir tous les champs');
             header("Location:" . Config::RACINE . "/Finances/exit");
         } else {
-            $budget = $this->getpost("budget");
-            if ($this->getAvailableBudget($budget) < $this->getpost("amount")) {
+            $budgetId = $this->getpost("budget");
+            $budget = $this->getSingleBudget($budgetId);
+            if ($budget->getRest() < $this->getpost("amount")) {
                 $this->setMessage('error','le budget n\'est pas/plus suffisant ou épuisé');
                 header("Location:" . Config::RACINE . "/Finances/exit");
-            } else {
+            } elseif($this->testFile()){
+                $this->setMessage('error','format ou poids de fichier incorrect');
+                header("Location:" . Config::RACINE . "/Finances/exit");
+            }
+            else{
                 $newexit = new FinancialExit();
                 $newexit->setAmount($this->getpost("amount"));
                 $newexit->setReason($this->getpost("reason"));
-                $newexit->setBudgeting($this->getSingleBudget($budget));
-                $newexit->setMovementDate();
+                $newexit->setProject($budget->getProject()->getName());
+                $newexit->setBudgeting($budget);
 
+                /*important*/
+                $budget->setUsedPart($budget->getUsedPart() + $this->getpost("amount"));
+                $budget->setRest($budget->getAmount() - $budget->getUsedPart());
+
+                $newexit->setMovementDate();
                 $this->db->persist($newexit);
+                $this->db->persist($budget);
                 $this->db->flush();
 
                 $pdf = new ExitBill(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
@@ -259,6 +274,9 @@ class FinancesC extends Controller
                 $pdf->setCreationDate(new \DateTime("now"));
                 $this->db->persist($pdf);
                 $this->db->flush();
+
+                /*file upload*/
+                $this->savefile($newexit);
 
                 //$pdf->writeData();
                 $this->logger->info('Registration of new Exit for ' . $newexit->getReason() . ' Amount' . $newexit->getAmount(), ["email" => $_SESSION["user"]->getEmail()]);
@@ -285,13 +303,14 @@ class FinancesC extends Controller
                     'error' => $error,
                     'success' => $success]);
             } catch (\Exception $e) {
-                View::renderTemplate('404.html');
+                var_dump($e->getMessage());
+                //View::renderTemplate('404.html');
             }
         }
     }
 
     /* ================================================================================================================*/
-    public function editBudgetAction($other, $id)
+    public function editBudgetAction($other,$id,$type)
     {
         if (!isset($_SESSION['user'])) {
             header("Location:" . Config::RACINE . "/");
@@ -299,10 +318,11 @@ class FinancesC extends Controller
         } else {
             try {
                 $budgetid = isset($id)?$id:$this->getpost("id");
-                if ($this->getpost("amount") == null || $this->getpost("reason") == null) {
+                $actiontype = isset($type)?$type:$this->getpost("type");
+                $currentbudget = null;
+                if ($this->getpost("amount") == null || $this->getpost("reason") == null || $this->getpost("type")==null) {
 
-                    $currentbudget = null;
-                    if($this->getpost("amount") != null || $this->getpost("reason") != null){
+                    if($this->getpost("amount") != null || $this->getpost("reason") != null || $this->getpost("type")!=null){
                         $this->setMessage('error', 'veuillez remplir tous les champs');
                     }
                     $error = $this->getMessage('error');
@@ -313,27 +333,41 @@ class FinancesC extends Controller
 
                     View::renderTemplate('Finances/editbudget.html', ["budget" => $currentbudget,
                         'error' => $error,
-                        'success' => $success]);
+                        'success' => $success,
+                        'type'=>$actiontype]);
 
                 } else {
 
                     $newbudget = $this->db->getRepository('App\Models\Budgeting')->find($budgetid);
                     $currentbudget = unserialize(serialize($newbudget));
+                    $newamount = null;
 
-                    /*check amount constraints of budget*/
+                    if($actiontype=="1"){$newamount = $newbudget->getAmount() + $this->getpost("amount");}
+                    elseif ($actiontype=="0"){$newamount = $newbudget->getAmount()- $this->getpost("amount");}
+
+                    /*check amount constraints of budget
                     $query = $this->db->createQuery("SELECT SUM(e.amount) FROM App\Models\FinancialExit e WHERE e.budgeting = ?1");
                     $query->setParameter(1, $this->getpost("id"));
-                    $usedpart = $query->getSingleScalarResult();
+                    $usedpart = $query->getSingleScalarResult();*/
                     $availabletreasury = $this->getAvailableTreasury();
 
-                    if ($availabletreasury < $this->getpost("amount") || $this->getpost("amount") < $usedpart || $newbudget->getAmount()==$this->getpost("amount")) {
-                        $this->setMessage('error','le montant ne peut supérieur à la trésorerie disponible qui est de' . $availabletreasury .' ,ne peut être inférieur aux dépenses déjà rélisés qui sont de ' . $usedpart.' et ne peut être égal au budget actuel');
-                        header("Location:" . Config::RACINE . "/FinancesC/".$budgetid."/editbudget");
+                    if ($availabletreasury < $newamount || $newamount < $newbudget->getUsedPart() || $this->getpost("amount")==0) {
+                        $this->setMessage('error','le nouveau budget ne peut être supérieur à la trésorerie disponible qui est de' . $availabletreasury .', et ne peut être inférieur aux dépenses déjà rélisés qui sont de ' . $newbudget->getUsedPart().' et le montant à ajouter/diminuer ne peut être nul');
+                        header("Location:" . Config::RACINE . "/FinancesC/".$budgetid."/".$actiontype."/editbudget");
                     } else {
 
-                        $newbudget->setAmount($this->getpost("amount"));
+                        $newbudget->setAmount($newamount);
+                        $newbudget->setRest($newbudget->getAmount() - $newbudget->getUsedPart());
+                        $budgetingupdate = new BudgetingUpdate();
+                        $budgetingupdate->setAmountBefore($currentbudget->getAmount());
+                        $budgetingupdate->setAmountAfter($newamount);
+                        $budgetingupdate->setAmount($this->getpost("amount"));
+                        $budgetingupdate->setBudgeting($newbudget);
+                        $budgetingupdate->setMovementDate();
+
 
                         $this->db->persist($newbudget);
+                        $this->db->persist($budgetingupdate);
                         $this->db->flush();
                         $this->logger->info('Modification of a Budget', [
                             "authorEmail" => $_SESSION["user"]->getEmail(),
@@ -349,8 +383,8 @@ class FinancesC extends Controller
                     }
                 }
             } catch (\Exception $e) {
-               // var_dump($e->getMessage());
-                View::renderTemplate('404.html');
+                var_dump($e->getMessage());
+                //View::renderTemplate('404.html');
             }
 
         }
@@ -426,10 +460,21 @@ class FinancesC extends Controller
                 $pdf = new ExitBill(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
                 $user = $this->db->getRepository('App\Models\Director')->find($exitbill->getUserId());
-
+                $files = $this->db->getRepository('App\Models\File')->findBy(array('exit'=>$exitbill->getExit()));
+                $links="";
+                $server=$_SERVER['SERVER_NAME'];
+                if (count($files)>0){
+                    for($i=0,$m=count($files);$i<$m;$i++){
+                        $links.='<a href="http://'.$this->getbase().Config::FileRacine.$files[$i]->getName().'" download="'.$files[$i]->getOriginName().'" target="_blank">'.$files[$i]->getOriginName().'</a> ';
+                    }
+                }
+                else{
+                    $links="aucune";
+                }
                 $pdf->setExit($exitbill->getExit());
                 $pdf->setId($exitbill->getId());
                 $pdf->setUser($user);
+                $pdf->setLinks($links);
                 $pdf->setCreationDate($exitbill->getCreationDate());
                 $pdf->init();
                 $pdf->writeData();
@@ -442,14 +487,73 @@ class FinancesC extends Controller
         }
     }
 
-    private function getbillforview($type){
-        $vrac = $this->db->getRepository('App\Models'.$type)->findAll();
-        return array_map(function ($v) {
-                    return array('id' => $v->getId(), 'creationDate' => $v->getCreationDate()->format('Y-m-d H:i:s'));
-                 }, $vrac);
+
+
+    public function historyAction($other,$id){
+        if (!isset($_SESSION['user'])) {
+            header("Location:" . Config::RACINE . "/");
+        } elseif ($id == null) {
+            $this->setMessage('error', 'une erreur s\'est produite');
+            header("Location:" . Config::RACINE . "/Finances/list");
+        } else {
+            try {
+                $list = $this->db->getRepository('App\Models\BudgetingUpdate')->findBy(array('budgeting' => $id),array('movementDate'=>'DESC'));
+                View::renderTemplate('Finances/history.html', ['user' => $_SESSION["user"], 'budgetupdates' => $list]);
+            }
+            catch (\Exception $e){
+                var_dump($e->getMessage());
+            }
+        }
     }
 
+    public function summaryAction(){
+        if (!isset($_SESSION['user'])) {
+            header("Location:" . Config::RACINE . "/");
+        } else {
+            try {
+                /*code here*/
+            }
+            catch (\Exception $e){
+                var_dump($e->getMessage());
+            }
+        }
+    }
+
+    public function filelistAction(){
+        if (!isset($_SESSION['user'])) {
+            header("Location:" . Config::RACINE . "/");
+        } else {
+            try {
+                /*code here*/
+            }
+            catch (\Exception $e){
+                var_dump($e->getMessage());
+            }
+        }
+    }
     /* ================================================================================================================*/
+
+
+    /*this function return bill information for the view*/
+    private function getbillforview($type){
+        $vrac = $this->db->getRepository('App\Models'.$type)->findBy(array(),array('creation_date'=>'DESC'));
+
+        if($type=='\ExitBill') {
+            return array_map(function ($v) {
+                return array('id' => $v->getId(),
+                 'creationDate' => $v->getCreationDate()->format('Y-m-d H:i:s'),
+                 'project'=>$v->getExit()->getProject());
+            }, $vrac);
+        }
+        else{
+            return array_map(function ($v) {
+                return array(
+                    'id' => $v->getId(),
+                    'creationDate' => $v->getCreationDate()->format('Y-m-d H:i:s'),
+                    'contributorID'=> $v->getEntry()->getContributorID());
+            }, $vrac);
+        }
+    }
 
     /*this function return all project that doesn't have a budget assigned*/
     private function projectsWithoutBudget()
@@ -524,4 +628,51 @@ class FinancesC extends Controller
         $this->db->flush();
     }
 
+    private function randomkey(){
+        return sha1(microtime(TRUE)*1000000);
+    }
+
+    private function savefile($exit){
+        $total = count($_FILES['file']['name']);
+        for( $i=0 ; $i < $total ; $i++ ) {
+            $fichier=$this->randomkey().strrchr($_FILES['file']['name'][$i], '.');
+
+            $files[$i] = new File();
+            $files[$i]->setOriginName($_FILES['file']['name'][$i]);
+            $files[$i]->setName($fichier);
+            $files[$i]->setExit($exit);
+            $files[$i]->setUploadDate();
+
+            move_uploaded_file($_FILES['file']['tmp_name'][$i],'../files/' . $fichier);
+
+            $this->db->persist( $files[$i]);
+        }
+        $this->db->flush();
+    }
+
+    private function testFile(){
+        $total = count($_FILES['file']['name']);
+        $error = false;
+
+        if($_FILES['file']['name'][0]!=""){
+        $extensions = array('.png','.gif','.jpg','.jpeg','.pdf','.docx','.txt','.doc','.ppt','.odt');
+            for( $i=0 ; $i < $total ; $i++ ) {
+                $extension =strrchr($_FILES['file']['name'][$i], '.');
+                $taille = filesize($_FILES['file']['tmp_name'][$i]);
+
+                if(!in_array($extension,$extensions) || $taille>5000000){
+                    $error=true; break;
+                }
+            }
+        }
+        return $error;
+    }
+
+    public function testAction(){
+        echo $this->getbase();
+    }
+
+    private function getbase(){
+        return $_SERVER['SERVER_ADDR'];
+    }
 }

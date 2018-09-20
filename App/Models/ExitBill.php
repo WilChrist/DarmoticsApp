@@ -19,7 +19,8 @@ class ExitBill extends TCPDF
 
     /**
      * @Id
-     * @Column(type="bigint")
+     * @Column(type="integer")
+     * @GeneratedValue(strategy="IDENTITY")
      */
     protected $id;
 
@@ -40,7 +41,6 @@ class ExitBill extends TCPDF
 
     public function initialise(){
         // set document information
-        $this->setId( random_int(1000000000,2147483647));
         $this->SetCreator(PDF_CREATOR);
         $this->SetAuthor('Darmotics');
         $this->SetTitle('Exit Bill');
@@ -213,6 +213,25 @@ class ExitBill extends TCPDF
     <td></td>
     <td></td>
     </tr>
+    
+    <tr>
+    <td></td>
+    <td></td>
+    <td><label>Projet:</label></td>
+    <td  colspan="3"><span class="info">'.$this->exit->getProject().'</span></td>
+    <td></td>
+    <td></td>
+    </tr>
+
+    <tr>
+    <td></td>
+    <td></td>
+    <td><label>Pièces Jointes:</label></td>
+    <td  colspan="3"><span class="info">'.$this->links.'</span></td>
+    <td></td>
+    <td></td>
+    </tr>
+
     </table>
     </div>
 
@@ -310,5 +329,13 @@ class ExitBill extends TCPDF
         $this->user_id = $user_id;
     }
 
+    protected $links;
 
+    public function setLinks($value){
+        $this->links=$value;
+    }
+
+    public function getLinks(){
+        return $this->links;
+    }
 }

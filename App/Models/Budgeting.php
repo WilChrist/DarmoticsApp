@@ -19,6 +19,7 @@ class Budgeting extends FinancialMovement
 
     public function __construct() {
         $this->financialexit = new ArrayCollection();
+        $this->budgetingUpdate = new ArrayCollection();
     }
 
     /**
@@ -28,6 +29,14 @@ class Budgeting extends FinancialMovement
      */
     protected $project;
 
+    /** @Column(type="float",options={"default"=0}) */
+    protected $origin_amount;
+
+    /** @Column(type="float",options={"default"=0}) */
+    protected $used_part;
+
+    /** @Column(type="float",options={"default"=0}) */
+    protected $rest;
 
     /**
      * One Budgeting is related to many FinancialExit.
@@ -35,6 +44,11 @@ class Budgeting extends FinancialMovement
      */
     protected $financialExit;
 
+    /**
+     * One Budgeting is related to many FinancialExit.
+     * @OneToMany(targetEntity="BudgetingUpdate", mappedBy="budgeting")
+     */
+    protected $budgetingUpdate;
 
     /**
      * @return mixed
@@ -67,5 +81,70 @@ class Budgeting extends FinancialMovement
     {
         $this->financialExit = $financialExit;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getOriginAmount()
+    {
+        return $this->origin_amount;
+    }
+
+    /**
+     * @param mixed $origin_amount
+     */
+    public function setOriginAmount($origin_amount)
+    {
+        $this->origin_amount = $origin_amount;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBudgetingUpdate()
+    {
+        return $this->budgetingUpdate;
+    }
+
+    /**
+     * @param mixed $budgetingUpdate
+     */
+    public function setBudgetingUpdate($budgetingUpdate)
+    {
+        $this->budgetingUpdate = $budgetingUpdate;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUsedPart()
+    {
+        return $this->used_part;
+    }
+
+    /**
+     * @param mixed $used_part
+     */
+    public function setUsedPart($used_part)
+    {
+        $this->used_part = $used_part;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRest()
+    {
+        return $this->rest;
+    }
+
+    /**
+     * @param mixed $rest
+     */
+    public function setRest($rest)
+    {
+        $this->rest = $rest;
+    }
+
 
 }

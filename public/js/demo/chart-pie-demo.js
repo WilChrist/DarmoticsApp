@@ -15,7 +15,7 @@
             var toUse = JSON.parse(data);
             var treasuryData = toUse.treasuryData;
             var capitalData = toUse.capitalData;
-
+            var allocationData = toUse.allocationData;
             /*drawing of treasury chart*/
             var treasury = document.getElementById("treasuryChart");
             var treasuryChart = new Chart(treasury, {
@@ -47,6 +47,17 @@
                 },
             });
 
+            var allocation = document.getElementById("capitalAllocaion");
+            var allocationChart = new Chart(allocation, {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(allocationData),
+                    datasets: [{
+                        data: Object.values(allocationData),
+                        backgroundColor: ['#007bff', '#dc3545','#ffc107', '#28a745','#f8c74a', '#fc3545','#307bfe', '#6b3545', '#7b3545', '#6a354e'],
+                    }],
+                },
+            });
         })
         .fail(function(data){
       console.log("echec de la collection des données");

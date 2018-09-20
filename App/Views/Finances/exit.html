@@ -27,7 +27,7 @@
                     {% if budgets | length <= 0 %}
                     <p>Il n'y a aucun budget sur lequel on peut effectuer des sorties </p>
                     {% else %}
-                    <form method="post" action="{{ app.request.getBaseURL()}}{{RACINE}}/Finances/addExit">
+                    <form method="post" action="{{ app.request.getBaseURL()}}{{RACINE}}/Finances/addExit" enctype="multipart/form-data">
                         <div class="form-group">
                             <label for="budget">Budget</label>
                             <select  id="budget" name="budget" class="form-control" required autofocus>
@@ -45,8 +45,13 @@
                         </div>
                         <div class="form-group">
                             <label for="reason">Raison</label>
-                            <textarea class="form-control" name="reason" id="reason" cols="30" rows="10" placeholder="description"></textarea>
+                            <textarea class="form-control" name="reason" id="reason" cols="30" rows="5" placeholder="description"></textarea>
                             <span class="alert alert-danger error" id="reason_error"></span>
+                        </div>
+                        <div class="form-group">
+                                <label for="file">Pièce Jointe</label>
+                                <input type="file" id="file" name="file[]" class="form-control" multiple="multiple">
+                                <span class="alert alert-danger error" id="file_error"></span>
                         </div>
                         <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Ajouter</button>
                     </form>

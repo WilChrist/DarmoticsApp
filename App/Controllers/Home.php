@@ -81,15 +81,31 @@ class Home extends Controller
             $don = $this->db->getRepository('App\Models\DonationUpdate')->findOneBy(array(), array('id' => 'desc'))->getAmountafter();
             $total =$apportA+$don;
 
+            
+            $query = $this->db->createQuery("SELECT SUM(e.amount) FROM App\Models\Budgeting e ");
+            $totalAllocation=$query->getSingleScalarResult();
+
             if($total!=null && $total!=0){
+
                 $treasuryData = array(
                     'apports Actionnaires'=> ($apportA/$total)*100,
                     'dons'=> ($don/$total)*100
                 );
+
+                $allocationData = array(
+                    'capital alloué'=>$totalAllocation,
+                    'capital non alloué'=>$total-$totalAllocation
+                );
+
             }else {
                 $treasuryData = array(
                     'apports Actionnaires' => 0,
                     'dons' => 0
+                );
+
+                $allocationData = array(
+                    'capital alloué'=>0,
+                    'capital non alloué'=>0
                 );
             }
 
@@ -99,7 +115,9 @@ class Home extends Controller
                 $capitalData[$shareholder->getLastName()]=$shareholder->getSharesPercentage();
             }
 
-            echo json_encode(array('treasuryData'=>$treasuryData,'capitalData'=>$capitalData));
+
+
+            echo json_encode(array('treasuryData'=>$treasuryData,'capitalData'=>$capitalData,'allocationData'=>$allocationData));
         }
     }
 

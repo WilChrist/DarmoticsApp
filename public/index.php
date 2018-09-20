@@ -61,10 +61,12 @@ $router->add('Finances/addExit', ['controller' => 'FinancesC', 'action' => 'addE
 $router->add('Finances/addBudgeting', ['controller' => 'FinancesC', 'action' => 'addBudgeting']);
 $router->add('Finances/listEntryBill', ['controller' => 'FinancesC', 'action' => 'listEntryBill']);
 $router->add('Finances/listExitBill', ['controller' => 'FinancesC', 'action' => 'listExitBill']);
+$router->add('Finances/summary', ['controller' => 'FinancesC', 'action' => 'summary']);
 
 
 $router->add('{controller}/{action}');
 $router->add('{controller}/{id:\d+}/{action}');
+$router->add('{controller}/{id:\d+}/{type:\d+}/{action}');
 
 //je passe le $_POST au routeur afin qu'il le passe au controleur
 
@@ -75,7 +77,7 @@ try {
 
 }
 catch (\Exception $e){
-    //var_dump($e);
-    print("<pre>".print_r($e,true)."</pre>");
+    var_dump($e->getMessage());
+    //print("<pre>".print_r($e,true)."</pre>");
     //View::renderTemplate('404.html', ['message'=>$e->getMessage()]);
 }

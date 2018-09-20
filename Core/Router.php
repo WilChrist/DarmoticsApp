@@ -128,7 +128,10 @@ class Router
                     if(!isset($this->params['id'])){
                         $this->params['id']=null;
                     }//var_dump($this->other);
-                    $controller_object->$action($this->other,$this->params['id']);
+                    if(!isset($this->params['type'])){
+                        $this->params['type']=null;
+                    }//var_dump($this->other);
+                    $controller_object->$action($this->other,$this->params['id'],$this->params['type']);
 
                 } else {
                     throw new \Exception("Method $action in controller $controller cannot be called directly - remove the Action suffix to call this method");

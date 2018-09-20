@@ -19,7 +19,8 @@ class EntryBill extends TCPDF
 {
     /**
      * @Id
-     * @Column(type="bigint")
+     * @Column(type="integer")
+     * @GeneratedValue(strategy="IDENTITY")
      */
     protected $id;
 
@@ -42,7 +43,6 @@ class EntryBill extends TCPDF
 
     public function initialise(){
         // set document information
-        $this->setId( random_int(1000000000,2147483647));
         $this->SetCreator(PDF_CREATOR);
         $this->SetAuthor('Darmotics');
         $this->SetTitle('Entry Bill');
@@ -154,6 +154,15 @@ class EntryBill extends TCPDF
     <div class="recapbloc">
     <p class="titlebloc">Actionnaire/Donnateur</p>
     <table cellpadding="5px">
+    
+    <tr>
+    <td></td>
+    <td></td>
+    <td><label>Id:</label></td>
+    <td colspan="3"><span class="info">'.$this->giver->getId().'</span></td>
+    <td></td>
+    <td></td>
+    </tr>
     
     <tr>
     <td></td>

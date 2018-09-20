@@ -8,12 +8,20 @@
 
 namespace App\Models;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
+
 /**
  * @Entity
  * @Table(name="financialExit")
  */
 class FinancialExit extends FinancialMovement
 {
+
+    public function __construct() {
+        $this->files= new ArrayCollection();
+    }
+
     /** @Column(length=255) */
     protected $reason;
 
@@ -24,13 +32,20 @@ class FinancialExit extends FinancialMovement
      */
     protected $budgeting;
 
+    /** @Column(length=255,nullable=true) */
+    protected $project;
 
     /**
-     * One entryBill is for One entry.
+     * One exitBill is for One exit.
      * @OneToOne(targetEntity="ExitBill", mappedBy="exit")
      */
     protected $exitbill;
 
+    /**
+     * One FinancialExit is related to many File.
+     * @OneToMany(targetEntity="File", mappedBy="exit")
+     */
+    protected $files;
 
     /**
      * @return mixed
@@ -78,6 +93,38 @@ class FinancialExit extends FinancialMovement
     public function setExitbill($exitbill)
     {
         $this->exitbill = $exitbill;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProject()
+    {
+        return $this->project;
+    }
+
+    /**
+     * @param mixed $project
+     */
+    public function setProject($project)
+    {
+        $this->project = $project;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFiles()
+    {
+        return $this->files;
+    }
+
+    /**
+     * @param mixed $files
+     */
+    public function setFiles($files)
+    {
+        $this->files = $files;
     }
 
 

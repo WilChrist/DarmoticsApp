@@ -23,7 +23,8 @@
                     </div>
                     <div class="mr-5">{{numberOfProjects}} Projets !</div>
                 </div>
-                <a class="card-footer text-white clearfix small z-1" href="{{ app.request.getBaseURL()}}{{RACINE}}/Project/list">
+                <a class="card-footer text-white clearfix small z-1"
+                   href="{{ app.request.getBaseURL()}}{{RACINE}}/Project/list">
                     <span class="float-left">Voir les Détails</span>
                     <span class="float-right">
                     <i class="fas fa-angle-right"></i>
@@ -39,7 +40,8 @@
                     </div>
                     <div class="mr-5">{{numberOfShareholders}} Actionnaires !</div>
                 </div>
-                <a class="card-footer text-white clearfix small z-1" href="{{ app.request.getBaseURL()}}{{RACINE}}/Shareholder/list">
+                <a class="card-footer text-white clearfix small z-1"
+                   href="{{ app.request.getBaseURL()}}{{RACINE}}/Shareholder/list">
                     <span class="float-left">Voir les Détails</span>
                     <span class="float-right">
                     <i class="fas fa-angle-right"></i>
@@ -55,7 +57,8 @@
                     </div>
                     <div class="mr-5">{{numberOfDepartments}} Départements !</div>
                 </div>
-                <a class="card-footer text-white clearfix small z-1" href="{{ app.request.getBaseURL()}}{{RACINE}}/Department/list">
+                <a class="card-footer text-white clearfix small z-1"
+                   href="{{ app.request.getBaseURL()}}{{RACINE}}/Department/list">
                     <span class="float-left">Voir les Détails</span>
                     <span class="float-right">
                     <i class="fas fa-angle-right"></i>
@@ -71,7 +74,8 @@
                     </div>
                     <div class="mr-5">{{numberOfEmployees}} Employés !</div>
                 </div>
-                <a class="card-footer text-white clearfix small z-1" href="{{ app.request.getBaseURL()}}{{RACINE}}/Employee/list">
+                <a class="card-footer text-white clearfix small z-1"
+                   href="{{ app.request.getBaseURL()}}{{RACINE}}/Employee/list">
                     <span class="float-left">Voir les Détails</span>
                     <span class="float-right">
                     <i class="fas fa-angle-right"></i>
@@ -88,7 +92,8 @@
             <div class="card mb-3">
                 <div class="card-header">
                     <i class="fas fa-chart-pie"></i>
-                    Répartition de la tésorerie</div>
+                    Répartition de la tésorerie
+                </div>
                 <div class="card-body">
                     <canvas id="treasuryChart" width="100%" height="100"></canvas>
                 </div>
@@ -100,7 +105,8 @@
             <div class="card mb-3">
                 <div class="card-header">
                     <i class="fas fa-chart-pie"></i>
-                    Répartition du capital</div>
+                    Répartition du capital
+                </div>
                 <div class="card-body">
                     <canvas id="capitalChart" width="100%" height="100"></canvas>
                 </div>
@@ -109,20 +115,101 @@
         </div>
 
         <div class="col-lg-4">
-                <div class="card mb-3">
-                    <div class="card-header">
-                        <i class="fas fa-chart-pie"></i>
-                        capital Alloué</div>
-                    <div class="card-body">
-                        <canvas id="capitalAllocaion" width="100%" height="100"></canvas>
-                    </div>
-                    <div class="card-footer small text-muted">Mise à jour du {{ "now"|date("d/m/Y") }}</div>
+            <div class="card mb-3">
+                <div class="card-header">
+                    <i class="fas fa-chart-pie"></i>
+                    capital Alloué
                 </div>
+                <div class="card-body">
+                    <canvas id="capitalAllocaion" width="100%" height="100"></canvas>
+                </div>
+                <div class="card-footer small text-muted">Mise à jour du {{ "now"|date("d/m/Y") }}</div>
+            </div>
         </div>
-        
+
+        <div class="col-lg-12">
+            <div class="card mb-12">
+                <div class="card-header">
+                    <i class="fas fa-table"></i>
+                    Dépenses par Projet
+                </div>
+                <div class="card-body">
+                    {% if budgets|length <= 0 %}
+                    <p>Aucun Budget n'existe pour l'instant</p>
+                    {% else %}
+                    {% set i=0 %} {% set total=0 %}
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th>N°</th>
+                                <th>Projet</th>
+                                <th>Montant utilisé</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for budget in budgets %}
+                            <tr>
+                                <td> {{i}}</td>
+                                <td>{{budget.project.name}}</td>
+                                <td>{{budget.UsedPart}}</td>
+                            </tr>
+                            {% set i = i + 1 %} {% set total = total + budget.UsedPart %}
+                            {% endfor %}
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <th colspan="1">Total</th>
+                                <th></th>
+                                <th>{{total}}</th>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="col-lg-12">
+            <div class="card mb-12">
+                <div class="card-header">
+                    <i class="fas fa-table"></i>
+                    Total Des Apports
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th>Intitulés</th>
+                                <th>Montant</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>Apport Actionnaires</td>
+                                <td>{{apportA}}</td>
+                            </tr>
+                            <tr>
+                                <td>Dons</td>
+                                <td>{{don}}</td>
+                            </tr>
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <th>Total</th>
+                                <th>{{apportA + don}}</th>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- DataTables Example -->
 
 
-{% endblock %}
+    {% endblock %}

@@ -22,6 +22,7 @@ use App\Models\EntryBill;
 use App\Models\ExitBill;
 use App\Models\Shareholder;
 use App\Config;
+
 class FinancesC extends Controller
 {
     public function indexAction()
@@ -35,18 +36,20 @@ class FinancesC extends Controller
             header("Location:" . Config::RACINE . "/");
         } else {
             try {
-                $error = $this->getMessage('error'); $this->setMessage('error','');
-                $success = $this->getMessage('success'); $this->setMessage('success','');
+                $error = $this->getMessage('error');
+                $this->setMessage('error', '');
+                $success = $this->getMessage('success');
+                $this->setMessage('success', '');
                 $shareholders = $this->db->getRepository('App\Models\Shareholder')->findAll();
 
                 View::renderTemplate('Finances/entry.html', ['user' => $_SESSION["user"],
                     'shareholders' => $shareholders,
-                    'error'=>$error,
-                    'success'=>$success]);
+                    'error' => $error,
+                    'success' => $success]);
 
             } catch (\Exception $e) {
                 echo $e->getMessage();
-                //View::renderTemplate('500.html');
+                View::renderTemplate('404.html');
             }
 
         }
@@ -65,14 +68,14 @@ class FinancesC extends Controller
                 $giver = null;
                 $newupdate = null;
 
-                if ($this->getpost("type") == "shareholder" && ($this->getpost("amount") == null || $this->getpost("amount")==0 || $this->getpost("shareholder") < 0)) {
+                if ($this->getpost("type") == "shareholder" && ($this->getpost("amount") == null || $this->getpost("amount") == 0 || $this->getpost("shareholder") < 0)) {
 
-                    $this->setMessage('error','veuillez remplir tous les champs');
+                    $this->setMessage('error', 'veuillez remplir tous les champs');
                     header("Location:" . Config::RACINE . "/Finances/entry");
 
-                } elseif ($this->getpost("type") != "shareholder" && ($this->getpost("amount") == null || $this->getpost("amount")==0 || $this->getpost("contributorName") == null)) {
+                } elseif ($this->getpost("type") != "shareholder" && ($this->getpost("amount") == null || $this->getpost("amount") == 0 || $this->getpost("contributorName") == null)) {
 
-                    $this->setMessage('error','veuillez remplir tous les champs');
+                    $this->setMessage('error', 'veuillez remplir tous les champs');
                     header("Location:" . Config::RACINE . "/Finances/entry");
 
                 } else {
@@ -142,14 +145,13 @@ class FinancesC extends Controller
                     //$pdf->writeData();
                     $this->logger->info('Adding of new Entry ' . $newentry->getType() . ' ' . $newentry->getAmount(), ["email" => $_SESSION["user"]->getEmail()]);
                     //$pdf->printBill();
-                    $message = 'l\'apport a correctement été enregistrée cliquer sur ce <a href = "'.Config::RACINE .'/FinancesC/'.$pdf->getId().'/entryprint" target="_blank">lien</a> pour télécharger la facture';
-                    $this->setMessage('success',$message);
+                    $message = 'l\'apport a correctement été enregistrée cliquer sur ce <a href = "' . Config::RACINE . '/FinancesC/' . $pdf->getId() . '/entryprint" target="_blank">lien</a> pour télécharger la facture';
+                    $this->setMessage('success', $message);
                     header("Location:" . Config::RACINE . "/Finances/entry");
 
 
                 }
-            }
-            catch (\Exception $e) {
+            } catch (\Exception $e) {
                 View::renderTemplate('404.html');
             }
         }
@@ -162,13 +164,15 @@ class FinancesC extends Controller
             header("Location:" . Config::RACINE . "/");
         } else {
             try {
-                $error = $this->getMessage('error'); $this->setMessage('error','');
-                $success = $this->getMessage('success'); $this->setMessage('success','');
+                $error = $this->getMessage('error');
+                $this->setMessage('error', '');
+                $success = $this->getMessage('success');
+                $this->setMessage('success', '');
 
                 View::renderTemplate('Finances/budgeting.html', ['user' => $_SESSION["user"],
                     'projects' => $this->projectsWithoutBudget(),
-                    'error'=>$error,
-                    'success'=>$success]);
+                    'error' => $error,
+                    'success' => $success]);
 
             } catch (\Exception $e) {
                 View::renderTemplate('404.html');
@@ -183,19 +187,18 @@ class FinancesC extends Controller
         } else {
             try {
                 $availablecapital = $this->getAvailableTreasury();
-                if($this->getpost("amount")==null || $this->getpost("project")<0){
-                    $this->setMessage('error','veuillez remplir tous les champs');
+                if ($this->getpost("amount") == null || $this->getpost("project") < 0) {
+                    $this->setMessage('error', 'veuillez remplir tous les champs');
                     header("Location:" . Config::RACINE . "/Finances/budgeting");
-                }
-                elseif ($availablecapital< $this->getpost("amount")){
-                    $this->setMessage('error','budget supérieur à la trésorerie non alouée qui est de ' . $availablecapital);
+                } elseif ($availablecapital < $this->getpost("amount")) {
+                    $this->setMessage('error', 'budget supérieur à la trésorerie non alouée qui est de ' . $availablecapital);
                     header("Location:" . Config::RACINE . "/Finances/budgeting");
-                }
-
-                else {
+                } else {
                     $budget = new Budgeting();
-                    $budget->setOriginAmount($this->getpost("amount")); $budget->setAmount($this->getpost("amount"));
-                    $budget->setUsedPart(0); $budget->setRest($this->getpost("amount"));
+                    $budget->setOriginAmount($this->getpost("amount"));
+                    $budget->setAmount($this->getpost("amount"));
+                    $budget->setUsedPart(0);
+                    $budget->setRest($this->getpost("amount"));
                     $budget->setProject($this->db->getRepository('App\Models\Project')->findOneBy(array('id' => $this->getpost("project"))));
                     $budget->setMovementDate();
 
@@ -203,14 +206,13 @@ class FinancesC extends Controller
                     $this->db->flush();
                     $this->logger->info('Creation of a new Budget for project ' . $budget->getProject()->getName(), ["email" => $_SESSION["user"]->getEmail()]);
 
-                    $this->setMessage('success','le budget a été alouer');
+                    $this->setMessage('success', 'le budget a été alouer');
                     header("Location:" . Config::RACINE . "/Finances/budgeting");
 
                 }
-            }
-            catch (\Exception $e){
-                var_dump($e->getMessage());
-                //View::renderTemplate('404.html');
+            } catch (\Exception $e) {
+                //var_dump($e->getMessage());
+                View::renderTemplate('404.html');
             }
         }
     }
@@ -221,13 +223,15 @@ class FinancesC extends Controller
             header("Location:" . Config::RACINE . "/");
         } else {
             try {
-                $error = $this->getMessage('error'); $this->setMessage('error','');
-                $success = $this->getMessage('success'); $this->setMessage('success','');
+                $error = $this->getMessage('error');
+                $this->setMessage('error', '');
+                $success = $this->getMessage('success');
+                $this->setMessage('success', '');
 
                 View::renderTemplate('Finances/exit.html', ['user' => $_SESSION["user"],
                     'budgets' => $this->getBudgeting(),
-                    'error'=>$error,
-                    'success'=>$success]);
+                    'error' => $error,
+                    'success' => $success]);
             } catch (\Exception $e) {
                 View::renderTemplate('404.html');
             }
@@ -239,19 +243,18 @@ class FinancesC extends Controller
         if (!isset($_SESSION["user"])) {
             header("Location:" . Config::RACINE . "/");
         } elseif ($this->getpost("budget") <= 0 || $this->getpost("amount") == null || $this->getpost("reason") == null) {
-            $this->setMessage('error','veuillez remplir tous les champs');
+            $this->setMessage('error', 'veuillez remplir tous les champs');
             header("Location:" . Config::RACINE . "/Finances/exit");
         } else {
             $budgetId = $this->getpost("budget");
             $budget = $this->getSingleBudget($budgetId);
             if ($budget->getRest() < $this->getpost("amount")) {
-                $this->setMessage('error','le budget n\'est pas/plus suffisant ou épuisé');
+                $this->setMessage('error', 'le budget n\'est pas/plus suffisant ou épuisé');
                 header("Location:" . Config::RACINE . "/Finances/exit");
-            } elseif($this->testFile()){
-                $this->setMessage('error','format ou poids de fichier incorrect');
+            } elseif ($this->testFile()) {
+                $this->setMessage('error', 'format ou poids de fichier incorrect');
                 header("Location:" . Config::RACINE . "/Finances/exit");
-            }
-            else{
+            } else {
                 $newexit = new FinancialExit();
                 $newexit->setAmount($this->getpost("amount"));
                 $newexit->setReason($this->getpost("reason"));
@@ -281,8 +284,8 @@ class FinancesC extends Controller
                 //$pdf->writeData();
                 $this->logger->info('Registration of new Exit for ' . $newexit->getReason() . ' Amount' . $newexit->getAmount(), ["email" => $_SESSION["user"]->getEmail()]);
                 //$pdf->printBill();
-                $message = 'la sortie a correctement été enregistrée cliquer sur ce <a href = "'.Config::RACINE .'/FinancesC/'.$pdf->getId().'/exitprint" target="_blank">lien</a> pour télécharger la facture';
-                $this->setMessage('success',$message);
+                $message = 'la sortie a correctement été enregistrée cliquer sur ce <a href = "' . Config::RACINE . '/FinancesC/' . $pdf->getId() . '/exitprint" target="_blank">lien</a> pour télécharger la facture';
+                $this->setMessage('success', $message);
                 header("Location:" . Config::RACINE . "/Finances/exit");
             }
 
@@ -303,26 +306,27 @@ class FinancesC extends Controller
                     'error' => $error,
                     'success' => $success]);
             } catch (\Exception $e) {
-                var_dump($e->getMessage());
+                //var_dump($e->getMessage());
                 //View::renderTemplate('404.html');
+                View::renderTemplate('404.html');
             }
         }
     }
 
     /* ================================================================================================================*/
-    public function editBudgetAction($other,$id,$type)
+    public function editBudgetAction($other, $id, $type)
     {
         if (!isset($_SESSION['user'])) {
             header("Location:" . Config::RACINE . "/");
 
         } else {
             try {
-                $budgetid = isset($id)?$id:$this->getpost("id");
-                $actiontype = isset($type)?$type:$this->getpost("type");
+                $budgetid = isset($id) ? $id : $this->getpost("id");
+                $actiontype = isset($type) ? $type : $this->getpost("type");
                 $currentbudget = null;
-                if ($this->getpost("amount") == null || $this->getpost("reason") == null || $this->getpost("type")==null) {
+                if ($this->getpost("amount") == null || $this->getpost("reason") == null || $this->getpost("type") == null) {
 
-                    if($this->getpost("amount") != null || $this->getpost("reason") != null || $this->getpost("type")!=null){
+                    if ($this->getpost("amount") != null || $this->getpost("reason") != null || $this->getpost("type") != null) {
                         $this->setMessage('error', 'veuillez remplir tous les champs');
                     }
                     $error = $this->getMessage('error');
@@ -334,7 +338,7 @@ class FinancesC extends Controller
                     View::renderTemplate('Finances/editbudget.html', ["budget" => $currentbudget,
                         'error' => $error,
                         'success' => $success,
-                        'type'=>$actiontype]);
+                        'type' => $actiontype]);
 
                 } else {
 
@@ -342,8 +346,11 @@ class FinancesC extends Controller
                     $currentbudget = unserialize(serialize($newbudget));
                     $newamount = null;
 
-                    if($actiontype=="1"){$newamount = $newbudget->getAmount() + $this->getpost("amount");}
-                    elseif ($actiontype=="0"){$newamount = $newbudget->getAmount()- $this->getpost("amount");}
+                    if ($actiontype == "1") {
+                        $newamount = $newbudget->getAmount() + $this->getpost("amount");
+                    } elseif ($actiontype == "0") {
+                        $newamount = $newbudget->getAmount() - $this->getpost("amount");
+                    }
 
                     /*check amount constraints of budget
                     $query = $this->db->createQuery("SELECT SUM(e.amount) FROM App\Models\FinancialExit e WHERE e.budgeting = ?1");
@@ -351,9 +358,9 @@ class FinancesC extends Controller
                     $usedpart = $query->getSingleScalarResult();*/
                     $availabletreasury = $this->getAvailableTreasury();
 
-                    if ($availabletreasury < $newamount || $newamount < $newbudget->getUsedPart() || $this->getpost("amount")==0) {
-                        $this->setMessage('error','le nouveau budget ne peut être supérieur à la trésorerie disponible qui est de' . $availabletreasury .', et ne peut être inférieur aux dépenses déjà rélisés qui sont de ' . $newbudget->getUsedPart().' et le montant à ajouter/diminuer ne peut être nul');
-                        header("Location:" . Config::RACINE . "/FinancesC/".$budgetid."/".$actiontype."/editbudget");
+                    if ($availabletreasury < $newamount || $newamount < $newbudget->getUsedPart() || $this->getpost("amount") == 0) {
+                        $this->setMessage('error', 'le nouveau budget ne peut être supérieur à la trésorerie disponible qui est de' . $availabletreasury . ', et ne peut être inférieur aux dépenses déjà rélisés qui sont de ' . $newbudget->getUsedPart() . ' et le montant à ajouter/diminuer ne peut être nul');
+                        header("Location:" . Config::RACINE . "/FinancesC/" . $budgetid . "/" . $actiontype . "/editbudget");
                     } else {
 
                         $newbudget->setAmount($newamount);
@@ -383,8 +390,8 @@ class FinancesC extends Controller
                     }
                 }
             } catch (\Exception $e) {
-                var_dump($e->getMessage());
-                //View::renderTemplate('404.html');
+                View::renderTemplate('404.html');
+                //var_dump($e->getMessage());
             }
 
         }
@@ -399,7 +406,7 @@ class FinancesC extends Controller
             try {
                 View::renderTemplate('Finances/listEntryBill.html', ['user' => $_SESSION["user"], 'entrybills' => $this->getbillforview('\EntryBill')]);
             } catch (\Exception $e) {
-                View::renderTemplate('404.html', ['message' => $e->getMessage()]);
+                View::renderTemplate('404.html');
             }
         }
     }
@@ -412,28 +419,28 @@ class FinancesC extends Controller
             try {
                 View::renderTemplate('Finances/listExitBill.html', ['user' => $_SESSION["user"], 'exitbills' => $this->getbillforview('\ExitBill')]);
             } catch (\Exception $e) {
-                View::renderTemplate('404.html', ['message' => $e->getMessage()]);
+                View::renderTemplate('404.html');
             }
         }
     }
 
-    public function entryprintAction($other, $id){
+    public function entryprintAction($other, $id)
+    {
         if (!isset($_SESSION['user'])) {
             header("Location:" . Config::RACINE . "/");
         } elseif ($id == null) {
-            View::renderTemplate('Finances/listEntryBill.html', ['user' => $_SESSION["user"], 'entrybills' => $this->getbillforview('\EntryBill'),'error'=>'erreur veuillez réessayer']);
+            View::renderTemplate('Finances/listEntryBill.html', ['user' => $_SESSION["user"], 'entrybills' => $this->getbillforview('\EntryBill'), 'error' => 'erreur veuillez réessayer']);
         } else {
             try {
-            $entrybill = $this->db->getRepository('App\Models\EntryBill')->find($id);
-            $pdf = new EntryBill(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+                $entrybill = $this->db->getRepository('App\Models\EntryBill')->find($id);
+                $pdf = new EntryBill(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
-            $user = $this->db->getRepository('App\Models\Director')->find($entrybill->getUserId());
-            if ($entrybill->getEntry()->getType()=="apport actionnaire"){
-                $pdf->setGiver($this->db->getRepository('App\Models\Shareholder')->find($entrybill->getEntry()->getContributorId()));
-            }
-            else{
-                $pdf->setGiver($this->db->getRepository('App\Models\Contributor')->find($entrybill->getEntry()->getContributorId()));
-            }
+                $user = $this->db->getRepository('App\Models\Director')->find($entrybill->getUserId());
+                if ($entrybill->getEntry()->getType() == "apport actionnaire") {
+                    $pdf->setGiver($this->db->getRepository('App\Models\Shareholder')->find($entrybill->getEntry()->getContributorId()));
+                } else {
+                    $pdf->setGiver($this->db->getRepository('App\Models\Contributor')->find($entrybill->getEntry()->getContributorId()));
+                }
                 $pdf->setEntry($entrybill->getEntry());
                 $pdf->setId($entrybill->getId());
                 $pdf->setUser($user);
@@ -442,34 +449,33 @@ class FinancesC extends Controller
                 $pdf->writeData();
                 $pdf->printBill();
 
-            }
-            catch (\Exception $e){
-                View::renderTemplate('Finances/listEntryBill.html', ['user' => $_SESSION["user"], 'entrybills' => $this->getbillforview('\EntryBill'),'error'=>'erreur veuillez réessayer']);
+            } catch (\Exception $e) {
+                View::renderTemplate('Finances/listEntryBill.html', ['user' => $_SESSION["user"], 'entrybills' => $this->getbillforview('\EntryBill'), 'error' => 'erreur veuillez réessayer']);
             }
         }
     }
 
-    public function exitprintAction($other, $id){
+    public function exitprintAction($other, $id)
+    {
         if (!isset($_SESSION['user'])) {
             header("Location:" . Config::RACINE . "/");
         } elseif ($id == null) {
-            View::renderTemplate('Finances/listExitBill.html', ['user' => $_SESSION["user"], 'exitbills' => $this->getbillforview('\ExitBill'),'error'=>'erreur veuillez réessayer']);
+            View::renderTemplate('Finances/listExitBill.html', ['user' => $_SESSION["user"], 'exitbills' => $this->getbillforview('\ExitBill'), 'error' => 'erreur veuillez réessayer']);
         } else {
             try {
                 $exitbill = $this->db->getRepository('App\Models\ExitBill')->find($id);
                 $pdf = new ExitBill(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
                 $user = $this->db->getRepository('App\Models\Director')->find($exitbill->getUserId());
-                $files = $this->db->getRepository('App\Models\File')->findBy(array('exit'=>$exitbill->getExit()));
-                $links="";
-                $server=$_SERVER['SERVER_NAME'];
-                if (count($files)>0){
-                    for($i=0,$m=count($files);$i<$m;$i++){
-                        $links.='<a href="http://'.$this->getbase().Config::FileRacine.$files[$i]->getName().'" download="'.$files[$i]->getOriginName().'" target="_blank">'.$files[$i]->getOriginName().'</a> ';
+                $files = $this->db->getRepository('App\Models\File')->findBy(array('exit' => $exitbill->getExit()));
+                $links = "";
+                $server = $_SERVER['SERVER_NAME'];
+                if (count($files) > 0) {
+                    for ($i = 0, $m = count($files); $i < $m; $i++) {
+                        $links .= '<a href="http://' . $this->getbase() . Config::FileRacine . $files[$i]->getName() . '" download="' . $files[$i]->getOriginName() . '" target="_blank">' . $files[$i]->getOriginName() . '</a> ';
                     }
-                }
-                else{
-                    $links="aucune";
+                } else {
+                    $links = "aucune";
                 }
                 $pdf->setExit($exitbill->getExit());
                 $pdf->setId($exitbill->getId());
@@ -480,16 +486,15 @@ class FinancesC extends Controller
                 $pdf->writeData();
                 $pdf->printBill();
 
-            }
-            catch (\Exception $e){
-                View::renderTemplate('Finances/listExitBill.html', ['user' => $_SESSION["user"], 'exitbills' => $this->getbillforview('\ExitBill'),'error'=>'erreur veuillez réessayer']);
+            } catch (\Exception $e) {
+                View::renderTemplate('Finances/listExitBill.html', ['user' => $_SESSION["user"], 'exitbills' => $this->getbillforview('\ExitBill'), 'error' => 'erreur veuillez réessayer']);
             }
         }
     }
 
 
-
-    public function historyAction($other,$id){
+    public function historyAction($other, $id)
+    {
         if (!isset($_SESSION['user'])) {
             header("Location:" . Config::RACINE . "/");
         } elseif ($id == null) {
@@ -497,60 +502,35 @@ class FinancesC extends Controller
             header("Location:" . Config::RACINE . "/Finances/list");
         } else {
             try {
-                $list = $this->db->getRepository('App\Models\BudgetingUpdate')->findBy(array('budgeting' => $id),array('movementDate'=>'DESC'));
+                $list = $this->db->getRepository('App\Models\BudgetingUpdate')->findBy(array('budgeting' => $id), array('movementDate' => 'DESC'));
                 View::renderTemplate('Finances/history.html', ['user' => $_SESSION["user"], 'budgetupdates' => $list]);
-            }
-            catch (\Exception $e){
-                var_dump($e->getMessage());
-            }
-        }
-    }
-
-    public function summaryAction(){
-        if (!isset($_SESSION['user'])) {
-            header("Location:" . Config::RACINE . "/");
-        } else {
-            try {
-                /*code here*/
-            }
-            catch (\Exception $e){
-                var_dump($e->getMessage());
+            } catch (\Exception $e) {
+                //var_dump($e->getMessage());
+                View::renderTemplate('404.html');
             }
         }
     }
 
-    public function filelistAction(){
-        if (!isset($_SESSION['user'])) {
-            header("Location:" . Config::RACINE . "/");
-        } else {
-            try {
-                /*code here*/
-            }
-            catch (\Exception $e){
-                var_dump($e->getMessage());
-            }
-        }
-    }
     /* ================================================================================================================*/
 
 
     /*this function return bill information for the view*/
-    private function getbillforview($type){
-        $vrac = $this->db->getRepository('App\Models'.$type)->findBy(array(),array('creation_date'=>'DESC'));
+    private function getbillforview($type)
+    {
+        $vrac = $this->db->getRepository('App\Models' . $type)->findBy(array(), array('creation_date' => 'DESC'));
 
-        if($type=='\ExitBill') {
+        if ($type == '\ExitBill') {
             return array_map(function ($v) {
                 return array('id' => $v->getId(),
-                 'creationDate' => $v->getCreationDate()->format('Y-m-d H:i:s'),
-                 'project'=>$v->getExit()->getProject());
+                    'creationDate' => $v->getCreationDate()->format('Y-m-d H:i:s'),
+                    'project' => $v->getExit()->getProject());
             }, $vrac);
-        }
-        else{
+        } else {
             return array_map(function ($v) {
                 return array(
                     'id' => $v->getId(),
                     'creationDate' => $v->getCreationDate()->format('Y-m-d H:i:s'),
-                    'contributorID'=> $v->getEntry()->getContributorID());
+                    'contributorID' => $v->getEntry()->getContributorID());
             }, $vrac);
         }
     }
@@ -628,14 +608,16 @@ class FinancesC extends Controller
         $this->db->flush();
     }
 
-    private function randomkey(){
-        return sha1(microtime(TRUE)*1000000);
+    private function randomkey()
+    {
+        return sha1(microtime(TRUE) * 1000000);
     }
 
-    private function savefile($exit){
+    private function savefile($exit)
+    {
         $total = count($_FILES['file']['name']);
-        for( $i=0 ; $i < $total ; $i++ ) {
-            $fichier=$this->randomkey().strrchr($_FILES['file']['name'][$i], '.');
+        for ($i = 0; $i < $total; $i++) {
+            $fichier = $this->randomkey() . strrchr($_FILES['file']['name'][$i], '.');
 
             $files[$i] = new File();
             $files[$i]->setOriginName($_FILES['file']['name'][$i]);
@@ -643,36 +625,35 @@ class FinancesC extends Controller
             $files[$i]->setExit($exit);
             $files[$i]->setUploadDate();
 
-            move_uploaded_file($_FILES['file']['tmp_name'][$i],'../files/' . $fichier);
+            move_uploaded_file($_FILES['file']['tmp_name'][$i], '../files/' . $fichier);
 
-            $this->db->persist( $files[$i]);
+            $this->db->persist($files[$i]);
         }
         $this->db->flush();
     }
 
-    private function testFile(){
+    private function testFile()
+    {
         $total = count($_FILES['file']['name']);
         $error = false;
 
-        if($_FILES['file']['name'][0]!=""){
-        $extensions = array('.png','.gif','.jpg','.jpeg','.pdf','.docx','.txt','.doc','.ppt','.odt');
-            for( $i=0 ; $i < $total ; $i++ ) {
-                $extension =strrchr($_FILES['file']['name'][$i], '.');
+        if ($_FILES['file']['name'][0] != "") {
+            $extensions = array('.png', '.gif', '.jpg', '.jpeg', '.pdf', '.docx', '.txt', '.doc', '.ppt', '.odt');
+            for ($i = 0; $i < $total; $i++) {
+                $extension = strrchr($_FILES['file']['name'][$i], '.');
                 $taille = filesize($_FILES['file']['tmp_name'][$i]);
 
-                if(!in_array($extension,$extensions) || $taille>5000000){
-                    $error=true; break;
+                if (!in_array($extension, $extensions) || $taille > 5000000) {
+                    $error = true;
+                    break;
                 }
             }
         }
         return $error;
     }
 
-    public function testAction(){
-        echo $this->getbase();
-    }
-
-    private function getbase(){
+    private function getbase()
+    {
         return $_SERVER['SERVER_ADDR'];
     }
 }

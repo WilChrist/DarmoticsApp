@@ -66,7 +66,10 @@ class Home extends Controller
                     "numberOfShareholders"=>$numberOfShareholders,
                     "numberOfDepartments"=>$numberOfDepartments,
                     "numberOfEmployees"=>$numberOfEmployees,
-                    "numberOfProjects"=>$numberOfProjects
+                    "numberOfProjects"=>$numberOfProjects,
+                    "budgets"=> $this->db->getRepository('App\Models\Budgeting')->findAll(),
+                    "apportA"=> $this->db->getRepository('App\Models\CapitalUpdate')->findOneBy(array(), array('id' => 'desc'))->getAmountafter(),
+                    "don"=>$this->db->getRepository('App\Models\DonationUpdate')->findOneBy(array(), array('id' => 'desc'))->getAmountafter()
                 ]);
         }
     }

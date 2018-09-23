@@ -104,6 +104,7 @@
                                 <label for="department">Département</label>
                                 <select class="custom-select" name="department" id="department" required>
                                     <option value="-1" selected disabled>Sélectionez</option>
+                                    <option value="0" >Aucun</option>
                                     {% for department in departments %}
                                         {% if (department.id==employee.department.id)%}
                                             <option value={{department.id}} selected>{{department.name}}</option>

@@ -43,7 +43,7 @@ class EmployeeC extends Controller
     {
         if (!isset($_SESSION['user'])) {
             header("Location:".Config::RACINE."/");
-        } elseif ($this->getpost("first_name") == null || $this->getpost("email") == null || $this->getpost("department") == null) {
+        } elseif ($this->getpost("first_name") == null || $this->getpost("email") == null) {
             $this->setMessage('error','veuillez remplir tous les champs');
             header("Location:".Config::RACINE."/Employee");
         } else {
@@ -135,6 +135,9 @@ class EmployeeC extends Controller
             $newEmployee->setLastUpdateDate();
             $newEmployee->setSignUpDate();
 
+            $departName="";
+            if ($newEmployee->getDepartment() != null)
+                $departName = $newEmployee->getDepartment()->getName();
 
             try {
 
@@ -167,7 +170,7 @@ class EmployeeC extends Controller
                         "address" => $newEmployee->getAddress(),
                         "dateOfEntry" => $newEmployee->getDateOfEntry(),
                         "education" => $newEmployee->getEducation(),
-                        "departmentName" => $newEmployee->getDepartment()->getName(),
+                        "departmentName" => $departName,
                         "office" => $newEmployee->getOffice(),
                         "skills" => $newEmployee->getSkills(),
                         "lastUpdateDate" => $newEmployee->getLastUpdateDate(),

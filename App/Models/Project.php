@@ -41,7 +41,7 @@ class Project
     protected $budget;
 
     /** @Column(length=255, options={"default":"created"}) */
-    protected $state;
+    protected $state="created";
 
     /**
      * One Project has Many Employee_Project.

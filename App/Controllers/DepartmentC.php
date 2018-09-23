@@ -91,7 +91,8 @@ class DepartmentC extends Controller
                 }
                 if($currentDepartment->getChiefId()!=null)
                     $employees=$this->thisChiefAndNotChiefEmployees($currentDepartment->getChiefId());
-
+                else
+                $employees=$this->notChiefEmployees();
                 View::renderTemplate('Department/edit.html',["department" => $currentDepartment,
                     'employees'=>$employees,
                     'error'=>$error,

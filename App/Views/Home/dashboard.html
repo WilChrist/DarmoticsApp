@@ -126,20 +126,22 @@
                 <div class="card-footer small text-muted">Mise à jour du {{ "now"|date("d/m/Y") }}</div>
             </div>
         </div>
+    </div>
 
-        <div class="col-lg-12">
-            <div class="card mb-12">
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12 mx-auto">
+            <div class="card mb-10 space">
                 <div class="card-header">
                     <i class="fas fa-table"></i>
                     Dépenses par Projet
                 </div>
                 <div class="card-body">
                     {% if budgets|length <= 0 %}
-                    <p>Aucun Budget n'existe pour l'instant</p>
+                    <div>Aucun Budget n'existe pour l'instant</div>
                     {% else %}
                     {% set i=0 %} {% set total=0 %}
                     <div class="table-responsive">
-                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <table class="table table-bordered"  width="100%" cellspacing="0">
                             <thead>
                             <tr>
                                 <th>N°</th>
@@ -166,20 +168,23 @@
                             </tfoot>
                         </table>
                     </div>
+                    {% endif %}
                 </div>
+                <div class="card-footer small text-muted">Mise à jour du {{ "now"|date("d/m/Y") }}</div>
             </div>
-            {% endif %}
         </div>
+    </div>
 
-        <div class="col-lg-12">
-            <div class="card mb-12">
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12 mx-auto">
+            <div class="card mb-10 space">
                 <div class="card-header">
                     <i class="fas fa-table"></i>
                     Total Des Apports
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <table class="table table-bordered"  width="100%" cellspacing="0">
                             <thead>
                             <tr>
                                 <th>Intitulés</th>
@@ -205,11 +210,14 @@
                         </table>
                     </div>
                 </div>
+                <div class="card-footer small text-muted">Mise à jour du {{ "now"|date("d/m/Y") }}</div>
             </div>
         </div>
     </div>
 
-    <!-- DataTables Example -->
+</div>
+
+<!-- DataTables Example -->
 
 
-    {% endblock %}
+{% endblock %}

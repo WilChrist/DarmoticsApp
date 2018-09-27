@@ -1,0 +1,8 @@
+{"datetime":"2018-09-18 17:12:47.568520","logLevel":"INFO","message":"Adding of new Entry apport actionnaire 100000","context":"{"email":"admin@gmail.com"}"}
+{"datetime":"2018-09-18 17:17:25.681555","logLevel":"INFO","message":"Creation of a new Budget for project test budgetisation","context":"{"email":"admin@gmail.com"}"}
+{"datetime":"2018-09-18 18:33:53.260025","logLevel":"INFO","message":"Registration of new Exit for premier test Amount100","context":"{"email":"admin@gmail.com"}"}
+{"datetime":"2018-09-18 18:39:39.381834","logLevel":"INFO","message":"Adding of new Entry apport actionnaire 50000","context":"{"email":"admin@gmail.com"}"}
+{"datetime":"2018-09-18 19:22:52.509514","logLevel":"INFO","message":"Modification of a Budget","context":"{"authorEmail":"admin@gmail.com","oldData":{"Amount":50000},"newData":{"Amount":50250,"Modification reason":"test d'augmentation du budget"}}"}
+{"datetime":"2018-09-18 19:28:33.435817","logLevel":"INFO","message":"Modification of a Budget","context":"{"authorEmail":"admin@gmail.com","oldData":{"Amount":50250},"newData":{"Amount":49950,"Modification reason":"test de la reduction d'un budget"}}"}
+{"datetime":"2018-09-18 19:51:39.967942","logLevel":"INFO","message":"Adding of new Entry don 1000","context":"{"email":"admin@gmail.com"}"}
+{"datetime":"2018-09-18 19:52:50.407960","logLevel":"INFO","message":"Registration of new Exit for deuxieme test de sortie Amount155.6","context":"{"email":"admin@gmail.com"}"}

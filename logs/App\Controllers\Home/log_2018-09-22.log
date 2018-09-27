@@ -1,0 +1,5 @@
+{"datetime":"2018-09-22 17:20:35.774705","logLevel":"INFO","message":"Login","context":"{"email":"admin@gmail.com"}"}
+{"datetime":"2018-09-22 17:34:36.920145","logLevel":"INFO","message":"Logout","context":"{"email":"admin@gmail.com"}"}
+{"datetime":"2018-09-22 17:34:39.016362","logLevel":"INFO","message":"Login","context":"{"email":"admin@gmail.com"}"}
+{"datetime":"2018-09-22 18:44:51.131613","logLevel":"INFO","message":"Login","context":"{"email":"admin@gmail.com"}"}
+{"datetime":"2018-09-22 20:11:40.106307","logLevel":"INFO","message":"Login","context":"{"email":"admin@gmail.com"}"}

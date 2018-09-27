@@ -1,0 +1,17 @@
+{"datetime":"2018-08-18 1:34:03.541527","logLevel":"INFO","message":"Adding of new Entry apport actionnaire 100","context":"{"email":"admin@gmail.com"}"}
+{"datetime":"2018-08-18 1:57:53.605146","logLevel":"INFO","message":"Modification of a Budget","context":"{"authorEmail":"admin@gmail.com","oldData":{"Amount":400},"newData":{"Amount":"500","Modification reason":"kjdlks"}}"}
+{"datetime":"2018-08-18 1:58:26.944974","logLevel":"INFO","message":"Registration of new Exit for sososososos Amount1","context":"{"email":"admin@gmail.com"}"}
+{"datetime":"2018-08-18 14:44:37.492404","logLevel":"INFO","message":"Registration of new Exit for test redirection Amount20","context":"{"email":"admin@gmail.com"}"}
+{"datetime":"2018-08-18 14:46:46.369966","logLevel":"INFO","message":"Registration of new Exit for test redirection Amount0.95","context":"{"email":"admin@gmail.com"}"}
+{"datetime":"2018-08-18 14:48:04.194972","logLevel":"INFO","message":"Registration of new Exit for test redirection Amount0.95","context":"{"email":"admin@gmail.com"}"}
+{"datetime":"2018-08-18 14:48:32.788768","logLevel":"INFO","message":"Registration of new Exit for test redirection Amount0.95","context":"{"email":"admin@gmail.com"}"}
+{"datetime":"2018-08-18 14:50:25.871901","logLevel":"INFO","message":"Registration of new Exit for test redirection Amount0.95","context":"{"email":"admin@gmail.com"}"}
+{"datetime":"2018-08-18 22:14:42.286365","logLevel":"INFO","message":"Registration of new Exit for jhjkj Amount0.1","context":"{"email":"admin@gmail.com"}"}
+{"datetime":"2018-08-18 22:15:38.811188","logLevel":"INFO","message":"Registration of new Exit for jhjkj Amount0.1","context":"{"email":"admin@gmail.com"}"}
+{"datetime":"2018-08-18 22:16:10.772685","logLevel":"INFO","message":"Registration of new Exit for jhjkj Amount0.1","context":"{"email":"admin@gmail.com"}"}
+{"datetime":"2018-08-18 22:21:30.468760","logLevel":"INFO","message":"Registration of new Exit for lkhjhkj Amount1","context":"{"email":"admin@gmail.com"}"}
+{"datetime":"2018-08-18 22:25:16.612200","logLevel":"INFO","message":"Creation of a new Budget for project redirection","context":"{"email":"admin@gmail.com"}"}
+{"datetime":"2018-08-18 22:25:56.934376","logLevel":"INFO","message":"Registration of new Exit for en passant par la session Amount10","context":"{"email":"admin@gmail.com"}"}
+{"datetime":"2018-08-18 22:35:01.669337","logLevel":"INFO","message":"Registration of new Exit for esperons que c'est bon Amount10","context":"{"email":"admin@gmail.com"}"}
+{"datetime":"2018-08-18 22:39:54.159431","logLevel":"INFO","message":"Registration of new Exit for voyons Amount10","context":"{"email":"admin@gmail.com"}"}
+{"datetime":"2018-08-18 22:45:32.919737","logLevel":"INFO","message":"Registration of new Exit for dernier test Amount10","context":"{"email":"admin@gmail.com"}"}

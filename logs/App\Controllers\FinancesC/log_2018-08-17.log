@@ -1,0 +1,15 @@
+{"datetime":"2018-08-17 3:34:48.394283","logLevel":"INFO","message":"Adding of new Entry apport actionnaire 5000","context":"{"email":"admin@gmail.com"}"}
+{"datetime":"2018-08-17 3:35:43.282108","logLevel":"INFO","message":"Adding of new Entry apport actionnaire 3000","context":"{"email":"admin@gmail.com"}"}
+{"datetime":"2018-08-17 3:53:43.569267","logLevel":"INFO","message":"Adding of new Entry apport actionnaire 500","context":"{"email":"admin@gmail.com"}"}
+{"datetime":"2018-08-17 3:59:22.650464","logLevel":"INFO","message":"Adding of new Entry don 1000","context":"{"email":"admin@gmail.com"}"}
+{"datetime":"2018-08-17 4:31:54.579525","logLevel":"INFO","message":"Creation of a new Budget for project deploiement de l'apllication","context":"{"email":"admin@gmail.com"}"}
+{"datetime":"2018-08-17 6:47:07.691205","logLevel":"INFO","message":"Adding of new Entry apport actionnaire 1000","context":"{"email":"admin@gmail.com"}"}
+{"datetime":"2018-08-17 18:21:59.555412","logLevel":"INFO","message":"Adding of new Entry don 500","context":"{"email":"admin@gmail.com"}"}
+{"datetime":"2018-08-17 19:01:59.191591","logLevel":"INFO","message":"Registration of new Exit for lmopko Amount10","context":"{"email":"admin@gmail.com"}"}
+{"datetime":"2018-08-17 19:05:05.353389","logLevel":"INFO","message":"Adding of new Entry apport actionnaire 100","context":"{"email":"admin@gmail.com"}"}
+{"datetime":"2018-08-17 19:15:13.101972","logLevel":"INFO","message":"Adding of new Entry apport actionnaire 100","context":"{"email":"admin@gmail.com"}"}
+{"datetime":"2018-08-17 19:48:43.947561","logLevel":"INFO","message":"Adding of new Entry apport actionnaire 45","context":"{"email":"admin@gmail.com"}"}
+{"datetime":"2018-08-17 19:55:10.960439","logLevel":"INFO","message":"Registration of new Exit for ,nv Amount1","context":"{"email":"admin@gmail.com"}"}
+{"datetime":"2018-08-17 19:56:11.717087","logLevel":"INFO","message":"Registration of new Exit for uhnl Amount1","context":"{"email":"admin@gmail.com"}"}
+{"datetime":"2018-08-17 19:59:19.417548","logLevel":"INFO","message":"Registration of new Exit for uhnl Amount1","context":"{"email":"admin@gmail.com"}"}
+{"datetime":"2018-08-17 21:09:49.208003","logLevel":"INFO","message":"Modification of a Budget","context":"{"authorEmail":"admin@gmail.com","oldData":{"Amount":500},"newData":{"Amount":"400","Modification reason":"parce que je veux"}}"}

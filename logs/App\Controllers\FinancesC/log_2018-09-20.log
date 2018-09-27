@@ -1,0 +1,4 @@
+{"datetime":"2018-09-20 20:49:18.009886","logLevel":"INFO","message":"Registration of new Exit for test des fichiers 2 Amount11","context":"{"email":"admin@gmail.com"}"}
+{"datetime":"2018-09-20 21:17:44.354523","logLevel":"INFO","message":"Registration of new Exit for test sans fichier Amount10","context":"{"email":"admin@gmail.com"}"}
+{"datetime":"2018-09-20 22:08:11.190542","logLevel":"INFO","message":"Registration of new Exit for test des lies avec plusieurs fichier Amount15","context":"{"email":"admin@gmail.com"}"}
+{"datetime":"2018-09-20 23:47:35.312953","logLevel":"INFO","message":"Adding of new Entry apport actionnaire 5000","context":"{"email":"admin@gmail.com"}"}

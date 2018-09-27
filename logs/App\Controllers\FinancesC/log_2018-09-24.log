@@ -1,0 +1,2 @@
+{"datetime":"2018-09-24 14:13:53.263859","logLevel":"INFO","message":"Modification of a Budget","context":"{"authorEmail":"admin@gmail.com","oldData":{"Amount":100},"newData":{"Amount":600,"Modification reason":"comme \u00e7a"}}"}
+{"datetime":"2018-09-24 14:14:54.604804","logLevel":"INFO","message":"Registration of new Exit for parce que je veux Amount500","context":"{"email":"admin@gmail.com"}"}

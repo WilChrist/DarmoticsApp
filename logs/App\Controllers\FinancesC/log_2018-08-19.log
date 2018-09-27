@@ -1,0 +1,6 @@
+{"datetime":"2018-08-19 15:19:18.484395","logLevel":"INFO","message":"Modification of a Budget","context":"{"authorEmail":"admin@gmail.com","oldData":{"Amount":500},"newData":{"Amount":"600","Modification reason":"hj"}}"}
+{"datetime":"2018-08-19 15:35:02.622466","logLevel":"INFO","message":"Modification of a Budget","context":"{"authorEmail":"admin@gmail.com","oldData":{"Amount":600},"newData":{"Amount":"600","Modification reason":"jk"}}"}
+{"datetime":"2018-08-19 16:04:13.798455","logLevel":"INFO","message":"Adding of new Entry apport actionnaire 100","context":"{"email":"admin@gmail.com"}"}
+{"datetime":"2018-08-19 16:05:48.988537","logLevel":"INFO","message":"Adding of new Entry don 50","context":"{"email":"admin@gmail.com"}"}
+{"datetime":"2018-08-19 16:09:50.248742","logLevel":"INFO","message":"Modification of a Budget","context":"{"authorEmail":"admin@gmail.com","oldData":{"Amount":600},"newData":{"Amount":"500","Modification reason":"retour \u00e0 la normale"}}"}
+{"datetime":"2018-08-19 17:01:35.070760","logLevel":"INFO","message":"Adding of new Entry apport actionnaire 3000","context":"{"email":"admin@gmail.com"}"}

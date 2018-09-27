@@ -11,31 +11,33 @@
                 <div class="card-body">
                     <h5 class="card-title text-center">Ajouter un Employé</h5>
 
-                    {% if error %}
+                    {% if error is not empty %}
                     <div class="alert alert-danger alert-dismissible">
                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                        <strong>{{error}} </strong>
+                        <strong>{{error|raw}} </strong>
                     </div>
-                    {% elseif success %}
+                    {% elseif success is not empty %}
                     <div class="alert alert-success alert-dismissible">
                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                        <strong>{{success}} </strong>
+                        <strong>{{success|raw}} </strong>
                     </div>
                     {% endif %}
 
 
                     <form class="addshareholder" method="post"
-                          action="{{ app.request.getBaseURL()}}/DarmoticsApp/public/Employee/add">
+                          action="{{ app.request.getBaseURL()}}{{RACINE}}/Employee/add">
                         <div class="row">
                             <div class="form-group col-sm-6">
                                 <label for="first_name">Nom</label>
-                                <input type="text" id="first_name" name="first_name" class="form-control" placeholder="Nom"
+                                <input type="text" id="first_name" name="first_name" class="form-control"
+                                       placeholder="Nom"
                                        required autofocus>
                                 <span class="alert alert-danger error" id="first_name_error"></span>
                             </div>
                             <div class="form-group col-sm-6">
                                 <label for="first_name">Prénom</label>
-                                <input type="text" id="last_name" name="last_name" class="form-control" placeholder="Prénom"
+                                <input type="text" id="last_name" name="last_name" class="form-control"
+                                       placeholder="Prénom"
                                        required autofocus>
                                 <span class="alert alert-danger error" id="last_name_error"></span>
                             </div>
@@ -43,13 +45,15 @@
                         <div class="row">
                             <div class="form-group col-sm-6">
                                 <label for="email">Email</label>
-                                <input type="email" id="email" name="email" class="form-control" placeholder="Adresse Mail"
+                                <input type="email" id="email" name="email" class="form-control"
+                                       placeholder="Adresse Mail"
                                        required autofocus>
                                 <span class="alert alert-danger error" id="email_error"></span>
                             </div>
                             <div class="form-group col-sm-6">
                                 <label for="phone">Téléphone</label>
-                                <input type="tel" id="phone" name="phone" class="form-control" placeholder="Numéro de Téléphone"
+                                <input type="tel" id="phone" name="phone" class="form-control"
+                                       placeholder="Numéro de Téléphone"
                                        required autofocus>
                                 <span class="alert alert-danger error" id="phone_error"></span>
                             </div>
@@ -57,13 +61,15 @@
                         <div class="row">
                             <div class="form-group col-sm-6">
                                 <label for="address">Adresse</label>
-                                <input type="text" id="address" name="address" class="form-control" placeholder="Adresse Physique"
+                                <input type="text" id="address" name="address" class="form-control"
+                                       placeholder="Adresse Physique"
                                        required autofocus>
                                 <span class="alert alert-danger error" id="address_error"></span>
                             </div>
                             <div class="form-group col-sm-6">
                                 <label for="dateOfEntry">Date d'entrée dans l'entreprise</label>
-                                <input type="date" id="dateOfEntry" name="dateOfEntry" class="form-control" placeholder="Adresse Physique"
+                                <input type="date" id="dateOfEntry" name="dateOfEntry" class="form-control"
+                                       placeholder="Adresse Physique"
                                        required autofocus>
                                 <span class="alert alert-danger error" id="dateOfEntry_error"></span>
                             </div>
@@ -71,35 +77,39 @@
                         <div class="row">
                             <div class="form-group col-sm-6">
                                 <label for="education">Education</label>
-                                <input type="text" id="education" name="education" class="form-control" placeholder="Bac Maths; Licence Maths; Diplôme d'ingénieur (Ensas)"
+                                <input type="text" id="education" name="education" class="form-control"
+                                       placeholder="Bac Maths; Licence Maths; Diplôme d'ingénieur (Ensas)"
                                        required autofocus>
                                 <span class="alert alert-danger error" id="education_error"></span>
                             </div>
                             <div class="form-group col-sm-6">
                                 <label for="skills">Compétences</label>
-                                <input type="text" id="skills" name="skills" class="form-control" placeholder="Développement Web; Programmation Mobile (débutant);"
+                                <input type="text" id="skills" name="skills" class="form-control"
+                                       placeholder="Développement Web; Programmation Mobile (débutant);"
                                        required autofocus>
                                 <span class="alert alert-danger error" id="skills_error"></span>
                             </div>
                         </div>
                         <div class="row">
-                        <div class="form-group col-sm-6">
-                            <label for="department">Département</label>
-                            <select class="custom-select" name="department" id="department" required>
-                                <option value="-1" selected disabled>Sélectionez</option>
-                                {% for department in departments %}
+                            <div class="form-group col-sm-6">
+                                <label for="department">Département</label>
+                                <select class="custom-select" name="department" id="department" required>
+                                    <option value="-1" selected disabled>Sélectionez</option>
+                                    <option value="0" >Aucun</option>
+                                    {% for department in departments %}
                                     <option value={{department.id}}>{{department.name}}</option>
-                                {% endfor %}
-                            </select>
-                            <span class="alert alert-danger error" id="department_error"></span>
+                                    {% endfor %}
+                                </select>
+                                <span class="alert alert-danger error" id="department_error"></span>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="office">Poste</label>
+                                <input type="text" id="office" name="office" class="form-control"
+                                       placeholder="Votre Poste"
+                                       required autofocus>
+                                <span class="alert alert-danger error" id="office_error"></span>
+                            </div>
                         </div>
-                        <div class="form-group col-sm-6">
-                            <label for="office">Poste</label>
-                            <input type="text" id="office" name="office" class="form-control" placeholder="Votre Poste"
-                                   required autofocus>
-                            <span class="alert alert-danger error" id="office_error"></span>
-                        </div>
-                    </div>
 
                         <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Ajouter</button>
                     </form>

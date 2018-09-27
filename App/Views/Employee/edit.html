@@ -1,0 +1,176 @@
+{% extends "dashboardbase.html" %}
+
+{% block title %}Modifier Employés{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9 col-md-10 col-lg-10 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Modifier un Employé</h5>
+
+                    {% if error is not empty %}
+                    <div class="alert alert-danger alert-dismissible">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>{{error|raw}} </strong>
+                    </div>
+                    {% elseif success is not empty %}
+                    <div class="alert alert-success alert-dismissible">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>{{success|raw}} </strong>
+                    </div>
+                    {% endif %}
+
+
+                    <form class="editEmployee" method="post"
+                          action="{{ app.request.getBaseURL()}}{{RACINE}}/EmployeeC/{{employee.id}}/edit">
+                        <div class="row">
+                            <div class="form-group col-sm-6">
+                                <input type="hidden" name="id" id="id" value="{{employee.id}}">
+                                <label for="first_name">Nom</label>
+                                <input type="text" id="first_name" name="first_name" class="form-control"
+                                       placeholder="Nom"
+                                       value="{{employee.firstName}}"
+                                       required autofocus>
+                                <span class="alert alert-danger error" id="first_name_error"></span>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="first_name">Prénom</label>
+                                <input type="text" id="last_name" name="last_name" class="form-control"
+                                       placeholder="Prénom"
+                                       value="{{employee.lastName}}"
+                                       required autofocus>
+                                <span class="alert alert-danger error" id="last_name_error"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-sm-6">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email" class="form-control"
+                                       placeholder="Adresse Mail"
+                                       value="{{employee.email}}"
+                                       required autofocus>
+                                <span class="alert alert-danger error" id="email_error"></span>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="phone">Téléphone</label>
+                                <input type="tel" id="phone" name="phone" class="form-control"
+                                       placeholder="Numéro de Téléphone"
+                                       value="{{employee.phone}}"
+                                       required autofocus>
+                                <span class="alert alert-danger error" id="phone_error"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-sm-6">
+                                <label for="address">Adresse</label>
+                                <input type="text" id="address" name="address" class="form-control"
+                                       placeholder="Adresse Physique"
+                                       value="{{employee.address}}"
+                                       required autofocus>
+                                <span class="alert alert-danger error" id="address_error"></span>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="dateOfEntry">Date d'entrée dans l'entreprise</label>
+                                <input type="date" id="dateOfEntry" name="dateOfEntry" class="form-control"
+                                       placeholder="Adresse Physique"
+                                       value="{{employee.dateOfEntry|date('Y-m-d')}}"
+                                       required autofocus>
+                                <span class="alert alert-danger error" id="dateOfEntry_error"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-sm-6">
+                                <label for="education">Education</label>
+                                <input type="text" id="education" name="education" class="form-control"
+                                       placeholder="Bac Maths; Licence Maths; Diplôme d'ingénieur (Ensas)"
+                                       value="{{employee.education}}"
+                                       required autofocus>
+                                <span class="alert alert-danger error" id="education_error"></span>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="skills">Compétences</label>
+                                <input type="text" id="skills" name="skills" class="form-control"
+                                       placeholder="Développement Web; Programmation Mobile (débutant);"
+                                       value="{{employee.skills}}"
+                                       required autofocus>
+                                <span class="alert alert-danger error" id="skills_error"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-sm-6">
+                                <label for="department">Département</label>
+                                <select class="custom-select" name="department" id="department" required>
+                                    <option value="-1" selected disabled>Sélectionez</option>
+                                    <option value="0" >Aucun</option>
+                                    {% for department in departments %}
+                                        {% if (department.id==employee.department.id)%}
+                                            <option value={{department.id}} selected>{{department.name}}</option>
+                                        {% else %}
+                                            <option value={{department.id}}>{{department.name}}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                                <span class="alert alert-danger error" id="department_error"></span>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="office">Poste</label>
+                                <input type="text" id="office" name="office" class="form-control"
+                                       placeholder="Votre Poste"
+                                       value="{{employee.office}}"
+                                       required autofocus>
+                                <span class="alert alert-danger error" id="office_error"></span>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Modifier</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $("#first_name").blur(function () {
+            if ($(this).val() === "") {
+                $("#first_name_error").empty().append("le nom ne peut être vide").show();
+            }
+            else {
+                $("#first_name_error").hide();
+            }
+        })
+
+        $("#last_name").blur(function () {
+            if ($(this).val() === "") {
+                $("#last_name_error").empty().append("le prénom ne peut être vide").show();
+            }
+            else {
+                $("#last_name_error").hide();
+            }
+        })
+
+        $("#email").blur(function () {
+            if ($(this).val() === "") {
+                $("#email_error").empty().append("l'email ne peut être vide").show();
+            }
+            else {
+                $("#email_error").hide();
+            }
+        })
+        $("#department").blur(function () {
+            if ($(this).val() == "-1") {
+                $("#department_error").empty().append("Veuillez sélécetionner un département").show();
+            }
+            else {
+                $("#department_error").hide();
+            }
+        })
+
+    })
+
+</script>
+{% endblock %}

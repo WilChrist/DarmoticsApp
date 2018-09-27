@@ -7,6 +7,8 @@
  */
 
 namespace App\Models;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Tests\Models\Reflection\ParentClass;
 
 /**
  * @Entity
@@ -30,9 +32,31 @@ class Employee extends User
     /**
      * One Employee has One Department.
      * @ManyToOne(targetEntity="Department", inversedBy="employees")
-     * @JoinColumn(name="department_id", referencedColumnName="id", nullable=true)
+     * @JoinColumn(name="department_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
     protected $department;
+
+    /**
+     * One Employee has Many Employee_Project.
+     * @OneToMany(targetEntity="Employee_Project", mappedBy="employee")
+     */
+    protected $employee_project;
+
+    /**
+     * @return mixed
+     */
+    public function getEmployeeProject()
+    {
+        return $this->employee_project;
+    }
+
+    /**
+     * @param mixed $employee_project
+     */
+    public function setEmployeeProject($employee_project)
+    {
+        $this->employee_project = $employee_project;
+    }
 
     /**
      * @return mixed
@@ -118,5 +142,11 @@ class Employee extends User
     }
 
 
-
+    /**
+     * Employee constructor.
+     */
+    public function __construct() {
+        parent::__construct();
+        $this->employee_project = new ArrayCollection();
+    }
 }

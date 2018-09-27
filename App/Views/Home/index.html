@@ -4,74 +4,39 @@
 
 {% block body %}
 
-    <h1 class="text-center">Welcome to DarmoticApp</h1>
-    <!-- The Modal -->
-    <div class="modal" id="myModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h4 class="modal-title">Please enter Corrects Informations</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-
-                {% if error %}
-                    <div class="alert alert-danger alert-dismissible">
-                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                        <strong>{{error}} </strong>
-                    </div>
-                    <script>
-                        $( document ).ready(function() {
-                            $('#myModal').modal('show');
-                        });
-                    </script>
-                {% endif %}
-
-                <!-- Modal body -->
-                <div class="modal-body">
-
-                    <form method="post" action="{{ app.request.getBaseURL()}}/DarmoticsApp/public/Home/login" enctype="application/x-www-form-urlencoded">
-                        <div class="form-group">
-                            <label for="email">Email address:</label>
-                            <input type="email" class="form-control" id="email" name="email">
-                        </div>
-                        <div class="form-group">
-                            <label for="pwd">Password:</label>
-                            <input type="password" class="form-control" id="pwd" name="password">
-                        </div>
-                        <div class="form-group form-check">
-                            <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox"> Remember me
-                            </label>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </form>
-                </div>
-
-
-                <!-- Modal footer -->
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                </div>
-
-            </div>
+<div class="row" style="height: 100vh; width: 100%;">
+    <div class="col-lg-7 col-md-6 leftpart">
+        <div class="present">
+            <h1> <b>Darmotics App</b></h1>
+            <p>La robotique et l'informatique au Service des Ménages!
+                Yes We Can !!!
+            </p>
         </div>
     </div>
+    <div class=" col-lg-5 col-md-6 col-sm-12 col-12 here" style="background-color: transparent;">
 
-
-<div class="container">
-    <div class="row">
-        <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-            <div class="card card-signin my-5">
-                <div class="card-body">
-                    <h5 class="card-title text-center">Sign In First</h5>
-
-                </div>
+        <form class="centrer" method="post" action="{{ app.request.getBaseURL()}}{{RACINE}}/Home/login" enctype="application/x-www-form-urlencoded">
+            <div class="present2">
+                <h2> <b>Darmotics App</b></h2>
+                <p>La robotique et l'informatique au Service des Menage!
+                    Yes We Can !!!
+                </p>
             </div>
-        </div>
+            <h2 class="form-heading">Accédez à l'Application</h2>
+            {% if error %}
+            <div class="alert alert-danger alert-dismissible">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>{{error}} </strong>
+            </div>
+            {% endif %}
+            <div class="form-group">
+                <input type="email" class="form-control bigger" id="email" name="email" placeholder="Entrer votre Adresse Mail ...">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control bigger" id="pwd" name="password" placeholder="Entrer votre Mot de Passe ...">
+            </div>
+            <button type="submit" class="loginBtn">Connectez vous!</button>
+        </form>
     </div>
 </div>
-
-
 {% endblock %}

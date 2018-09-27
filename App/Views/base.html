@@ -1,62 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
     <title>{% block title %}{% endblock %}</title>
     <!-- Latest compiled and minified CSS -->
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
-
-    <!-- Font Awesome-->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
-    <script src="{{ app.request.getBaseURL()}}/DarmoticsApp/App/Views/vendor1/jquery/jquery.min.js"></script>
-</head>
-<body>
-
-    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-        <a class="navbar-brand" href="./">DarmoticApp</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="collapsibleNavbar">
-            <ul class="navbar-nav">
-
-                <li class="nav-item">
-                    <a class="nav-link active" href="./">Accueil</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Contact</a>
-                </li>
-            </ul>
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a href="#" class="nav-link" data-toggle="modal" data-target="#myModal">
-                        <i class="fas fa-sign-in-alt" aria-hidden="true"></i>
-                        Login
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-    {% block body %}
-    {{ app.request.baseUrl  }}
-
-    {{base_path}}
-
-    {{ app.request.getBaseURL() }}
-    {% endblock %}
-
-    <footer class="jumbotron text-center" style="margin-bottom:0">
-            <p>Footer</p>
-    </footer>
-    <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-    <!-- Popper JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <link href="{{ app.request.getBaseURL()}}{{RACINE}}/css/style.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
+
+</head>
+<body class="body">
+
+    {% block body %}
+
+    {% endblock %}
+
+    <!-- jQuery library -->
 </body>
 </html>

@@ -3,10 +3,25 @@
 {% block title %}Employés{% endblock %}
 
 {% block body %}
-
+<script type="application/javascript" src="{{ app.request.getBaseURL()}}{{RACINE}}/js/suppr.js"></script>
 <div class="container">
     <div class="row">
         <div class="col-sm-12 col-md-12 col-lg-12 mx-auto">
+
+            {% if error is not empty %}
+            <div class="alert alert-danger alert-dismissible">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>{{error|raw}} </strong>
+            </div>
+            {% elseif success is not empty %}
+            <div class="alert alert-success alert-dismissible">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>{{success|raw}} </strong>
+            </div>
+            {% endif %}
+
+            <div id="mess" class="">
+            </div>
             {% if employees|length <= 0 %}
             <p>Aucun Employée n'existe pour le moment veuillez rajouter des employées</p>
             {% else %}
@@ -15,7 +30,7 @@
             <div class="card mb-3">
                 <div class="card-header">
                     <i class="fas fa-table"></i>
-                    Liste des Employées</div>
+                    Liste des Employées <input type="hidden" id="controller" value="EmployeeC"></div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -31,6 +46,7 @@
                                 <th>Compétences</th>
                                 <th>Département</th>
                                 <th>Poste</th>
+                                <th>Projet</th>
                                 <th>Date d'entrée dans l'E'se</th>
                                 <th>Modifier</th>
                                 <th>Supprimer</th>
@@ -48,6 +64,7 @@
                                 <th>Compétences</th>
                                 <th>Département</th>
                                 <th>Poste</th>
+                                <th>Projet</th>
                                 <th>Date d'entrée dans l'E'se</th>
                                 <th>Modifier</th>
                                 <th>Supprimer</th>
@@ -57,7 +74,7 @@
                             {% set d=null%}
                             {% for employee in employees %}
                             {% set skills=employee.skills|split(';')%}
-                            <tr>
+                            <tr id="{{employee.id}}">
                                 <td> {{i}} </td>
                                 <td>{{employee.firstName}}</td>
                                 <td>{{employee.lastName}}</td>
@@ -72,9 +89,14 @@
                                 </td>
                                 <td>{{employee.department.name}}</td>
                                 <td>{{employee.office}}</td>
+                                <td>
+                                    {% for ep in employee.employeeProject%}
+                                        <a href="{{ app.request.getBaseURL()}}{{RACINE}}/ProjectC/{{ep.project.id}}/edit"><span class="badge badge-info">{{ep.project.name}}</span></a>
+                                    {% endfor %}
+                                </td>
                                 <td>{{employee.dateOfEntry|date('Y-m-d')}}</td>
-                                <td><a href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/Department/edit?id={{department.id}}"><button type="button" class="btn btn-primary">Modifier</button></a></td>
-                                <td><a href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/Department/delete?id={{department.id}}"><button type="button" class="btn btn-danger">Supprimer</button></a></td>
+                                <td><a href="{{ app.request.getBaseURL()}}{{RACINE}}/EmployeeC/{{employee.id}}/edit"><button type="button" class="btn btn-primary">Modifier</button></a></td>
+                                <td><button type="button" class="btn btn-danger" onclick="deletee('{{employee.id}}', '{{employee.email}}')">Supprimer</button></td>
                             </tr>{% set d=employee.lastUpdateDate%}
                             {% set i=i+1 %}
                             {% endfor %}
@@ -91,5 +113,53 @@
     </div>
 </div>
 
+<div class="modal" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header  alert alert-danger">
+                <h4 class="modal-title">Suppression d'un Employé</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            {% if error %}
+            <div class="alert alert-danger alert-dismissible">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>{{error}} </strong>
+            </div>
+            <script>
+                $( document ).ready(function() {
+                    $('#myModal').modal('show');
+                });
+            </script>
+            {% endif %}
+
+            <!-- Modal body -->
+            <div class="modal-body">
+
+                <div>
+                    <div class="form-group">
+                        <input type="hidden" class="form-control" id="id" name="id" value="-1">
+                    </div>
+                    <p>Êtes-vous certains de vouloir supprimmer l'employé <span id="meaningvalue"></span> ? <br/>Si oui,
+                        veuillez en donner la reason </p>
+                    <div class="form-group">
+                        <label for="reason">Raison:</label>
+                        <input type="text" class="form-control" id="reason" name="reason" required>
+                    </div>
+                    <button id="suppBout" type="submit" class="btn btn-danger">Supprimmer</button>
+                </div>
+            </div>
+
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 {% endblock %}

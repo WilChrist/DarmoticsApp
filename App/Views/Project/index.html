@@ -11,21 +11,21 @@
                 <div class="card-body">
                     <h5 class="card-title text-center">Ajouter un projet</h5>
 
-                    {% if error %}
+                    {% if error is not empty %}
                     <div class="alert alert-danger alert-dismissible">
                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                        <strong>{{error}} </strong>
+                        <strong>{{error|raw}} </strong>
                     </div>
-                    {% elseif success %}
+                    {% elseif success is not empty %}
                     <div class="alert alert-success alert-dismissible">
                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                        <strong>{{success}} </strong>
+                        <strong>{{success|raw}} </strong>
                     </div>
                     {% endif %}
 
 
                     <form class="addshareholder" method="post"
-                          action="{{ app.request.getBaseURL()}}/DarmoticsApp/public/Project/add">
+                          action="{{ app.request.getBaseURL()}}{{RACINE}}/Project/add">
                         <div class="form-group">
                             <label for="name">Nom Projet</label>
                             <input type="text" id="name" name="name" class="form-control" placeholder="Nom"
@@ -46,6 +46,31 @@
                             <label for="endDate">Date de fin du projet</label>
                             <input type="date" id="endDate" name="endDate" class="form-control" required>
                             <span class="alert alert-danger error" id="endDate_error"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="chief">Chef du Projet</label>
+                            <select class="select-chief custom-select" id="chief" name="chief" autofocus>
+                                <option value="-1" selected disabled>Nom du Chef</option>
+                                {% for emp in employees %}
+                                {%if(emp.id==department.chief.id)%}
+                                <option value={{emp.id}} selected>{{emp.firstName}}</option>
+                                {%else%}
+                                <option value={{emp.id}}>{{emp.firstName}}</option>
+                                {%endif%}
+
+                                {% endfor %}
+                            </select>
+                            <span class="alert alert-danger error" id="chief_name_error"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="employees[]">Employées Travaillant sur ce Project (vous pouvez en selectionner plusieurs)</label>
+                            <span class="alert alert-danger error" id="employees_name_error"></span>
+                            <select class="select-employees custom-select" id="employees[]" name="employees[]" autofocus multiple="multiple" style="width: 100%;">
+                                    <option value="-1" selected disabled>Sélectionnez des employées</option>
+                                {% for emp in employees %}
+                                    <option value={{emp.id}}>{{emp.firstName}}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                         <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Ajouter</button>
                     </form>
@@ -85,7 +110,7 @@
         })
 
         $("#endDate").blur(function () {
-            if ($(this).val() === "" || $(this).val() <= $("#startDate").val()) {
+            if ($(this).val() === "" || $(this).val() < $("#startDate").val()) {
                 $("#endDate_error").empty().append("la date de fin est invalide").show();
             }
             else {
@@ -93,6 +118,11 @@
             }
         })
     })
-
+    $(document).ready(function() {
+        $('.select-employees').select2();
+    });
+    $(document).ready(function() {
+        $('.select-chief').select2();
+    });
 </script>
 {% endblock %}

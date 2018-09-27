@@ -32,4 +32,19 @@ abstract class Model
 
         return $db;
     }
+
+    /*
+     * get Model Class Name for @model
+     * @params string $model abbreviation of the model name wanted
+     * @return string model Class Name
+     */
+    public static function models($modelAbbreviation){
+        $models=[
+            'dep'=>'App\Models\Department',
+            'emp'=>'App\Models\Employee',
+            'pro'=>'App\Models\Project',
+            'fce'=>'App\Models\FinancialEntry',
+        ];
+        return $models[$modelAbbreviation];
+    }
 }

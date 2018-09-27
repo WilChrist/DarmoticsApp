@@ -20,23 +20,31 @@ class Config
      * Database name
      * @var string
      */
-    const DB_NAME = 'darmotics';
+    const DB_NAME = 'festirev_darmoticsapp';
 
     /**
      * Database user
      * @var string
      */
-    const DB_USER = 'root';
+    const DB_USER = 'festirev_admin';
 
     /**
      * Database password
      * @var string
      */
-    const DB_PASSWORD = '';
+    const DB_PASSWORD = 'csEXWgpiPYg]';
 
     /**
      * Show or hide error messages on screen
      * @var boolean
      */
     const SHOW_ERRORS = true;
+
+    /**
+     * Do redirection onto public Folder
+     * @var string
+     */
+    const RACINE = '';
+
+    const FileRacine = '../files/';
 }

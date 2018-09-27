@@ -20,9 +20,6 @@ class FinancialEntry extends FinancialMovement
     /** @Column(type="integer") */
     protected $contributorID;
 
-    /** @Column(type="integer") */
-    protected $documentID;
-
     /**
      * @return mixed
      */
@@ -30,6 +27,13 @@ class FinancialEntry extends FinancialMovement
     {
         return $this->type;
     }
+
+
+    /**
+     * One entryBill is for One entry.
+     * @OneToOne(targetEntity="EntryBill", mappedBy="entry")
+     */
+    protected $entrybill;
 
     /**
      * @param mixed $type
@@ -58,18 +62,19 @@ class FinancialEntry extends FinancialMovement
     /**
      * @return mixed
      */
-    public function getDocumentID()
+    public function getEntrybill()
     {
-        return $this->documentID;
+        return $this->entrybill;
     }
 
     /**
-     * @param mixed $documentID
+     * @param mixed $entrybill
      */
-    public function setDocumentID($documentID)
+    public function setEntrybill($entrybill)
     {
-        $this->documentID = $documentID;
+        $this->entrybill = $entrybill;
     }
+
 
 
 }

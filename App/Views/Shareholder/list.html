@@ -1,19 +1,32 @@
 {% extends "dashboardbase.html" %}
 
-{% block title %}Shareholder{% endblock %}
+{% block title %}Liste des Actionnaires{% endblock %}
 
 {% block body %}
 
 <div class="container">
     <div class="row">
         <div class="col-sm-9 col-md-6 col-lg-6 mx-auto">
+
+            {% if error is not empty %}
+            <div class="alert alert-danger alert-dismissible">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>{{error|raw}} </strong>
+            </div>
+            {% elseif success is not empty %}
+            <div class="alert alert-success alert-dismissible">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>{{success|raw}} </strong>
+            </div>
+            {% endif %}
+
             {% if shareholders|length <= 0 %}
                 <p>Aucun Actionnaire n'existe pour le moment veuillez rajouter des actionnaires</p>
             {% else %}
                 {% set i=0 %}
                 <div id="accordion">
                 {% for shareholder in shareholders %}
-                    <div class="card bg-dark text-white">
+                    <div class=" card bg-dark text-white cardlist">
                         <div class="card-header">
                             <a class="card-link" data-toggle="collapse" href="#collapse{{i}}">
                                 {{shareholder.lastname}}
@@ -22,15 +35,15 @@
                         <div id="collapse{{i}}" class="collapse{% if i==0 %}{{' show'}}{% endif %}" data-parent="#accordion">
                             <div class="card-body">
                                 <p class="card-text">Prenom: {{shareholder.firstname}}</p>
-                                <p class="card-text">Email: {{shareholder.phone}}</p>
-                                <p class="card-text">Téléphone: {{shareholder.email}}</p>
-                                <p class="card-text">Téléphone: {{shareholder.address}}</p>
-                                <p class="card-text">Pourcentage d'Actions: {{shareholder.sharesPercentage}}%</p>
+                                <p class="card-text">Email: {{shareholder.email}}</p>
+                                <p class="card-text">Téléphone: {{shareholder.phone}}</p>
+                                <p class="card-text">Adresse: {{shareholder.address}}</p>
+                                <p class="card-text">Pourcentage d'Actions: {{shareholder.sharesPercentage}}% ({{shareholder.sharesPercentage*totalOfShareholdersEntry/100}})</p>
                             </div>
                             <div class="card-footer">
                                 <div class="container">
-                                    <a href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/Shareholder/edit?id={{shareholder.id}}"><button type="button" class="btn btn-primary">Modifier</button></a>
-                                    <a href="{{ app.request.getBaseURL()}}/DarmoticsApp/public/Shareholder/delete?id={{shareholder.id}}"><button type="button" class="btn btn-danger">Supprimer</button></a>
+                                    <a href="{{ app.request.getBaseURL()}}{{RACINE}}/ShareholderC/{{shareholder.id}}/edit"><button type="button" class="btn btn-primary">Modifier</button></a>
+                                    <button type="button" class="btn btn-danger">Supprimer</button>
                                 </div>
                             </div>
                         </div>

@@ -9,10 +9,7 @@
 namespace App\Models;
 
 
-/**
- * @Entity
- * @Table(name="account")
- */
+
 class Account
 {
     /**
@@ -20,10 +17,35 @@ class Account
      * @Column(type="integer")
      * @GeneratedValue(strategy="IDENTITY")
      */
-    protected $id ;
+    protected $id;
+
+    /** @Column(type="float")  */
+    protected $amountbefore;
 
     /** @Column(type="float")  */
     protected $amount;
+
+    /** @Column(type="float")  */
+    protected $amountafter;
+
+    /** @Column(type="datetime",options={"default":"CURRENT_TIMESTAMP"}) */
+    protected $date;
+
+    /**
+     * @return mixed
+     */
+    public function getAmountbefore()
+    {
+        return $this->amountbefore;
+    }
+
+    /**
+     * @param mixed $amountbefore
+     */
+    public function setAmountbefore($amountbefore)
+    {
+        $this->amountbefore = $amountbefore;
+    }
 
     /**
      * @return mixed
@@ -41,5 +63,59 @@ class Account
         $this->amount = $amount;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getAmountafter()
+    {
+        return $this->amountafter;
+    }
+
+    /**
+     * @param mixed $amountafter
+     */
+    public function setAmountafter($amountafter)
+    {
+        $this->amountafter = $amountafter;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * @param mixed $date
+     */
+    public function setDate()
+    {
+        $this->date = new \DateTime("now");
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+
+
+    public function __construct()
+    {
+        $this->setDate();
+    }
 
 }

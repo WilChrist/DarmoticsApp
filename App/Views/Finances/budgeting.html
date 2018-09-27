@@ -1,0 +1,76 @@
+{% extends "dashboardbase.html" %}
+
+{% block title %}Budgetisation{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9 col-md-10 col-lg-10 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Affecter un Budget à un projet</h5>
+
+                    {% if error is not empty %}
+                    <div class="alert alert-danger alert-dismissible">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>{{error|raw}} </strong>
+                    </div>
+                    {% elseif success is not empty %}
+                    <div class="alert alert-success alert-dismissible">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>{{success|raw}} </strong>
+                    </div>
+                    {% endif %}
+
+                    {% if projects | length <= 0 %}
+                        <p>Il n'y a aucun projet auquel affecter un budget veuillez ajouter des projets</p>
+                    {% else %}
+                    <form method="post" action="{{ app.request.getBaseURL()}}{{RACINE}}/Finances/addBudgeting">
+                            <div class="form-group">
+                                <label for="project">Projet</label>
+                                <select  id="project" name="project" class="form-control" required autofocus>
+                                    <option value="-1">Nom projet</option>
+                                    {% for project in projects %}
+                                    <option value="{{project.id}}">{{project.name}}</option>
+                                    {% endfor %}
+                                </select>
+                                <span class="alert alert-danger error" id="project_error"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="amount">Montant du budget</label>
+                                <input type="number" id="amount" name="amount" class="form-control" step="0.01" min="0">
+                                <span class="alert alert-danger error" id="amount_error"></span>
+                            </div>
+                            <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Ajouter</button>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $("#project").change(function () {
+            if ($(this).val() <0 ) {
+                $("#project_error").empty().append("veuillez selectionner un projet").show();
+            }
+            else {
+                $("#project_error").hide();
+            }
+        })
+
+        $("#amount").blur(function(){
+            if(!$.isNumeric($(this).val()) || $(this).val()==="" ){
+                $("#amount_error").empty().append("le montant ne peut être vide et doit être numérque").show();
+            }
+            else {
+                $("#amount_error").hide();
+            }
+        })
+    })
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,97 @@
+{% extends "dashboardbase.html" %}
+
+{% block title %}Liste des Budgets{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12 mx-auto">
+            <div id="mess" class="">
+
+                {% if error is not empty %}
+                <div class="alert alert-danger alert-dismissible">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>{{error|raw}} </strong>
+                </div>
+                {% elseif success is not empty %}
+                <div class="alert alert-success alert-dismissible">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>{{success|raw}} </strong>
+                </div>
+                {% endif %}
+
+            </div>
+            {% if budgets|length <= 0 %}
+            <p>Aucun Budget n'existe pour l'instant</p>
+            {% else %}
+            {% set i=0 %}
+            <!-- DataTables Example -->
+            <div class="card mb-3">
+                <div class="card-header">
+                    <i class="fas fa-table"></i>
+                    Liste des Budgets </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th>N°</th>
+                                <th>Projet</th>
+                                <th>Date d'affectation</th>
+                                <th>Montant d'Origine</th>
+                                <th>Montant Actuel</th>
+                                <th>Montant utilisé</th>
+                                <th>Montant Restant</th>
+                                <th>Modifier</th>
+                                <th>Supprimer</th>
+                                <th>historique</th>
+                            </tr>
+                            </thead>
+                            <tfoot>
+                            <tr>
+                                <th>N°</th>
+                                <th>Projet</th>
+                                <th>Date d'affectation</th>
+                                <th>Montant d'Origine</th>
+                                <th>Montant Actuel</th>
+                                <th>Montant utilisé</th>
+                                <th>Montant Restant</th>
+                                <th>Modifier</th>
+                                <th>Supprimer</th>
+                                <th>historique</th>
+                            </tr>
+                            </tfoot>
+                            <tbody>
+                            {% for budget in budgets %}
+                            <tr>
+                                <td> {{i}} </td>
+                                <td>{{budget.project.name}}</td>
+                                <td>{{budget.movementDate|date('Y-m-d')}}</td>
+                                <td>{{budget.OriginAmount}}</td>
+                                <td>{{budget.Amount}}</td>
+                                <td>{{budget.UsedPart}}</td>
+                                <td>{{budget.Rest}}</td>
+                                <td>
+                                    <a href="{{ app.request.getBaseURL()}}{{RACINE}}/FinancesC/{{budget.id}}/1/editbudget"><button type="button" class="btn btn-primary btn-sm">Augmenter</button></a>
+                                    <a href="{{ app.request.getBaseURL()}}{{RACINE}}/FinancesC/{{budget.id}}/0/editbudget"><button type="button" class="btn btn-secondary btn-sm">Diminuer</button></a>
+
+                                </td>
+                                <td><button type="button" class="btn btn-danger">Supprimer</button></td>
+                                <td><a href="{{ app.request.getBaseURL()}}{{RACINE}}/FinancesC/{{budget.id}}/history"><button type="button" class="btn btn-secondary">Historique</button></a></td>
+
+                            </tr>
+                            {% set i=i+1 %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

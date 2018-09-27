@@ -1,0 +1,75 @@
+{% extends "dashboardbase.html" %}
+
+{% block title %}Liste des factures de dorties{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12 mx-auto">
+            <div id="mess" class="">
+                {% if error %}
+                <div class="alert alert-danger alert-dismissible">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>{{error}} </strong>
+                </div>
+                {% elseif success %}
+                <div class="alert alert-success alert-dismissible">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>{{success}} </strong>
+                </div>
+                {% endif %}
+            </div>
+            {% if exitbills|length <= 0 %}
+            <p>Aucun facture de sortie financière pour le moment</p>
+            {% else %}
+            {% set i=0 %}
+            <!-- DataTables Example -->
+            <div class="card mb-3">
+                <div class="card-header">
+                    <i class="fas fa-table"></i>
+                    Liste des Factures de sorties <input type="hidden" id="controller" value="FinancesC"></div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th>N°</th>
+                                <th>Ref</th>
+                                <th>Date de creation</th>
+                                <th>Projet</th>
+                                <th>Lien</th>
+                            </tr>
+                            </thead>
+                            <tfoot>
+                            <tr>
+                                <th>N°</th>
+                                <th>Ref</th>
+                                <th>Date de creation</th>
+                                <th>Projet</th>
+                                <th>Lien</th>
+                            </tr>
+                            </tfoot>
+                            <tbody>
+                            {% for exitbill in exitbills %}
+                            <tr id="{{employee.id}}">
+                                <td> {{i}} </td>
+                                <td>{{exitbill.id}}</td>
+                                <td>{{exitbill.creationDate}}</td>
+                                <td>{{exitbill.project}}</td>
+                                <td><a href="{{ app.request.getBaseURL()}}{{RACINE}}/FinancesC/{{exitbill.id}}/exitprint" target="_blank"><button type="button" class="btn btn-primary">Télécharger</button></a></td>
+                            </tr>
+                            {% set i=i+1 %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -68,38 +68,45 @@ class FinancesC extends Controller
                 $giver = null;
                 $newupdate = null;
 
-                if ($this->getpost("type") == "shareholder" && ($this->getpost("amount") == null || $this->getpost("amount") == 0 || $this->getpost("shareholder") < 0)) {
+                if ($this->getpost("type") == "shareholder" && ($this->getpost("amount") == null || $this->getpost("amount") == 0 || $this->getpost("shareholder") < 0 || !is_numeric($this->getpost("amount")) )) {
 
                     $this->setMessage('error', 'veuillez remplir tous les champs');
                     header("Location:" . Config::RACINE . "/Finances/entry");
 
-                } elseif ($this->getpost("type") != "shareholder" && ($this->getpost("amount") == null || $this->getpost("amount") == 0 || $this->getpost("contributorName") == null)) {
+                } elseif ($this->getpost("type") != "shareholder" && ($this->getpost("amount") == null || $this->getpost("amount") == 0 || $this->getpost("contributorName") == null || !is_numeric($this->getpost("amount")))) {
 
                     $this->setMessage('error', 'veuillez remplir tous les champs');
                     header("Location:" . Config::RACINE . "/Finances/entry");
 
                 } else {
                     if ($this->getpost("type") == "shareholder") {
-                        $newentry->setType("apport actionnaire");
-                        $newentry->setAmount($this->getpost("amount"));
-                        $newentry->setContributorID($this->getpost("shareholder"));
-                        $giver = $this->getSingleShareholder($this->getpost("shareholder"));
+                        if($this->getSingleShareholder($this->getpost("shareholder"))==null){
+                            $this->setMessage('error', 'cet Actionnaire n\'existe pas');
+                            header("Location:" . Config::RACINE . "/Finances/entry");
+                        }
+                        else{ 
+                            $newentry->setType("apport actionnaire");
+                            $newentry->setAmount($this->getpost("amount"));
+                            $newentry->setContributorID($this->getpost("shareholder"));
+                            $giver = $this->getSingleShareholder($this->getpost("shareholder"));
 
-                        //updating account state for capital
-                        $newupdate = new CapitalUpdate();
-                        $this->setAccountUpdate($newupdate, '\CapitalUpdate');
+                            //updating account state for capital
+                            $newupdate = new CapitalUpdate();
+                            $this->setAccountUpdate($newupdate, '\CapitalUpdate');
 
-                        //adding date
-                        $newupdate->setDate();
-                        $newentry->setMovementDate();
+                            //adding date
+                            $newupdate->setDate();
+                            $newentry->setMovementDate();
 
-                        //save modification
-                        $this->db->persist($newentry);
-                        $this->db->persist($newupdate);
-                        $this->db->flush();
+                            //save modification
+                            $this->db->persist($newentry);
+                            $this->db->persist($newupdate);
+                            $this->db->flush();
 
-                        //update shareholder
-                        $this->updateSharesPercentage();
+                            //update shareholder
+                            $this->updateSharesPercentage();
+                        }
+                       
 
                     } else {
                         //adding contributor in case of donatio type entry
@@ -187,7 +194,7 @@ class FinancesC extends Controller
         } else {
             try {
                 $availablecapital = $this->getAvailableTreasury();
-                if ($this->getpost("amount") == null || $this->getpost("project") < 0) {
+                if ($this->getpost("amount") == null || $this->getpost("project") < 0 || !is_numeric($this->getpost("amount")) || $this->db->getRepository('App\Models\Project')->findOneBy(array('id' => $this->getpost("project")))==null) {
                     $this->setMessage('error', 'veuillez remplir tous les champs');
                     header("Location:" . Config::RACINE . "/Finances/budgeting");
                 } elseif ($availablecapital < $this->getpost("amount")) {
@@ -242,12 +249,11 @@ class FinancesC extends Controller
     {
         if (!isset($_SESSION["user"])) {
             header("Location:" . Config::RACINE . "/");
-        } elseif ($this->getpost("budget") <= 0 || $this->getpost("amount") == null || $this->getpost("reason") == null) {
+        } elseif ($this->getpost("budget") <= 0 || $this->getpost("amount") == null || !is_numeric($this->getpost("amount")) || $this->getpost("reason") == null || $this->getSingleBudget($this->getpost("budget"))==null) {
             $this->setMessage('error', 'veuillez remplir tous les champs');
             header("Location:" . Config::RACINE . "/Finances/exit");
         } else {
-            $budgetId = $this->getpost("budget");
-            $budget = $this->getSingleBudget($budgetId);
+            $budget = $this->getSingleBudget($this->getpost("budget"));
             if ($budget->getRest() < $this->getpost("amount")) {
                 $this->setMessage('error', 'le budget n\'est pas/plus suffisant ou épuisé');
                 header("Location:" . Config::RACINE . "/Finances/exit");
@@ -324,9 +330,10 @@ class FinancesC extends Controller
                 $budgetid = isset($id) ? $id : $this->getpost("id");
                 $actiontype = isset($type) ? $type : $this->getpost("type");
                 $currentbudget = null;
-                if ($this->getpost("amount") == null || $this->getpost("reason") == null || $this->getpost("type") == null) {
+                if ($this->getpost("amount") == null || $this->getpost("reason") == null || $this->getpost("type") == null || 
+!is_numeric($this->getpost("amount"))) {
 
-                    if ($this->getpost("amount") != null || $this->getpost("reason") != null || $this->getpost("type") != null) {
+                    if ($this->getpost("amount") != null || $this->getpost("reason") != null || $this->getpost("type") != null || $this->db->getRepository('App\Models\Budgeting')->find($budgetid)==null) {
                         $this->setMessage('error', 'veuillez remplir tous les champs');
                     }
                     $error = $this->getMessage('error');
@@ -358,8 +365,13 @@ class FinancesC extends Controller
                     $usedpart = $query->getSingleScalarResult();*/
                     $availabletreasury = $this->getAvailableTreasury();
 
-                    if ($availabletreasury < $newamount || $newamount < $newbudget->getUsedPart() || $this->getpost("amount") == 0) {
-                        $this->setMessage('error', 'le nouveau budget ne peut être supérieur à la trésorerie disponible qui est de' . $availabletreasury . ', et ne peut être inférieur aux dépenses déjà rélisés qui sont de ' . $newbudget->getUsedPart() . ' et le montant à ajouter/diminuer ne peut être nul');
+                    if ($availabletreasury < $this->getpost("amount") || $newamount < $newbudget->getUsedPart() || $this->getpost("amount") == 0) {
+                        if($availabletreasury < $this->getpost("amount")){$this->setMessage('error', 'le montant à ajouter ne peut être supérieur à la trésorerie disponible qui est de '.$availabletreasury);}
+                        elseif($newamount < $newbudget->getUsedPart() ){
+                            $max = $newbudget->getAmount() - $newbudget->getUsedPart();
+                            $this->setMessage('error', 'le budget réduit ne peut être inférieur aux dépenses déjà rélisées qui sont de '. $newbudget->getUsedPart().' (vous ne pouvez pas réduire plus de '.$max.')');
+                        }
+                        else{$this->setMessage('error','le montant à ajouter/diminuer ne peut être nul');}
                         header("Location:" . Config::RACINE . "/FinancesC/" . $budgetid . "/" . $actiontype . "/editbudget");
                     } else {
 
@@ -428,7 +440,7 @@ class FinancesC extends Controller
     {
         if (!isset($_SESSION['user'])) {
             header("Location:" . Config::RACINE . "/");
-        } elseif ($id == null) {
+        } elseif ($id == null || $this->db->getRepository('App\Models\EntryBill')->find($id)==null) {
             View::renderTemplate('Finances/listEntryBill.html', ['user' => $_SESSION["user"], 'entrybills' => $this->getbillforview('\EntryBill'), 'error' => 'erreur veuillez réessayer']);
         } else {
             try {
@@ -459,7 +471,7 @@ class FinancesC extends Controller
     {
         if (!isset($_SESSION['user'])) {
             header("Location:" . Config::RACINE . "/");
-        } elseif ($id == null) {
+        } elseif ($id == null || $this->db->getRepository('App\Models\ExitBill')->find($id)==null) {
             View::renderTemplate('Finances/listExitBill.html', ['user' => $_SESSION["user"], 'exitbills' => $this->getbillforview('\ExitBill'), 'error' => 'erreur veuillez réessayer']);
         } else {
             try {
@@ -472,7 +484,9 @@ class FinancesC extends Controller
                 $server = $_SERVER['SERVER_NAME'];
                 if (count($files) > 0) {
                     for ($i = 0, $m = count($files); $i < $m; $i++) {
-                        $links .= '<a href="http://' . $this->getbase() . Config::FileRacine . $files[$i]->getName() . '" download="' . $files[$i]->getOriginName() . '" target="_blank">' . $files[$i]->getOriginName() . '</a> ';
+                        $links .= '<a href="http://darmoticsapp.cc.nf/Files/'.$files[$i]->getId() . '/download" download="' . $files[$i]->getOriginName() . '" 
+target="_blank">' . 
+$files[$i]->getOriginName() . '</a> ';
                     }
                 } else {
                     $links = "aucune";

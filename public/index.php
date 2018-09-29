@@ -77,7 +77,7 @@ try {
 
 }
 catch (\Exception $e){
-    var_dump($e->getMessage());
+    //var_dump($e->getMessage());
     //print("<pre>".print_r($e,true)."</pre>");
-    //View::renderTemplate('404.html', ['message'=>$e->getMessage()]);
+    View::renderTemplate('404.html', ['message'=>$e->getMessage()]);
 }
